@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>event.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="anim.html">
+                anim.js
+              </a>
+            
+              
+              <a class="source" href="core.html">
+                core.js
+              </a>
+            
+              
+              <a class="source" href="event.html">
+                event.js
+              </a>
+            
+              
+              <a class="source" href="io.html">
+                io.js
+              </a>
+            
+              
+              <a class="source" href="loader.html">
+                loader.js
+              </a>
+            
+              
+              <a class="source" href="node.html">
+                node.js
+              </a>
+            
+              
+              <a class="source" href="ua.html">
+                ua.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>event.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="event-">Event 模块</h2>
+<p><strong>Event 用法：</strong></p>
+<p>1.直接使用</p>
+<pre><code><span class="hljs-keyword">var</span> $ = KISSY.Node.all;
+$(<span class="hljs-string">'body'</span>).on(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+    <span class="hljs-built_in">console</span>.log(ev)
+});
+</code></pre><p>2.普通对象的自定义事件</p>
+<pre><code><span class="hljs-keyword">var</span> a = {}, S = KISSY;
+S.mix(a, S.Event.Target);
+a.on(<span class="hljs-string">'my_event'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+    <span class="hljs-built_in">console</span>.log(ev)
+});
+a.fire(<span class="hljs-string">'my_event'</span>, {<span class="hljs-string">"data1"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"data2"</span>: <span class="hljs-number">2</span>});
+</code></pre><p><strong>未列出的Event API與KISSY保持用法一致</strong></p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th style="text-align:center">KISSY</th>
+<th style="text-align:center">KISSY-MINI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event.Object</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>Event.Target.publish</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>Event.Target.addTarget</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>Event.Target.removeTarget</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>mouseenter</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>mouseleave</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>mousewheel</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>gestures</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center"><code>Import touch.js*</code></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>与 zeptojs 对比，有以下差异：</strong></p>
+<ol>
+<li>去除对鼠标兼容事件的支持，包括 mouseenter/mouseleave；</li>
+<li>提供对普通对象的自定义事件支持，需提前混入 S.Event.Target</li>
+</ol>
+<p><strong>与 KISSY 对比，有以下差异：</strong></p>
+<ol>
+<li>仅支持链式调用，不支持 Event.on 语法；</li>
+<li>自定义事件不支持冒泡等属性和方法；</li>
+<li>触控事件需额外引入 touch.js；</li>
+<li>回调返回的 event 对象是兼容处理后的原生事件对象，不再提供 ev.originalEvent</li>
+</ol>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+
+S.Event || (S.Event = {});
+<span class="hljs-keyword">var</span> $ = S.all,
+    Node = S.node,
+    _eid = <span class="hljs-number">1</span>,
+    isFunction = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj == <span class="hljs-string">'function'</span>;
+    },
+    <span class="hljs-comment">/* 简化 S.mix */</span>
+    mix = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(target, source)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> source) {
+            target[key] = source[key];
+        }
+    },
+    <span class="hljs-comment">/* 简化 S.each */</span>
+    each = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, iterator, context)</span> </span>{
+        <span class="hljs-built_in">Object</span>.keys(obj).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{
+            iterator.call(context, obj[name], name, obj);
+        });
+    },
+    slice = [].slice,
+    handlers = [],
+    focusinSupported = <span class="hljs-string">'onfocusin'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>,
+    <span class="hljs-comment">/* 焦点事件代理 */</span>
+    focusEvent = {
+        focus: <span class="hljs-string">'focusin'</span>,
+        blur: <span class="hljs-string">'focusout'</span>
+    },
+    specialEvents = {
+        <span class="hljs-string">"click"</span>: <span class="hljs-string">"MouseEvent"</span>
+    },
+    eventMethods = {
+        preventDefault: <span class="hljs-string">'isDefaultPrevented'</span>,
+        stopImmediatePropagation: <span class="hljs-string">'isImmediatePropagationStopped'</span>,
+        stopPropagation: <span class="hljs-string">'isPropagationStopped'</span>
+    };
+
+<span class="hljs-comment">/**
+ * 生成返回布尔值函数的方法
+ * @param  {[type]} trueOrFalse [description]
+ * @return {[type]}             [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>returnBool(trueOrFalse)</p>
+<p>内部方法，生成返回布尔值函数的方法</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">returnBool</span><span class="hljs-params">(trueOrFalse)</span> </span>{
+   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{ <span class="hljs-keyword">return</span> trueOrFalse; };
+}
+
+<span class="hljs-comment">/**
+ * 生成和 DOM 绑定的唯一 id
+ * @param  {[type]} element [description]
+ * @return {[type]}         [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>eid(element)</p>
+<p>内部方法，生成和 DOM 绑定的唯一 id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eid</span><span class="hljs-params">(element)</span> </span>{
+    <span class="hljs-keyword">return</span> element._eid || (element._eid = _eid++);
+}
+
+<span class="hljs-comment">/**
+ * 解析事件字符串
+ * @param  {String} event 原始的事件类型字符串
+ * @return {Object}       解析后得到的事件类型对象
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>parse(event)</p>
+<p>内部方法，解析事件字符串</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parse</span><span class="hljs-params">(event)</span> </span>{
+    <span class="hljs-keyword">var</span> parts = event.split(<span class="hljs-string">'.'</span>);
+    <span class="hljs-keyword">return</span> {
+        e : parts[<span class="hljs-number">0</span>],
+        ns: parts.slice(<span class="hljs-number">1</span>).join(<span class="hljs-string">' '</span>)
+    };
+}
+
+<span class="hljs-comment">/**
+ * 根据事件类型 ns 生成匹配正则，用于判断是否在同一个分组
+ * @param  {String} ns [description]
+ * @return {RegExp}    [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>matcherFor(ns)</p>
+<p>内部方法，根据事件类型 ns 生成匹配正则，用于判断是否在同一个分组</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">matcherFor</span><span class="hljs-params">(ns)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">'(?:^| )'</span> + ns.replace(<span class="hljs-string">' '</span>, <span class="hljs-string">' .* ?'</span>) + <span class="hljs-string">'(?: |S)'</span>);
+}
+
+<span class="hljs-comment">/**
+ * 获得指定的 Handler
+ * @param  {[type]}   element  [description]
+ * @param  {[type]}   event    [description]
+ * @param  {Function} fn       [description]
+ * @param  {[type]}   selector [description]
+ * @return {[type]}            [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>findHandlers(el,event,fn)</p>
+<p>内部方法，获得指定的 Handler</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findHandlers</span><span class="hljs-params">(element, event, fn, selector, scope)</span> </span>{
+    <span class="hljs-keyword">var</span> evt = parse(event);
+    <span class="hljs-keyword">if</span> (evt.ns) <span class="hljs-keyword">var</span> matcher = matcherFor(event.ns);
+    <span class="hljs-keyword">return</span> (handlers[eid(element)] || []).filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler)</span> </span>{
+        <span class="hljs-keyword">return</span> handler &amp;&amp;
+            (!evt.e || handler.e == evt.e) &amp;&amp;
+            (!evt.ns || matcher.test(handler.ns)) &amp;&amp;
+            (!fn || handler.fn === fn) &amp;&amp;
+            (!selector || handler.sel == selector) &amp;&amp;
+            (!scope || handler.scope === scope);
+    });
+}
+
+<span class="hljs-comment">/**
+ * 获得是否捕获事件状态，焦点事件一律捕获
+ * @param  {[type]}  handler        [description]
+ * @param  {[type]}  captureSetting [description]
+ * @return {Boolean}                [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>isCapture(handler,capture)</p>
+<p>内部方法，获得是否捕获事件状态，焦点事件一律捕获</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isCapture</span><span class="hljs-params">(handler, capture)</span> </span>{
+    <span class="hljs-keyword">return</span> handler.del &amp;&amp;
+        (!focusinSupported &amp;&amp; (handler.e <span class="hljs-keyword">in</span> focusEvent)) || !!capture;
+}
+
+<span class="hljs-comment">/**
+ * 将焦点事件统一为真实事件，但 firefox 因为不支持 focusinout 所以不会被转换
+ * @param  {[type]} type [description]
+ * @return {[type]}      [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>eventCvt(type)</p>
+<p>内部方法，将焦点事件统一为真实事件，但 firefox 因为不支持 focusinout 所以不会被转换</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eventCvt</span><span class="hljs-params">(type)</span> </span>{
+    <span class="hljs-keyword">return</span> (focusinSupported &amp;&amp; focusEvnet[type]) || type;
+}
+
+<span class="hljs-comment">/**
+ * 复制原事件对象，并作为原事件对象的代理
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>createProxy(event)</p>
+<p>内部方法，复制原事件对象，并作为原事件对象的代理</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createProxy</span><span class="hljs-params">(event)</span> </span>{
+    <span class="hljs-keyword">var</span> key, proxy = {
+            originalEvent: event
+        };
+    <span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> event)
+        <span class="hljs-keyword">if</span> (event[key] !== <span class="hljs-literal">undefined</span>) proxy[key] = event[key];
+    <span class="hljs-keyword">return</span> compatible(proxy, event);
+}
+S.Event.createProxy = createProxy;
+
+<span class="hljs-comment">/**
+ * 针对三个事件属性做兼容
+ * @param  {[type]} event  [description]
+ * @param  {[type]} source [description]
+ * @return {[type]}        [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>compatible(event,source)</p>
+<p>内部方法，针对三个事件属性做兼容</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compatible</span><span class="hljs-params">(event, source)</span> </span>{
+    <span class="hljs-keyword">if</span> (source || !event.isDefaultPrevented) {
+        source || (source = event);
+        each(eventMethods, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(predicate,name)</span> </span>{
+            <span class="hljs-keyword">var</span> sourceMethod = source[name];
+            event[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">this</span>[predicate] = returnBool(<span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">return</span> sourceMethod &amp;&amp; sourceMethod.apply(source, <span class="hljs-built_in">arguments</span>);
+            };
+            event[predicate] = returnBool(<span class="hljs-literal">false</span>);
+        });
+
+		event.halt = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			<span class="hljs-keyword">this</span>.preventDefault();
+			<span class="hljs-keyword">this</span>.stopPropagation();
+		};
+
+        <span class="hljs-keyword">if</span> (source.defaultPrevented !== <span class="hljs-literal">undefined</span> ? source.defaultPrevented :
+            <span class="hljs-string">'returnValue'</span> <span class="hljs-keyword">in</span> source ? source.returnValue === <span class="hljs-literal">false</span> :
+            source.getPreventDefault &amp;&amp; source.getPreventDefault())
+            event.isDefaultPrevented = returnBool(<span class="hljs-literal">true</span>);
+    }
+    <span class="hljs-keyword">return</span> event;
+}
+
+<span class="hljs-comment">/**
+ * 生成原生事件对象
+ * @param  {[type]} type  [description]
+ * @param  {[type]} props [description]
+ * @return {[type]}       [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>createEvent(type,props)</p>
+<p>内部方法，生成原生事件对象</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createEvent</span><span class="hljs-params">(type, props)</span> </span>{
+    <span class="hljs-keyword">var</span> event = <span class="hljs-built_in">document</span>.createEvent(specialEvents[type] || <span class="hljs-string">'Events'</span>),
+        bubbles = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (props) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> props) {
+            name == <span class="hljs-string">'bubbles'</span> ? (bubbles = !!props[name]) : (event[name] = props[name]);
+        }
+    }
+    event.initEvent(type, bubbles, <span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">return</span> compatible(event);
+}
+
+<span class="hljs-comment">/**
+ * 添加事件绑定的主函数
+ * @param {[type]}   element   [description]
+ * @param {[type]}   events    [description]
+ * @param {Function} fn        [description]
+ * @param {[type]}   data      [description]
+ * @param {[type]}   selector  [description]
+ * @param {[type]}   delegator [description]
+ * @param {[type]}   capture   [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>add(el,event,fn)</p>
+<p>内部方法，添加事件绑定的主函数</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span><span class="hljs-params">(element, events, fn, selector, delegator, scope)</span> </span>{
+    <span class="hljs-keyword">var</span> id = eid(element),
+        set = (handlers[id] || (handlers[id] = []));
+    <span class="hljs-keyword">if</span> (events == <span class="hljs-string">'ready'</span>) <span class="hljs-keyword">return</span> S.ready(fn);
+    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> </span>{
+        <span class="hljs-keyword">var</span> handler = parse(event);
+        handler.fn = fn;
+        handler.sel = selector;
+        handler.del = delegator;
+        handler.scope = scope;
+        <span class="hljs-keyword">var</span> callback = delegator || fn;
+        handler.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+            e = compatible(e);
+            <span class="hljs-keyword">if</span> (e.isImmediatePropagationStopped()) <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">var</span> result = callback.apply(scope || element, e._args == <span class="hljs-literal">undefined</span> ? [e] : [e].concat(e._args));
+            <span class="hljs-keyword">if</span> (result === <span class="hljs-literal">false</span>) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            <span class="hljs-keyword">return</span> result;
+        };
+        handler.i = set.length;
+        set.push(handler);
+        element.addEventListener(eventCvt(handler.e), handler.proxy, isCapture(handler));
+		<span class="hljs-comment">/* 自定义 DOM 事件处理，初始化*/</span>
+		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> event !== <span class="hljs-string">'undefined'</span> &amp;&amp; event <span class="hljs-keyword">in</span> S.Event.Special){
+			S.Event.Special[event].setup.apply(S.one(element,[handler.scope]));
+		}
+    });
+}
+
+<span class="hljs-comment">/**
+ * 移除事件绑定的主函数
+ * @param  {[type]}   element  [description]
+ * @param  {[type]}   events   [description]
+ * @param  {Function} fn       [description]
+ * @param  {[type]}   selector [description]
+ * @param  {[Object]} scope    [description]
+ * @return {[type]}            [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>remove(el,event,fn)</p>
+<p>内部方法，移除事件绑定的主函数</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span><span class="hljs-params">(element, events, fn, selector, scope)</span> </span>{
+    <span class="hljs-keyword">var</span> id = eid(element),
+        removeHandlers = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(set)</span> </span>{
+            set.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler)</span></span>{
+                <span class="hljs-keyword">delete</span> handlers[id][handler.i];
+                element.removeEventListener(eventCvt(handler.e), handler.proxy, isCapture(handler));
+                <span class="hljs-comment">/* 自定义 DOM 事件处理，销毁*/</span>
+                <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> event !== <span class="hljs-string">'undefined'</span> &amp;&amp; event <span class="hljs-keyword">in</span> S.Event.Special){
+                    S.Event.Special[event].teardown.apply(S.one(element));
+                }
+            });
+        };
+    <span class="hljs-keyword">if</span>(events) {
+        events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> </span>{
+            removeHandlers(findHandlers(element, event, fn, selector, scope));
+        });
+    }
+    <span class="hljs-keyword">else</span> removeHandlers(handlers[id] || []);
+}
+
+<span class="hljs-comment">/**
+ * 主要绑定函数，包括 delegate 的处理方法
+ * @param  {[type]}   event    [description]
+ * @param  {[type]}   selector [description]
+ * @param  {Function} callback [description]
+ * @param  {[type]}   scope    [description]
+ * @return {[type]}            [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p><strong>S.Node.on(event,selector,callback,[scope])</strong></p>
+<p>事件绑定</p>
+<pre><code>S.Event.on(<span class="hljs-string">'click'</span>,<span class="hljs-string">'div'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span></span>{...})
+</code></pre><p>可以使用<code>els.on(&#39;click&#39;,callback)</code></p>
+<p><strong>el.on(eventType,callback)</strong></p>
+<p>在元素上进行事件绑定，el也可以是Node列表，比如</p>
+<pre><code>S.one(<span class="hljs-string">'div'</span>).on(<span class="hljs-string">'click'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    alert(<span class="hljs-string">'ok'</span>);
+});
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.on = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+    <span class="hljs-keyword">var</span> delegator, _this = <span class="hljs-keyword">this</span>;
+
+    <span class="hljs-comment">/* selector 为空的情况，即非 delegator */</span>
+    <span class="hljs-keyword">if</span> (isFunction(selector)) {
+        scope = callback;
+        callback = selector;
+        selector = <span class="hljs-literal">undefined</span>;
+    }
+
+    <span class="hljs-comment">/* 阻止默认事件，kissy 不支持此方式 */</span>
+    <span class="hljs-keyword">if</span> (callback === <span class="hljs-literal">false</span>) callback = returnFalse;
+
+    _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+        <span class="hljs-comment">/* delegate 处理逻辑 */</span>
+        <span class="hljs-keyword">if</span> (selector) delegator = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+            <span class="hljs-keyword">var</span> evt, match, matches = element.all(selector);
+            <span class="hljs-keyword">if</span>(!matches || !matches.length) <span class="hljs-keyword">return</span>;
+            match = matches.filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{
+                <span class="hljs-keyword">return</span> (el == e.target) || ($(el).contains(e.target));
+            })[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">if</span> (match &amp;&amp; match !== element[<span class="hljs-number">0</span>]) {
+                evt = createProxy(e);
+                evt.currentTarget = match;
+                evt.liveFired = element[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">return</span> callback.apply(scope || match, [evt].concat(slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>)));
+            }
+        };
+
+        add(element[<span class="hljs-number">0</span>], event, callback, selector, delegator, scope);
+    });
+
+    <span class="hljs-keyword">return</span> _this;
+};
+
+<span class="hljs-comment">/**
+ * 取消事件绑定的主函数
+ * @param  {[type]}   event    [description]
+ * @param  {[type]}   selector [description]
+ * @param  {Function} callback [description]
+ * @param  {[type]}   scope    [description]
+ * @return {[type]}            [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p><strong>S.Node.detach(event,selector,callback,[scope])</strong></p>
+<p>取消事件绑定，推荐直接调用<strong>els.detach(‘click’,callback)</strong></p>
+<p><strong>el.detach(eventType,callback)</strong></p>
+<p>取消元素事件，el也可以是Node列表。</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.detach = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+    <span class="hljs-keyword">var</span> _this = <span class="hljs-keyword">this</span>;
+
+    <span class="hljs-keyword">if</span> (isFunction(selector)) {
+        scope = callback;
+        callback = selector;
+        selector = <span class="hljs-literal">undefined</span>;
+    }
+
+    _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+        remove(element[<span class="hljs-number">0</span>], event, callback, selector, scope);
+    });
+
+    <span class="hljs-keyword">return</span> _this;
+};
+
+<span class="hljs-comment">/**
+ * delegate 主函数，只是 Node.on 的别名
+ * @param  {[type]}   event    [description]
+ * @param  {[type]}   selector [description]
+ * @param  {Function} callback [description]
+ * @param  {[type]}   scope    [description]
+ * @return {[type]}            [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p><strong>S.Node.delegate(event,selector,function(){…},[scope])</strong></p>
+<p>事件委托，推荐直接调用<strong>el.delegate(‘event’,selector,callback,scop)</strong></p>
+<p><strong>el.delegate(eventType,callback,scope)</strong></p>
+<p>针对当前节点执行事件委托，scope 为委托的节点或选择器</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.on(event, selector, callback, scope);
+};
+
+<span class="hljs-comment">/**
+ * undelegate 主函数，只是 Node.detach 的别名
+ * @param  {[type]}   event    [description]
+ * @param  {[type]}   selector [description]
+ * @param  {Function} callback [description]
+ * @param  {[type]}   scope    [description]
+ * @return {[type]}            [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p><strong>S.Node.undelegate(event,selector,function(){…},[scope])</strong></p>
+<p>解除事件委托，是<code>Node.detach</code>的别名，推荐直接调用<strong>el.undelegate()</strong></p>
+<p><strong>el.undelegate(eventType,selector,callback,scope)</strong></p>
+<p>针对当前节点执行解除事件委托，scope 为委托的节点或选择器</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.detach(event, selector, callback, scope);
+};
+
+
+<span class="hljs-comment">/**
+ * 执行符合匹配的 dom 节点的相应事件的事件处理器
+ * @param  {String} events [description]
+ * @param  {Object} props  模拟处理原生事件的一些信息
+ * @return {[type]}       [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p><strong>S.Node.fire(event,props)</strong></p>
+<p>执行符合匹配的 dom 节点的相应事件的事件处理器，推荐直接调用</p>
+<pre><code>el.fire(<span class="hljs-string">'click'</span>)
+</code></pre><p><strong>el.fire(eventType,props)</strong></p>
+<p>触发节点元素的<code>eventType</code>事件，el.fire 函数继承自 <code>S.Node.fire(event,props)</code></p>
+<ul>
+<li>eventType: 事件类型</li>
+<li>props：触发事件的时候传入的回传参数</li>
+</ul>
+<pre><code>S.one(<span class="hljs-string">'div'</span>).on(<span class="hljs-string">'click'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span></span>{
+    alert(e.a);
+});
+S.one(<span class="hljs-string">'div'</span>).fire(<span class="hljs-string">'click'</span>,{
+    a:<span class="hljs-number">1</span>
+});
+<span class="hljs-comment">// =&gt; 弹出框，值为1</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.fire = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(events, props)</span> </span>{
+    <span class="hljs-keyword">var</span> _this = <span class="hljs-keyword">this</span>;
+    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>{
+        event = createEvent(event, props);
+        _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+            <span class="hljs-keyword">if</span> (<span class="hljs-string">'dispatchEvent'</span> <span class="hljs-keyword">in</span> element[<span class="hljs-number">0</span>]) element[<span class="hljs-number">0</span>].dispatchEvent(event);
+            <span class="hljs-keyword">else</span> element.fireHandler(events, props);
+        });
+    });
+    <span class="hljs-keyword">return</span> _this;
+};
+
+<span class="hljs-comment">/**
+ * 执行符合匹配的 dom 节点的相应事件的事件处理器，不会冒泡
+ * @param  {[type]} event [description]
+ * @param  {[type]} props  [description]
+ * @return {[type]}       [description]
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>S.Node.fireHandler(event,props)</strong></p>
+<p>执行符合匹配的 dom 节点的相应事件的事件处理器，不会冒泡</p>
+<p>推荐直接执行</p>
+<pre><code>el.fireHandler(<span class="hljs-string">'click'</span>,{...})
+</code></pre><p><strong>el.fireHandler(eventType,props)</strong></p>
+<p>以非冒泡形式触发回调，由<code>el.fire()</code>函数调用，在单纯希望执行事件绑定函数时使用此方法</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.fireHandler = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(events, props)</span> </span>{
+    <span class="hljs-keyword">var</span> e, result, _this = <span class="hljs-keyword">this</span>;
+    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>{
+        _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+            e = createEvent(event);
+            e.target = element[<span class="hljs-number">0</span>];
+			<span class="hljs-keyword">if</span>(e.target === <span class="hljs-literal">null</span>){
+				e = getCustomDOMEvent(e);
+			}
+			mix(e,props);
+            findHandlers(element[<span class="hljs-number">0</span>], event).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler, i)</span> </span>{
+                result = handler.proxy(e);
+                <span class="hljs-keyword">if</span> (e.isImmediatePropagationStopped()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            });
+        });
+    });
+    <span class="hljs-keyword">return</span> _this;
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCustomDOMEvent</span><span class="hljs-params">(e)</span></span>{
+	<span class="hljs-keyword">var</span> eProxy = {};
+	mix(eProxy,e);
+	eProxy.__proto__ = e.__proto__;
+	<span class="hljs-keyword">return</span> eProxy;
+}
+
+
+S.Event || (S.Event = {});
+<span class="hljs-comment">/**
+ * 将普通对象混入 Event.Target 后，即能拥有简单的自定义事件特性。
+ * @type {Object}
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p><strong>S.Event.Target</strong></p>
+<p>简单自定义事件对象，将普通对象混入 <code>Event.Target</code> 后，即能拥有简单的自定义事件特性。</p>
+<p>事件本身是一个抽象概念，和平台无关、和设备无关、更和浏览器无关，浏览器只是使用“事件”的方法来触发特定的行为，进而触发某段网页逻辑。而常见的DOM事件诸如click,dbclick是浏览器帮我们实现的“特定行为”。而这里的“特定行为”就是触发事件的时机，是可以被重新定义的，原理上，事件都是需要精确的定义的，比如下面这个例子，我们定义了一个新事件：“初始化1秒后”</p>
+<pre><code><span class="hljs-keyword">var</span> EventFactory = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>;
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            that.fire(<span class="hljs-string">'afterOneSecond'</span>);
+        },<span class="hljs-number">1000</span>);
+};
+S.augment(EventFactory,S.Event.Target);
+<span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> EventFactory();
+a.on(<span class="hljs-string">'afterOneSecond'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        alert(<span class="hljs-string">'1秒后'</span>);
+});
+<span class="hljs-comment">// 1秒后弹框</span>
+</code></pre><p>这是一个很纯粹的自定义事件，它有事件名称<code>afterOneSecond</code>，有事件的触发条件<code>self.fire(&#39;afterOneSecond&#39;)</code>，有事件的绑定，<code>a.on(&#39;afterOneSecond&#39;)</code>。这样这个事件就能顺利的发生，并被成功监听。在代码组织层面，一般工厂类中实现了事件命名、定义和实现，属于内聚的功能实现。而绑定事件时可以是工厂类这段代码外的用户，他不会去关心事件的具体实现，只要关心工厂类”暴露了什么事件可以让我绑定”就可以了，这就是KISSY中使用自定义事件的用法。</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.Event.Target = {
+    <span class="hljs-comment">/**
+     * 用于存放绑定的事件信息
+     * @type {Object}
+     */</span>
+    _L: {
+		<span class="hljs-comment">/*
+         "click": [
+             {
+                 E: "click touchstart",
+                 F: fn1,
+                 S: scope1
+             },
+             {
+                 E: "click",
+                 F: fn2,
+                 S: scope2
+             }
+         ]
+		 */</span>
+    },
+    <span class="hljs-comment">/**
+     * 绑定事件
+     * @param  {String}   eventType 必选，绑定的事件类型，以空格分隔
+     * @param  {Function} fn        必选，触发事件后的回调方法
+     * @param  {[type]}   scope     回调方法的 this 指针
+     * @return {[type]}             返回对象本身
+     */</span>
+    on: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, fn, scope)</span> </span>{
+        <span class="hljs-keyword">var</span> eventArr = s2a(eventType), T = <span class="hljs-keyword">this</span>;
+        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+            <span class="hljs-keyword">var</span> evt = ev <span class="hljs-keyword">in</span> T._L ? T._L[ev] : (T._L[ev] = []);
+            evt.push({
+                E: eventType,
+                F: fn,
+                S: scope
+            });
+        });
+        <span class="hljs-keyword">return</span> T;
+    },
+    <span class="hljs-comment">/**
+     * 触发事件
+     * @param  {String} eventType 必选，绑定的事件类型，以空格分隔
+     * @param  {[type]} data      触发事件时传递给回调事件对象的信息，而 data 后面的参数会原封不动地传过去
+     * @return {[type]}           返回对象本身
+     */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>on()</p>
+<p>Event.Target 的参元方法，绑定自定义事件</p>
+<p>fire(event,data)</p>
+<p>Event.Target 的参元方法，触发事件</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    fire: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, data)</span> </span>{
+        <span class="hljs-keyword">var</span> eventArr = s2a(eventType), T = <span class="hljs-keyword">this</span>;
+        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+            <span class="hljs-keyword">var</span> evt = T._L[ev], 
+                returnEv = S.mix(data || {}, {target: T, currentTarget: T});
+            <span class="hljs-keyword">if</span>(!evt) <span class="hljs-keyword">return</span>;
+            evt.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(group)</span></span>{
+                group.F.apply(group.S || T, [returnEv].concat([].slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">2</span>)));
+            });
+
+        });
+        <span class="hljs-keyword">return</span> T;
+    },
+
+    <span class="hljs-comment">/**
+     * 解除绑定事件
+     * @param  {String}   eventType 必选，绑定的事件类型，以空格分隔
+     * @param  {Function} fn        如果需要指定解除某个回调，需要填写
+     * @param  {[type]}   scope     同上，可以进一步区分某个回调
+     * @return {[type]}             返回对象本身
+     */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>detach(event,fn)</p>
+<p>Event.Target 的参元方法，解除绑定事件</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    detach: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, fn, scope)</span> </span>{
+        <span class="hljs-keyword">var</span> eventArr = s2a(eventType), T = <span class="hljs-keyword">this</span>;
+        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+            <span class="hljs-comment">/* 如果遇到相同事件，优先取消最新绑定的 */</span>
+            <span class="hljs-keyword">var</span> evt = T._L[ev];
+            <span class="hljs-keyword">if</span>(!evt) <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">if</span>(!fn &amp;&amp; (T._L[ev] = [])) <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key=<span class="hljs-number">0</span>; key &lt; evT._Length; key++) {
+                <span class="hljs-keyword">if</span>(group.F == fn &amp;&amp; group.S == scope) {
+                    evt.split(key, <span class="hljs-number">1</span>);
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(group.F == fn) {
+                    evt.split(key, <span class="hljs-number">1</span>);
+                    <span class="hljs-keyword">continue</span>;
+                }
+            }
+        });
+        <span class="hljs-keyword">return</span> T;
+    }
+};
+
+S.Event.Special = {
+	<span class="hljs-comment">/*
+	'myEvent':{
+		setup:function(){
+
+		},
+		teardown:function(){
+
+		}
+	}
+   */</span>
+};
+
+<span class="hljs-comment">/**
+ * 把 event 字符串格式化为数组
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>s2a(str)</p>
+<p>内部方法，把 event 字符串格式化为数组</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s2a</span><span class="hljs-params">(str)</span> </span>{
+    <span class="hljs-keyword">return</span> str.split(<span class="hljs-string">' '</span>);
+}
+
+S.add(<span class="hljs-string">'event'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+	<span class="hljs-keyword">return</span> S.Event;
+});
+
+})(KISSY);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

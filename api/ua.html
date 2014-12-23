@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ua.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="anim.html">
+                anim.js
+              </a>
+            
+              
+              <a class="source" href="core.html">
+                core.js
+              </a>
+            
+              
+              <a class="source" href="event.html">
+                event.js
+              </a>
+            
+              
+              <a class="source" href="io.html">
+                io.js
+              </a>
+            
+              
+              <a class="source" href="loader.html">
+                loader.js
+              </a>
+            
+              
+              <a class="source" href="node.html">
+                node.js
+              </a>
+            
+              
+              <a class="source" href="ua.html">
+                ua.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>ua.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*
+combined files : 
+
+m/ua
+
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="ua-">UA 模块</h2>
+<p>硬件设备探测模块，API 兼容KISSY，但去除了对IE老版本的支持。新增对kindle、touchpad、blackberry等设备的探测，这样来引入模块：</p>
+<pre><code>KISSY.use(<span class="hljs-string">'ua'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S,UA)</span></span>{
+        <span class="hljs-comment">// S.UA.xx 或者 UA.xx 来获取设备探测字段</span>
+});
+</code></pre><p>使用方法</p>
+<pre><code><span class="hljs-comment">// 通用探测</span>
+S.UA.webkit <span class="hljs-comment">//webkit内核版本</span>
+S.UA.trident <span class="hljs-comment">// IE 内核版本，支持不全</span>
+S.UA.gecko <span class="hljs-comment">// Firefox 内核版本</span>
+S.UA.presto <span class="hljs-comment">// Opera 内核版本</span>
+S.UA.chrome <span class="hljs-comment">// Cheome 版本</span>
+S.UA.safari <span class="hljs-comment">// Safari 版本</span>
+S.UA.firefox <span class="hljs-comment">// Firefox 版本</span>
+S.UA.ie <span class="hljs-comment">// IE 版本，支持不全</span>
+S.UA.opera <span class="hljs-comment">// Opera 版本</span>
+S.UA.core <span class="hljs-comment">// 内核类型，返回webkit或者trident等</span>
+S.UA.shell <span class="hljs-comment">// 外壳版本，返回ie,chrome,firefox等</span>
+
+<span class="hljs-comment">// 移动设备探测</span>
+S.UA.phantomjs <span class="hljs-comment">// PhantomJS 版本号</span>
+S.UA.os <span class="hljs-comment">// 操作系统类型，取值linux、windows、ios、android等</span>
+S.UA.ipad <span class="hljs-comment">// ipad 版本</span>
+S.UA.iphone <span class="hljs-comment">// iphone 版本</span>
+S.UA.ipod <span class="hljs-comment">// ipod 版本</span>
+S.UA.ios <span class="hljs-comment">// ios 操作系统版本</span>
+S.UA.touchpad <span class="hljs-comment">// touchpad 版本</span>
+S.UA.kindle <span class="hljs-comment">// kindle 版本</span>
+S.UA.android <span class="hljs-comment">// android 版本</span>
+S.UA.webos <span class="hljs-comment">// webos版本</span>
+S.UA.blackberry <span class="hljs-comment">// 黑莓版本</span>
+S.UA.bb10 <span class="hljs-comment">// 老版本黑莓版本探测</span>
+S.UA.rimtabletos <span class="hljs-comment">// 平板电脑版本</span>
+S.UA.tablet <span class="hljs-comment">// 平板电脑版本</span>
+S.UA.slik <span class="hljs-comment">// Slik 版本</span>
+S.UA.playbook <span class="hljs-comment">// PlayBook版本</span>
+</code></pre><p>具体用法参照<a href="http://docs.kissyui.com/1.4/docs/html/guideline/ua.html">KISSY1.4.0 UA文档</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>KISSY.add(<span class="hljs-string">'m/ua'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span> </span>{
+	<span class="hljs-keyword">var</span> ua = navigator.userAgent,m,core,shell,
+	UA = S.UA = {
+		<span class="hljs-comment">/**
+		 * webkit version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		webkit: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * trident version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		trident: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * gecko version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		gecko: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * presto version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		presto: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * chrome version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		chrome: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * safari version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		safari: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * firefox version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		firefox: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * ie version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		ie: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * opera version
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		opera: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * mobile browser. apple, android.
+		 * @type String
+		 * @member KISSY.UA
+		 */</span>
+		<span class="hljs-comment">/*mobile: undefined,*/</span>
+		<span class="hljs-comment">/**
+		 * browser render engine name. webkit, trident
+		 * @type String
+		 * @member KISSY.UA
+		 */</span>
+		core: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * browser shell name. ie, chrome, firefox
+		 * @type String
+		 * @member KISSY.UA
+		 */</span>
+		shell: <span class="hljs-literal">undefined</span>,
+
+		<span class="hljs-comment">/**
+		 * PhantomJS version number
+		 * @type undefined|Number
+		 * @member KISSY.UA
+		 */</span>
+		phantomjs: <span class="hljs-literal">undefined</span>,
+
+		<span class="hljs-comment">/**
+		 * operating system. android, ios, linux, windows
+		 * @type string
+		 * @member KISSY.UA
+		 */</span>
+		os: <span class="hljs-literal">undefined</span>,
+
+		<span class="hljs-comment">/**
+		 * ipad ios version
+		 * @type Number
+		 * @member KISSY.UA
+		 */</span>
+		ipad: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * iphone ios version
+		 * @type Number
+		 * @member KISSY.UA
+		 */</span>
+		iphone: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * ipod ios
+		 * @type Number
+		 * @member KISSY.UA
+		 */</span>
+		ipod: <span class="hljs-literal">undefined</span>,
+		<span class="hljs-comment">/**
+		 * ios version
+		 * @type Number
+		 * @member KISSY.UA
+		 */</span>
+		ios: <span class="hljs-literal">undefined</span>,
+		touchpad:<span class="hljs-literal">undefined</span>,
+		kindle:<span class="hljs-literal">undefined</span>,
+
+		<span class="hljs-comment">/**
+		 * android version
+		 * @type Number
+		 * @member KISSY.UA
+		 */</span>
+		android: <span class="hljs-literal">undefined</span>,
+		webos:<span class="hljs-literal">undefined</span>,
+		blackberry:<span class="hljs-literal">undefined</span>,
+		bb10:<span class="hljs-literal">undefined</span>,
+		rimtabletos:<span class="hljs-literal">undefined</span>,
+		tablet:<span class="hljs-literal">undefined</span>,
+
+		slik:<span class="hljs-literal">undefined</span>,
+		playbook:<span class="hljs-literal">undefined</span>
+	};
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">numberify</span><span class="hljs-params">(s)</span> </span>{
+		<span class="hljs-keyword">var</span> c = <span class="hljs-number">0</span>;
+		<span class="hljs-comment">/* convert '1.2.3.4' to 1.234 */</span>
+		<span class="hljs-keyword">return</span> <span class="hljs-built_in">parseFloat</span>(s.replace(<span class="hljs-regexp">/\./g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> (c++ === <span class="hljs-number">0</span>) ? <span class="hljs-string">'.'</span>: <span class="hljs-string">''</span>;
+		}));
+	}
+
+	<span class="hljs-keyword">var</span> os = <span class="hljs-comment">/*S.UA.os =*/</span> {},
+	browser = <span class="hljs-comment">/*this.browser =*/</span> {},
+	webkit = ua.match(<span class="hljs-regexp">/Web[kK]it[\/]{0,1}([\d.]+)/</span>),
+	android = ua.match(<span class="hljs-regexp">/(Android);?[\s\/]+([\d.]+)?/</span>),
+	ipad = ua.match(<span class="hljs-regexp">/(iPad).*OS\s([\d_]+)/</span>),
+	ipod = ua.match(<span class="hljs-regexp">/(iPod)(.*OS\s([\d_]+))?/</span>),
+	iphone = ! ipad &amp;&amp; ua.match(<span class="hljs-regexp">/(iPhone\sOS)\s([\d_]+)/</span>),
+	webos = ua.match(<span class="hljs-regexp">/(webOS|hpwOS)[\s\/]([\d.]+)/</span>),
+	touchpad = webos &amp;&amp; ua.match(<span class="hljs-regexp">/TouchPad/</span>),
+	kindle = ua.match(<span class="hljs-regexp">/Kindle\/([\d.]+)/</span>),
+	silk = ua.match(<span class="hljs-regexp">/Silk\/([\d._]+)/</span>),
+	blackberry = ua.match(<span class="hljs-regexp">/(BlackBerry).*Version\/([\d.]+)/</span>),
+	bb10 = ua.match(<span class="hljs-regexp">/(BB10).*Version\/([\d.]+)/</span>),
+	rimtabletos = ua.match(<span class="hljs-regexp">/(RIM\sTablet\sOS)\s([\d.]+)/</span>),
+	playbook = ua.match(<span class="hljs-regexp">/PlayBook/</span>),
+	chrome = ua.match(<span class="hljs-regexp">/Chrome\/([\d.]+)/</span>) || ua.match(<span class="hljs-regexp">/CriOS\/([\d.]+)/</span>),
+	firefox = ua.match(<span class="hljs-regexp">/Firefox\/([\d.]+)/</span>),
+	ie = ua.match(<span class="hljs-regexp">/MSIE\s([\d.]+)/</span>),
+	safari = webkit &amp;&amp; ua.match(<span class="hljs-regexp">/Mobile\//</span>) &amp;&amp; ! chrome,
+	webview = ua.match(<span class="hljs-regexp">/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/</span>) &amp;&amp; ! chrome;
+
+	<span class="hljs-comment">/*
+	Todo: clean this up with a better OS/browser seperation:
+	- discern (more) between multiple browsers on android
+	- decide if kindle fire in silk mode is android or not
+	- Firefox on Android doesn't specify the Android version
+	- possibly devide in os, device and browser hashes
+	*/</span>
+	<span class="hljs-keyword">if</span> (browser.webkit = !! webkit) {
+		browser.webkit = numberify(webkit[<span class="hljs-number">1</span>]);
+	}
+
+	<span class="hljs-keyword">if</span> (android){
+		os.android = numberify(android[<span class="hljs-number">2</span>]);
+		UA.os = <span class="hljs-string">'android'</span>;
+	}
+	<span class="hljs-keyword">if</span> (iphone &amp;&amp; ! ipod){
+		os.ios = os.iphone = numberify(iphone[<span class="hljs-number">2</span>].replace(<span class="hljs-regexp">/_/g</span>, <span class="hljs-string">'.'</span>));
+		UA.os = <span class="hljs-string">'ios'</span>;
+	}
+	<span class="hljs-keyword">if</span> (ipad){
+		os.ios = os.ipad = numberify(ipad[<span class="hljs-number">2</span>].replace(<span class="hljs-regexp">/_/g</span>, <span class="hljs-string">'.'</span>));
+		UA.os = <span class="hljs-string">'ios'</span>;
+	}
+	<span class="hljs-keyword">if</span> (ipod){
+		os.ios = os.ipod = numberify(ipod[<span class="hljs-number">3</span>] ? ipod[<span class="hljs-number">3</span>].replace(<span class="hljs-regexp">/_/g</span>, <span class="hljs-string">'.'</span>) : <span class="hljs-literal">true</span>);
+		UA.os = <span class="hljs-string">'ios'</span>;
+	}
+	<span class="hljs-keyword">if</span> (webos){
+		os.webos = numberify(webos[<span class="hljs-number">2</span>]);
+		UA.os = <span class="hljs-string">'webos'</span>;
+	}
+	<span class="hljs-keyword">if</span> (touchpad){
+		os.touchpad = <span class="hljs-literal">true</span>;
+		UA.os = <span class="hljs-string">'touchpad'</span>;
+	}
+	<span class="hljs-keyword">if</span> (blackberry){
+		os.blackberry = numberify(blackberry[<span class="hljs-number">2</span>]);
+		UA.os = <span class="hljs-string">'blackberry'</span>;
+	}
+	<span class="hljs-keyword">if</span> (bb10){
+		os.bb10 = numberify(bb10[<span class="hljs-number">2</span>]);
+		UA.os = <span class="hljs-string">'bb10'</span>;
+	}
+	<span class="hljs-keyword">if</span> (rimtabletos){
+		os.rimtabletos = numberify(rimtabletos[<span class="hljs-number">2</span>]);
+		UA.os = <span class="hljs-string">'rimtabletos'</span>;
+	}
+	<span class="hljs-keyword">if</span> (playbook) {
+		browser.playbook = <span class="hljs-literal">true</span>;
+		shell = <span class="hljs-string">'playbook'</span>;
+	}
+	<span class="hljs-keyword">if</span> (kindle) {
+		os.kindle = numberify(kindle[<span class="hljs-number">1</span>]);
+		UA.os = <span class="hljs-string">'kindle'</span>;
+	}
+	<span class="hljs-keyword">if</span> (silk) {
+		browser.silk = numberify(silk[<span class="hljs-number">1</span>])
+	}
+	<span class="hljs-keyword">if</span> (!silk &amp;&amp; os.android &amp;&amp; ua.match(<span class="hljs-regexp">/Kindle Fire/</span>)){
+		browser.silk = <span class="hljs-literal">true</span>;
+		shell = <span class="hljs-string">'silk'</span>;
+	}
+	<span class="hljs-keyword">if</span> (chrome) {
+		browser.chrome = numberify(chrome[<span class="hljs-number">1</span>]);
+		shell = <span class="hljs-string">'chrome'</span>;
+	}
+	<span class="hljs-keyword">if</span> (firefox) {
+		browser.firefox = numberify(firefox[<span class="hljs-number">1</span>]);
+		shell = <span class="hljs-string">'firefox'</span>;
+	}
+	<span class="hljs-keyword">if</span> (ie) {
+		browser.ie = numberify(ie[<span class="hljs-number">1</span>]);
+		shell = <span class="hljs-string">'ie'</span>;
+	}
+	<span class="hljs-keyword">if</span> (safari &amp;&amp; (ua.match(<span class="hljs-regexp">/Safari/</span>) || !! os.ios)){
+		browser.safari = <span class="hljs-literal">true</span>;
+		shell = <span class="hljs-string">'safari'</span>;
+	}
+	<span class="hljs-keyword">if</span> (webview){
+		browser.webview = <span class="hljs-literal">true</span>;
+		shell = <span class="hljs-string">'webview'</span>;
+	}
+
+	<span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/AppleWebKit\/([\d.]*)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+		core = <span class="hljs-string">'webkit'</span>;
+
+		<span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/OPR\/(\d+\.\d+)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+			UA[shell = <span class="hljs-string">'opera'</span>] = numberify(m[<span class="hljs-number">1</span>]);
+		}
+		<span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/PhantomJS\/([^\s]*)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+			UA.phantomjs = numberify(m[<span class="hljs-number">1</span>]);
+		}
+	}
+	<span class="hljs-comment">/* NOT WebKit */</span>
+	<span class="hljs-keyword">else</span> {
+		<span class="hljs-comment">/* 
+		Presto
+		ref: http://www.useragentstring.com/pages/useragentstring.php
+		*/</span>
+        <span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/Trident\/([\d.]*)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+            UA[core = <span class="hljs-string">'trident'</span>] = numberify(m[<span class="hljs-number">1</span>]);
+        }
+		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/Presto\/([\d.]*)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+			UA[core = <span class="hljs-string">'presto'</span>] = numberify(m[<span class="hljs-number">1</span>]);
+
+			<span class="hljs-comment">/* Opera */</span>
+			<span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/Opera\/([\d.]*)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+				UA[shell = <span class="hljs-string">'opera'</span>] = numberify(m[<span class="hljs-number">1</span>]); <span class="hljs-comment">// Opera detected, look for revision</span>
+				<span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/Opera\/.* Version\/([\d.]*)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+					UA[shell] = numberify(m[<span class="hljs-number">1</span>]);
+				}
+
+			}
+
+			<span class="hljs-comment">/* NOT WebKit or Presto */</span>
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/Gecko/</span>))) {
+			UA[core = <span class="hljs-string">'gecko'</span>] = <span class="hljs-number">0.1</span>; <span class="hljs-comment">// Gecko detected, look for revision</span>
+			<span class="hljs-keyword">if</span> ((m = ua.match(<span class="hljs-regexp">/rv:([\d.]*)/</span>)) &amp;&amp; m[<span class="hljs-number">1</span>]) {
+				UA[core] = numberify(m[<span class="hljs-number">1</span>]);
+			}
+		}
+	}
+
+	S.mix(S.UA,{
+		tablet : !! (ipad || playbook || (android &amp;&amp; ! ua.match(<span class="hljs-regexp">/Mobile/</span>)) || 
+					 (firefox &amp;&amp; ua.match(<span class="hljs-regexp">/Tablet/</span>)) || (ie &amp;&amp; ! ua.match(<span class="hljs-regexp">/Phone/</span>) &amp;&amp; ua.match(<span class="hljs-regexp">/Touch/</span>))),
+		phone : !! (!os.tablet &amp;&amp; ! os.ipod &amp;&amp; 
+				(android || iphone || webos || blackberry || bb10 || (chrome &amp;&amp; ua.match(<span class="hljs-regexp">/Android/</span>)) || 
+				 (chrome &amp;&amp; ua.match(<span class="hljs-regexp">/CriOS\/([\d.]+)/</span>)) || (firefox &amp;&amp; ua.match(<span class="hljs-regexp">/Mobile/</span>)) || 
+				 (ie &amp;&amp; ua.match(<span class="hljs-regexp">/Touch/</span>))))
+	});
+
+	S.mix(S.UA,browser);
+	S.mix(S.UA,os);
+
+	<span class="hljs-keyword">if</span>(!UA.os){
+		<span class="hljs-keyword">if</span> ((<span class="hljs-regexp">/windows|win32/i</span>).test(ua)) {
+			UA.os = <span class="hljs-string">'windows'</span>;
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((<span class="hljs-regexp">/macintosh|mac_powerpc/i</span>).test(ua)) {
+			UA.os  = <span class="hljs-string">'macintosh'</span>;
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((<span class="hljs-regexp">/linux/i</span>).test(ua)) {
+			UA.os = <span class="hljs-string">'linux'</span>;
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((<span class="hljs-regexp">/rhino/i</span>).test(ua)) {
+			UA.os = <span class="hljs-string">'rhino'</span>;
+		}
+	}
+
+	<span class="hljs-keyword">if</span>(!UA.core){
+		UA.core = core;
+	}
+	<span class="hljs-keyword">if</span>(!UA.shell){
+		UA.shell = shell;
+	}
+
+	<span class="hljs-keyword">return</span> UA;
+});
+
+
+<span class="hljs-comment">/*
+ NOTES:
+ 2013.07.08 yiminghe@gmail.com
+ - support ie11 and opera(using blink)
+
+ 2013.01.17 yiminghe@gmail.com
+ - expose getDescriptorFromUserAgent for analysis tool in nodejs
+
+ 2012.11.27 yiminghe@gmail.com
+ - moved to seed for conditional loading and better code share
+
+ 2012.11.21 yiminghe@gmail.com
+ - touch and os support
+
+ 2011.11.08 gonghaocn@gmail.com
+ - ie &lt; 10 使用条件注释判断内核，更精确
+
+ 2010.03
+ - jQuery, YUI 等类库都推荐用特性探测替代浏览器嗅探。特性探测的好处是能自动适应未来设备和未知设备，比如
+ if(document.addEventListener) 假设 IE9 支持标准事件，则代码不用修改，就自适应了“未来浏览器”。
+ 对于未知浏览器也是如此。但是，这并不意味着浏览器嗅探就得彻底抛弃。当代码很明确就是针对已知特定浏览器的，
+ 同时并非是某个特性探测可以解决时，用浏览器嗅探反而能带来代码的简洁，同时也也不会有什么后患。总之，一切
+ 皆权衡。
+ - UA.ie &amp;&amp; UA.ie &lt; 8 并不意味着浏览器就不是 IE8, 有可能是 IE8 的兼容模式。进一步的判断需要使用 documentMode.
+ */</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

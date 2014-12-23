@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>core.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="anim.html">
+                anim.js
+              </a>
+            
+              
+              <a class="source" href="core.html">
+                core.js
+              </a>
+            
+              
+              <a class="source" href="event.html">
+                event.js
+              </a>
+            
+              
+              <a class="source" href="io.html">
+                io.js
+              </a>
+            
+              
+              <a class="source" href="loader.html">
+                loader.js
+              </a>
+            
+              
+              <a class="source" href="node.html">
+                node.js
+              </a>
+            
+              
+              <a class="source" href="ua.html">
+                ua.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>core.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="kissy-mini">KISSY MINI</h2>
+<p>KISSY MINI 是面向移动终端的KISSY瘦身版，在保持API和KISSY一致的情况下，着重优化、精简核心模块代码，保证高可用的同时做到身材苗条。</p>
+<p>KISSY MINI 提供<code>mini.js</code>、<code>mini-full.js</code>、<code>mini-all.js</code>三个种子，其中</p>
+<ul>
+<li><strong><a href="../build/mini.js">mini.js</a></strong>(8k)：<code>core</code>、<code>node</code>、<code>event</code>、<code>io</code></li>
+<li><strong><a href="../build/mini-full.js">mini-full.js</a></strong>(13k)：<code>core</code>、<code>node</code>、<code>event</code>、<code>io</code>、<code>loader</code></li>
+<li><strong><a href="../build/mini-all.js">mini-all.js</a></strong>(34k)：全部模块</li>
+</ul>
+<p>KISSY MINI 提供的官方模块有</p>
+<table>
+<thead>
+<tr>
+<th>模块名</th>
+<th style="text-align:center">内置</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>core</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">构造KISSY全局对象</td>
+</tr>
+<tr>
+<td>node</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">Node模块</td>
+</tr>
+<tr>
+<td>io</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">Ajax模块</td>
+</tr>
+<tr>
+<td>event</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">Event 模块</td>
+</tr>
+<tr>
+<td>loader</td>
+<td style="text-align:center">YES<br/>(<code>mini-full.js</code>)</td>
+<td style="text-align:center">简版的loader</td>
+</tr>
+<tr>
+<td>base</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"><a href="http://docs.kissyui.com/1.4/docs/html/guideline/base.html">KISSY Base 模块</a></td>
+</tr>
+<tr>
+<td>ua</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">浏览器嗅探模块</td>
+</tr>
+<tr>
+<td>uri</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">KISSY URI 模块</td>
+</tr>
+<tr>
+<td>anim</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">动画模块</td>
+</tr>
+<tr>
+<td>lang</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">语言工具方法集合</td>
+</tr>
+<tr>
+<td>juicer</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">Juicer模版渲染引擎</td>
+</tr>
+<tr>
+<td>form</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">Form表单处理</td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>在使用<strong>mini-full.js</strong>时，可以通过<code>KISSY.use(&#39;ua&#39;)</code>来拉取非内置的官方模块。</p>
+<h2 id="core-">Core 模块</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*
+ * KISSY MINI
+ * by: @kissyteam
+ * created: 2014-02-12
+ * contains: core node event io
+ * license: MIT
+ **/</span>
+;(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(root)</span> </span>{
+
+<span class="hljs-keyword">var</span> S = {
+    version: <span class="hljs-string">'0.3.3'</span>,
+    Env: {
+        host: root
+    }
+};
+
+<span class="hljs-keyword">var</span> arrayProto = <span class="hljs-built_in">Array</span>.prototype,
+    class2type = {},
+    doc = <span class="hljs-built_in">document</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><strong>S.map(els,function(items){…})</strong></p>
+<p>遍历数组，数组结果是在对每个原数组元素调用fn的返回值.</p>
+<ul>
+<li>els:需要遍历的数组</li>
+<li>fn:能够根据原数组当前元素返回新数组元素的函数.</li>
+</ul>
+<pre><code>S.map([<span class="hljs-string">"foot"</span>, <span class="hljs-string">"goose"</span>, <span class="hljs-string">"moose"</span>],<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(single)</span></span>{
+    <span class="hljs-keyword">return</span> single.replace(<span class="hljs-regexp">/o/g</span>, <span class="hljs-string">"e"</span>);
+}); <span class="hljs-comment">// =&gt;  ["feet", "geese", "meese"]</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.map = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(els, cb)</span> </span>{
+    <span class="hljs-keyword">var</span> val,
+        key,
+        ret = [];
+
+    <span class="hljs-keyword">if</span> (!S.isObject(els)) {
+        arrayProto.forEach.call(els, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, index)</span> </span>{
+            val = cb(el, index);
+            <span class="hljs-keyword">if</span> (val !== <span class="hljs-literal">null</span>) {
+                ret.push(val);
+            }
+        });
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> els) {
+            val = cb(els[key], key);
+            <span class="hljs-keyword">if</span> (val !== <span class="hljs-literal">null</span>) {
+                ret.push(val);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">return</span> ret.length &gt; <span class="hljs-number">0</span> ? arrayProto.concat.apply([], ret) : ret;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><strong>S.each(collection, function(index, item){ … },ctx)</strong></p>
+<p>遍历数组中的每一项, 执行回调函数中的方法</p>
+<ul>
+<li>collection:需要遍历的数组或者对象</li>
+<li>fn:回调函数，回传三个参数<ol>
+<li>当前项的值</li>
+<li>索引（index）或者键值（key）</li>
+<li>数组或者对象</li>
+</ol>
+</li>
+<li>ctx: fn的上下文对象，默认为<code>window</code></li>
+</ul>
+<pre><code>S.each([<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, item)</span></span>{
+     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'item %d is: %s'</span>, index, item)
+})
+
+<span class="hljs-keyword">var</span> hash = { name: <span class="hljs-string">'kissy.js'</span>, size: <span class="hljs-string">'micro'</span> }
+S.each(hash, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, value)</span></span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'%s: %s'</span>, key, value)
+})
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.each = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, iterator, context)</span> </span>{
+    <span class="hljs-keyword">var</span> keys, i, len;
+    <span class="hljs-keyword">if</span> (!obj) {
+        <span class="hljs-keyword">return</span> obj;
+    }
+    <span class="hljs-keyword">if</span> (obj.forEach === arrayProto.forEach) {
+        obj.forEach(iterator, context);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (S.isArray(obj)) {
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, len = obj.length; i &lt; len; i++) {
+            <span class="hljs-keyword">if</span> (iterator.call(context, obj[i], i, obj) === <span class="hljs-literal">false</span>) {
+                <span class="hljs-keyword">return</span>;
+            }
+        }
+    } <span class="hljs-keyword">else</span> {
+        keys = <span class="hljs-built_in">Object</span>.keys(obj);
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, len = keys.length; i &lt; len; i++) {
+            <span class="hljs-keyword">if</span> (iterator.call(context, obj[keys[i]], keys[i], obj) === <span class="hljs-literal">false</span>) {
+                <span class="hljs-keyword">return</span>;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> obj;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>S.mix(receiver , supplier)</strong></p>
+<p>将 supplier 对象的成员复制到 receiver 对象上.</p>
+<ul>
+<li>receiver: 属性接受者对象.</li>
+<li>supplier: 属性来源对象.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mix</span><span class="hljs-params">(obj)</span> </span>{
+    <span class="hljs-keyword">var</span> k;
+    S.each(arrayProto.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(source)</span> </span>{
+        <span class="hljs-keyword">if</span> (source) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> source) {
+                <span class="hljs-keyword">if</span>((k = source[prop]) !== <span class="hljs-literal">undefined</span>) {
+                    obj[prop] = k;
+                }
+            }
+        }
+    });
+    <span class="hljs-keyword">return</span> obj;
+}
+
+S.mix = mix;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><strong>S.makeArray(list)</strong></p>
+<p>把list(任何可以迭代的对象)转换成一个数组，在转换 arguments 对象时非常有用。</p>
+<pre><code>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">return</span> S.toArray(<span class="hljs-built_in">arguments</span>).slice(<span class="hljs-number">1</span>);
+})(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>); <span class="hljs-comment">// =&gt; [2, 3, 4]</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> </span>{
+	<span class="hljs-keyword">if</span> (o == <span class="hljs-literal">null</span>) {
+		<span class="hljs-keyword">return</span> [];
+	}
+	<span class="hljs-keyword">if</span> (S.isArray(o)) {
+		<span class="hljs-keyword">return</span> o;
+	}
+	<span class="hljs-keyword">var</span> lengthType = <span class="hljs-keyword">typeof</span> o.length,
+		oType = <span class="hljs-keyword">typeof</span> o;
+	<span class="hljs-keyword">if</span> (lengthType !== <span class="hljs-string">'number'</span> ||
+			o.alert ||
+			oType === <span class="hljs-string">'string'</span> ||
+			<span class="hljs-comment">/* https://github.com/ariya/phantomjs/issues/11478 */</span>
+			(oType === <span class="hljs-string">'function'</span> &amp;&amp; !( <span class="hljs-string">'item'</span> <span class="hljs-keyword">in</span> o &amp;&amp; lengthType === <span class="hljs-string">'number'</span>))) {
+				<span class="hljs-keyword">return</span> [o];
+			}
+	<span class="hljs-keyword">var</span> ret = [];
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = o.length; i &lt; l; i++) {
+		ret[i] = o[i];
+	}
+	<span class="hljs-keyword">return</span> ret;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><strong>S.augment (r, s1, [wl])</strong></p>
+<p>类的扩充，将 <code>s1</code> 的 <code>prototype</code> 属性的成员复制到 <code>r.prototype</code> 上。<code>Base</code> 使用。</p>
+<ul>
+<li>r: 将要扩充的函数</li>
+<li>s1: 扩充来源函数或对象. 非函数对象时复制的就是 s 的成员.</li>
+<li>wl: 属性来源对象的属性白名单, 仅在名单中的属性进行复制.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.augment = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(r, o, wl)</span> </span>{
+	<span class="hljs-keyword">if</span>(o <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Function</span>){
+		S.mix(r.prototype, o.prototype);
+	}
+	<span class="hljs-keyword">if</span>(o <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Object</span>){
+		S.mix(r.prototype, o);
+	}
+	<span class="hljs-keyword">if</span>(wl <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Object</span>){
+		S.mix(r.prototype, wl);
+	}
+	<span class="hljs-keyword">return</span> r;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p><strong>S.filter(list, iterator, [context])</strong></p>
+<p>遍历list中的每个值，返回包含所有通过iterator真值检测的元素值。默认使用原生的filter方法。<code>Base</code>使用</p>
+<pre><code><span class="hljs-keyword">var</span> evens = S.filter([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(num)</span></span>{
+    <span class="hljs-keyword">return</span> num % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>;
+}); <span class="hljs-comment">// =&gt; [2, 4, 6]</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.filter = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr, fn, context)</span> </span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.prototype.filter.call(arr, fn, context || <span class="hljs-keyword">this</span>);
+} ;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><strong>S.clone(input,[filter])</strong></p>
+<p>创建一个 普通对象 或数组的深拷贝, 并且返回新对象，Base 使用。</p>
+<ul>
+<li>input: 待深拷贝的对象或数组.</li>
+<li>filter: 过滤函数, 返回 false 不拷贝该元素. 传入参数为:<ol>
+<li>待克隆值为数组, 参数同 <code>S.filter()</code>, 上下文对象为全局 <code>window</code></li>
+<li>待克隆值为普通对象, 参数为对象的每个键, 每个键对应的值, 当前对象, 上下文对象为当前对象.</li>
+</ol>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.clone = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(input, filter)</span> </span>{
+	<span class="hljs-keyword">var</span> destination = input;
+
+	<span class="hljs-keyword">if</span>(!input) <span class="hljs-keyword">return</span> destination;
+
+	<span class="hljs-keyword">var</span> constructor = input.constructor;
+	<span class="hljs-keyword">if</span> (S.inArray(constructor, [<span class="hljs-built_in">Boolean</span>, <span class="hljs-built_in">String</span>, <span class="hljs-built_in">Number</span>, <span class="hljs-built_in">Date</span>, <span class="hljs-built_in">RegExp</span>])) {
+		destination = input.valueOf();
+	}
+	<span class="hljs-comment">/* ImageData , File, Blob , FileList .. etc */</span>
+	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (S.isArray(input)) {
+		destination = filter ? S.filter(input, filter) : input.concat();
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (S.isPlainObject(input)) {
+		destination = {};
+	}
+
+	<span class="hljs-keyword">if</span>(S.isArray(input)){
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; destination.length; i++) {
+			destination[i] = S.clone(destination[i], filter);
+		}
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (S.isPlainObject(input)){
+		<span class="hljs-keyword">for</span> (k <span class="hljs-keyword">in</span> input) {
+			<span class="hljs-keyword">if</span> (!filter || (filter.call(input, input[k], k, input) !== <span class="hljs-literal">false</span>)){
+				destination[k] = S.clone(input[k], filter);
+			}
+		}
+	}
+	<span class="hljs-keyword">return</span> destination;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><strong>S.ucfirst(string)</strong></p>
+<p>将字符串首字母大写，Base使用</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.ucfirst= <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s)</span> </span>{
+	s += <span class="hljs-string">''</span>;
+	<span class="hljs-keyword">return</span> s.charAt(<span class="hljs-number">0</span>).toUpperCase() + s.substring(<span class="hljs-number">1</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p><strong>S.trim(string)</strong></p>
+<p>去除字符串两端的空白字符. Base使用</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.trim = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+	<span class="hljs-keyword">return</span> str == <span class="hljs-literal">null</span> ? <span class="hljs-string">''</span> : <span class="hljs-built_in">String</span>.prototype.trim.call(str);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p><strong>S.now()</strong></p>
+<p>返回当前日期时间，Base 使用</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.now = <span class="hljs-built_in">Date</span>.now;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p><strong>S.reduce(arr,fn,[initialValue])</strong></p>
+<p>从左向右对每个数组元素调用给定函数，并把返回值累积起来，返回这个累加值，Base使用</p>
+<ul>
+<li>arr: 需要遍历的数组.</li>
+<li>fn: 在每个数组元素上执行的函数.</li>
+<li>initialValue: 对象类型，初次执行 fn 时的第一个参数值，如果不指定则为第一个元素值，后续从第二个元素开始遍历</li>
+</ul>
+<pre><code>S.reduce([<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p, c, index)</span></span>{
+    <span class="hljs-keyword">return</span> p + c;
+});
+<span class="hljs-comment">// 首次调用</span>
+p = <span class="hljs-number">0</span>, c = <span class="hljs-number">1</span>, index = <span class="hljs-number">1</span>
+<span class="hljs-comment">//第二次调用</span>
+p = <span class="hljs-number">1</span>, c = <span class="hljs-number">2</span>, index = <span class="hljs-number">2</span>
+<span class="hljs-comment">// 第三次调用</span>
+p = <span class="hljs-number">3</span>, c= <span class="hljs-number">3</span>, index = <span class="hljs-number">3</span>
+<span class="hljs-comment">// 第四次调用</span>
+p = <span class="hljs-number">6</span>, c = <span class="hljs-number">4</span>, index = <span class="hljs-number">4</span>
+<span class="hljs-comment">// 最终返回：10</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.reduce = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr, callback, initialValue)</span> </span>{
+	<span class="hljs-keyword">var</span> len = arr.length;
+	<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> callback !== <span class="hljs-string">'function'</span>) {
+		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'callback is not function!'</span>);
+	}
+
+	<span class="hljs-comment">/* 如果初始值是空数组，则无返回值，报错 */</span>
+	<span class="hljs-keyword">if</span> (len === <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-built_in">arguments</span>.length == <span class="hljs-number">2</span>) {
+		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'arguments invalid'</span>);
+	}
+
+	<span class="hljs-keyword">var</span> k = <span class="hljs-number">0</span>;
+	<span class="hljs-keyword">var</span> accumulator;
+	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length &gt;= <span class="hljs-number">3</span>) {
+		accumulator = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">2</span>];
+	}
+	<span class="hljs-keyword">else</span> {
+		<span class="hljs-keyword">do</span> {
+			<span class="hljs-keyword">if</span> (k <span class="hljs-keyword">in</span> arr) {
+				accumulator = arr[k++];
+				<span class="hljs-keyword">break</span>;
+			}
+
+			<span class="hljs-comment">/* 如果初始值是空数组，则无返回值，报错 */</span>
+			k += <span class="hljs-number">1</span>;
+			<span class="hljs-keyword">if</span> (k &gt;= len) {
+				<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>();
+			}
+		}
+		<span class="hljs-keyword">while</span> (TRUE);
+	}
+
+	<span class="hljs-keyword">while</span> (k &lt; len) {
+		<span class="hljs-keyword">if</span> (k <span class="hljs-keyword">in</span> arr) {
+			accumulator = callback.call(<span class="hljs-literal">undefined</span>, accumulator, arr[k], k, arr);
+		}
+		k++;
+	}
+
+	<span class="hljs-keyword">return</span> accumulator;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p><strong>S.substitute(str,o)</strong></p>
+<p>将字符串中的占位符替换为对应的键值。<code>Base</code>使用</p>
+<pre><code>str = <span class="hljs-string">'{name} is {prop_1} and {prop_2}.'</span>,
+obj = {name: <span class="hljs-string">'Jack Bauer'</span>,
+            prop_1: <span class="hljs-string">'our lord'</span>,
+            prop_2: <span class="hljs-string">'savior'</span>};
+
+S.substitute(str, obj);
+        <span class="hljs-comment">// =&gt; 'Jack Bauer is our lord and savior.'</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.substitute =  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str, o, regexp)</span> </span>{
+	<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> str != <span class="hljs-string">'string'</span> || !o) {
+		<span class="hljs-keyword">return</span> str;
+	}
+
+	<span class="hljs-keyword">return</span> str.replace(regexp || <span class="hljs-regexp">/\\?\{([^{}]+)\}/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(match, name)</span> </span>{
+		<span class="hljs-keyword">if</span> (match.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">'\\'</span>) {
+			<span class="hljs-keyword">return</span> match.slice(<span class="hljs-number">1</span>);
+		}
+		<span class="hljs-keyword">return</span> (o[name] === <span class="hljs-literal">undefined</span>) ? <span class="hljs-string">''</span>: o[name];
+	});
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p><strong>S.indexOf (elem,arr)</strong></p>
+<p>返回元素 elem 在数组 arr 中的序号.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.indexOf = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, arr)</span> </span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.prototype.indexOf.call(arr, item);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p><strong>S.inArray (elem,arr)</strong></p>
+<p>判断元素 elem 是否在数组 arr 中.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.inArray = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, arr)</span> </span>{
+	<span class="hljs-keyword">return</span> S.indexOf(item, arr) &gt; - <span class="hljs-number">1</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p><strong>S.merge (s1,s2[,…])</strong></p>
+<p>将多个对象的成员合并到一个新对象上. 参数中, 后面的对象成员会覆盖前面的.</p>
+<pre><code>a = { a: <span class="hljs-string">'a'</span> },
+b = { b: <span class="hljs-string">'b'</span> },
+c = { b: <span class="hljs-string">'b2'</span>, c: <span class="hljs-string">'c'</span> };
+
+<span class="hljs-keyword">var</span> o = S.merge(a, b, c);
+S.log(o.a); <span class="hljs-comment">// =&gt; 'a'</span>
+S.log(o.b); <span class="hljs-comment">// =&gt; 'b2'</span>
+S.log(o.c); <span class="hljs-comment">// =&gt; 'c'</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.merge = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+	<span class="hljs-keyword">var</span> args = arrayProto.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">return</span> mix.apply(<span class="hljs-literal">null</span>, [{}].concat(args));
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p><strong>S.extend (r,s[,px,sx])</strong></p>
+<p>让函数对象 r 继承函数对象 s</p>
+<ul>
+<li>r: 将要继承的子类函数</li>
+<li>supplier: 继承自的父类函数</li>
+<li>px: 需要添加/覆盖的原型成员</li>
+<li>sx: 需要添加/覆盖的静态成员.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.extend = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(receiver, supplier, protoPros, staticProps)</span> </span>{
+    <span class="hljs-keyword">var</span> supplierProto = supplier.prototype,
+        receiverProto;
+
+    supplierProto.constructor = supplier;
+
+    receiverProto = <span class="hljs-built_in">Object</span>.create(supplierProto);
+    receiverProto.constructor = receiver;
+    receiver.prototype = S.mix(receiverProto, receiver.prototype);
+    receiver.superclass = supplierProto;
+
+    <span class="hljs-keyword">if</span> (protoPros) {
+        S.mix(receiverProto, protoPros);
+    }
+
+    <span class="hljs-keyword">if</span> (staticProps) {
+        S.mix(receiver, staticProps);
+    }
+
+    <span class="hljs-keyword">return</span> receiver;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p><strong>S.type(object)</strong></p>
+<p>返回<code>object</code>的类型，如果要判断是否是plainObject（普通对象）需要使用<code>S.isPlainObject()</code>方法</p>
+<pre><code>S.type(S.one(<span class="hljs-string">'div'</span>)) <span class="hljs-comment">// =&gt; 'array'</span>
+S.type(<span class="hljs-built_in">Number</span>(<span class="hljs-number">2</span>)) <span class="hljs-comment">// =&gt; 'number'</span>
+S.type(S.Node)  <span class="hljs-comment">// =&gt; 'function'</span>
+</code></pre><p>如果需要验证是否是Node节点类型，使用<strong>S.Node.isNode()</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.type = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> </span>{
+    <span class="hljs-keyword">return</span> obj == <span class="hljs-literal">null</span> ?
+		<span class="hljs-built_in">String</span>(obj) : class2type[{}.toString.call(obj)] || <span class="hljs-string">'object'</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>S.unique (arr)</strong></p>
+<p>返回一个新数组, 仅包含 arr 去重后的值</p>
+<pre><code>KISSY.unique([<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'a'</span>]) =&gt; [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>]
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.unique = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(array)</span> </span>{
+    <span class="hljs-keyword">return</span> arrayProto.filter.call(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, index)</span> </span>{
+        <span class="hljs-keyword">return</span> array.indexOf(item) == index;
+    });
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p><strong>S.isWindow (o)</strong></p>
+<p>判断参数是否为浏览器 window</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.isWindow = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> </span>{
+    <span class="hljs-keyword">return</span> obj &amp;&amp; obj == obj.window;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p><strong>S.isPlainObject(obj)</strong></p>
+<p>判断是否是普通对象, 通过 {} 或 new FunctionClass/Object() 创建的, 不包括内置对象以及宿主对象.</p>
+<pre><code>S.isPlainObject({}); <span class="hljs-comment">// =&gt; true</span>
+S.isPlainObject(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()); <span class="hljs-comment">// =&gt; false</span>
+S.isPlainObject(<span class="hljs-built_in">document</span>.body); <span class="hljs-comment">// =&gt; false</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.isPlainObject = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> </span>{
+    <span class="hljs-keyword">return</span> S.isObject(obj) &amp;&amp; !S.isWindow(obj)
+		&amp;&amp; <span class="hljs-built_in">Object</span>.getPrototypeOf(obj) == <span class="hljs-built_in">Object</span>.prototype;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>类型诊断函数</p>
+<p><strong>S.isBoolean()</strong></p>
+<p><strong>S.isNumber()</strong></p>
+<p><strong>S.isString()</strong></p>
+<p><strong>S.isFunction()</strong></p>
+<p><strong>S.isArray()</strong></p>
+<p><strong>S.isDate()</strong></p>
+<p><strong>S.isRegExp()</strong></p>
+<p><strong>S.isObject()</strong></p>
+<p><strong>S.isError()</strong></p>
+<p><strong>S.isUndefined()</strong></p>
+<p><strong>S.isNull()</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>[<span class="hljs-string">'Boolean'</span>, <span class="hljs-string">'Number'</span>, <span class="hljs-string">'String'</span>, <span class="hljs-string">'Function'</span>,
+	<span class="hljs-string">'Array'</span>, <span class="hljs-string">'Date'</span>, <span class="hljs-string">'RegExp'</span>, <span class="hljs-string">'Object'</span>,
+	<span class="hljs-string">'Error'</span>].forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> </span>{
+    <span class="hljs-keyword">var</span> name2lc = name.toLowerCase();
+
+    class2type[<span class="hljs-string">'[object '</span> + name + <span class="hljs-string">']'</span>] = name2lc;
+
+    S[<span class="hljs-string">'is'</span> + name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> </span>{
+        <span class="hljs-keyword">return</span> S.type(obj) === name2lc;
+    };
+});
+
+S.isUndefined = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span></span>{
+	<span class="hljs-keyword">return</span> o === <span class="hljs-literal">undefined</span>;
+};
+
+S.isNull = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span></span>{
+	<span class="hljs-keyword">return</span> o === <span class="hljs-literal">null</span>;
+};
+
+S.isArray = <span class="hljs-built_in">Array</span>.isArray || S.isArray;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p><strong>S.startsWith (str,prefix)</strong></p>
+<p>判断 str 是否以 prefix 开头</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.startsWith = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, prefix)</span> </span>{
+    <span class="hljs-keyword">return</span> str.lastIndexOf(prefix, <span class="hljs-number">0</span>) === <span class="hljs-number">0</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p><strong>S.endsWith(str,suffix)</strong></p>
+<p>判断 str 是否以 suffix 结尾</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.endsWith   = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, suffix)</span> </span>{
+    <span class="hljs-keyword">var</span> ind = str.length - suffix.length;
+    <span class="hljs-keyword">return</span> ind &gt;= <span class="hljs-number">0</span> &amp;&amp; str.indexOf(suffix, ind) === ind;
+};
+
+<span class="hljs-keyword">var</span> guid = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p><strong>S.guid (prefix)</strong></p>
+<p>返回全局唯一 id.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.guid = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(pre)</span> </span>{
+    <span class="hljs-keyword">return</span> (pre || <span class="hljs-string">''</span>) + guid++;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p><strong>S.ready(function(S){…})</strong></p>
+<p>DOM Ready 事件，Ready 后再监听会立即执行回调</p>
+<p>与 DOMContentLoaded 事件此类似的事件还有 avaiable 和 contentready，在 PC 端产品多使用这两个方法来监听某个节点是否可用以及节点内的结构是否构造完整，这两个事件在无线端不常用，这里不提供，只提供 <code>ready()</code> 方法</p>
+<pre><code>KISSY.ready(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+    <span class="hljs-keyword">var</span> $ = S.all;
+});
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.ready = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(fn)</span></span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/complete|loaded|interactive/</span>.test(doc.readyState) &amp;&amp; doc.body) fn(S);
+    <span class="hljs-keyword">else</span> doc.addEventListener(<span class="hljs-string">'DOMContentLoaded'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{ fn(S); }, <span class="hljs-literal">false</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(S, undefined)</span> </span>{
+    <span class="hljs-comment">/* ios Function.prototype.bind === undefined */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bindFn</span><span class="hljs-params">(r, fn, obj)</span> </span>{
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">FNOP</span><span class="hljs-params">()</span> </span>{
+        }
+
+        <span class="hljs-keyword">var</span> slice = [].slice,
+            args = slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">3</span>),
+            bound = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">var</span> inArgs = slice.call(<span class="hljs-built_in">arguments</span>);
+                <span class="hljs-keyword">return</span> fn.apply(
+                    <span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> FNOP ? <span class="hljs-keyword">this</span> :
+                        <span class="hljs-comment">/* fix: y.x=S.bind(fn); */</span>
+                        obj || <span class="hljs-keyword">this</span>,
+                    (r ? inArgs.concat(args) : args.concat(inArgs))
+                );
+            };
+        FNOP.prototype = fn.prototype;
+        bound.prototype = <span class="hljs-keyword">new</span> FNOP();
+        <span class="hljs-keyword">return</span> bound;
+    }
+
+    S.mix(S, {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p><strong>S.noop()</strong></p>
+<p>空函数</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        noop: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p><strong>S.bind (fn , context)</strong></p>
+<p>创建一个新函数，该函数可以在固定的上下文以及传递部分固定参数放在用户参数前面给原函数并执行</p>
+<ul>
+<li>fn: 需要固定上下文以及固定部分参数的函数</li>
+<li>context: 执行 fn 时的 this 值. 如果新函数用于构造器则该参数无用.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        bind: bindFn(<span class="hljs-number">0</span>, bindFn, <span class="hljs-literal">null</span>, <span class="hljs-number">0</span>),
+        rbind: bindFn(<span class="hljs-number">0</span>, bindFn, <span class="hljs-literal">null</span>, <span class="hljs-number">1</span>)
+    });
+})(S);
+
+<span class="hljs-comment">/**
+ * @ignore
+ * script/css load across browser
+ * @author yiminghe@gmail.com
+ */</span>
+
+<span class="hljs-comment">/**
+ * Normal ua is like below:
+ * 
+ * Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 
+   (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25
+ * Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19
+   (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19
+ *  
+ * But we need [\/]{0,1} here, because some mobile's user agent is like below:
+ * 
+ * Xiaomi_2013061_TD/V1 Linux/3.4.5 Android/4.2.1 Release/09.18.2013
+   Browser/AppleWebKit534.30 Mobile Safari/534.30 MBBMS/2.2 System/Android 4.2.1
+   XiaoMi/MiuiBrowser/1.0
+ * ZTE U970_TD/1.0 Linux/2.6.39 Android/4.0 Release/2.21.2012 Browser/AppleWebKit534.30
+ * LenovoA658t_TD/1.0 Android 4.0.3 Release/10.01.2012 Browser/WAP2.0 appleWebkit/534.30 AliApp(AP/8.2.0.071702) AlipayClient/8.2.0.071702
+ * 
+ * @bugfix http://k3.alibaba-inc.com/issue/5108586?versionId=1030999
+ * @bugfix http://k3.alibaba-inc.com/issue/5184999?stat=1.5.0&amp;toPage=1&amp;versionId=1035887
+ * @bugfix http://k3.alibaba-inc.com/issue/5123513?stat=1.5.1&amp;toPage=1&amp;versionId=1035887
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>版本号前带斜杠：AppleWebKit/535.19
+版本号前不带斜杠：AppleWebKit534.30
+字母大小写：appleWebKit/534.30
+拼写错误：ApplelWebkit/534.30
+Android开头：AndroidWebkit/534.30
+匹配不到的话返回NaN，默认使用poll</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> webkit = +navigator.userAgent.replace(<span class="hljs-regexp">/.*Web[kK]it[\/]{0,1}(\d+)\..*/</span>, <span class="hljs-string">"$1"</span>);
+<span class="hljs-keyword">var</span> isOldWebKit = !webkit || webkit &lt; <span class="hljs-number">536</span>;
+
+<span class="hljs-keyword">var</span> <span class="hljs-comment">/* central poll for link node */</span>
+    cssTimer = <span class="hljs-number">0</span>,
+    <span class="hljs-comment">/* node.id:{callback:callback,node:node} */</span>
+    monitors = {},
+    monitorLen = <span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startCssTimer</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (!cssTimer) {
+        cssPoll();
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isCssLoaded</span><span class="hljs-params">(node, url)</span> </span>{
+    <span class="hljs-keyword">var</span> sheet = node.sheet,
+        loaded;
+
+    <span class="hljs-keyword">if</span> (isOldWebKit) {
+        <span class="hljs-comment">/* http://www.w3.org/TR/Dom-Level-2-Style/stylesheets.html */</span>
+        <span class="hljs-keyword">if</span> (node.sheet) {
+            loaded = <span class="hljs-number">1</span>;
+        }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (node.sheet) {
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">var</span> cssRules = node.sheet.cssRules;
+            <span class="hljs-keyword">if</span> (cssRules) {
+                loaded = <span class="hljs-number">1</span>;
+            }
+        } <span class="hljs-keyword">catch</span> (ex) {
+            <span class="hljs-comment">/* http://www.w3.org/TR/dom/#dom-domexception-code */</span>
+            <span class="hljs-keyword">if</span> (ex.name === <span class="hljs-string">'NS_ERROR_DOM_SECURITY_ERR'</span>) {
+            <span class="hljs-comment">/* for old firefox */</span>
+                loaded = <span class="hljs-number">1</span>;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> loaded;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cssPoll</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> url <span class="hljs-keyword">in</span> monitors) {
+        <span class="hljs-keyword">var</span> callbackObj = monitors[url],
+            node = callbackObj.node;
+        <span class="hljs-keyword">if</span> (isCssLoaded(node, url)) {
+            <span class="hljs-keyword">if</span> (callbackObj.callback) {
+                callbackObj.callback.call(node);
+            }
+            <span class="hljs-keyword">delete</span> monitors[url];
+            monitorLen--;
+        }
+    }
+
+    cssTimer = monitorLen ? setTimeout(cssPoll, <span class="hljs-number">30</span>) : <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">/* refer : http://lifesinger.org/lab/2011/load-js-css/css-preload.html */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pollCss</span><span class="hljs-params">(node, callback)</span> </span>{
+    <span class="hljs-keyword">var</span> href = node.href,
+        arr;
+    arr = monitors[href] = {};
+    arr.node = node;
+    arr.callback = callback;
+    monitorLen++;
+    startCssTimer();
+}
+
+<span class="hljs-comment">/*
+ References:
+ - http://unixpapa.com/js/dyna.html
+ - http://www.blaze.io/technical/ies-premature-execution-problem/
+
+ `onload` event is supported in WebKit since 535.23
+ - https://bugs.webkit.org/show_activity.cgi?id=38995
+ `onload/onerror` event is supported since Firefox 9.0
+ - https://bugzilla.mozilla.org/show_bug.cgi?id=185236
+ - https://developer.mozilla.org/en/HTML/Element/link#Stylesheet_load_events
+
+ monitor css onload across browsers.issue about 404 failure.
+ - firefox not ok（4 is wrong）：
+ - http://yearofmoo.com/2011/03/cross-browser-stylesheet-preloading/
+ - all is ok
+ - http://lifesinger.org/lab/2011/load-js-css/css-preload.html
+ - others
+ - http://www.zachleat.com/web/load-css-dynamically/
+ */</span>
+
+<span class="hljs-comment">/**
+ * @ignore
+ * getScript support for css and js callback after load
+ * @author yiminghe@gmail.com
+ */</span>
+
+<span class="hljs-keyword">var</span> jsCssCallbacks = {},
+    headNode = doc.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>] || doc.documentElement;
+
+<span class="hljs-comment">/**
+ * Load a javascript/css file from the server using a GET HTTP request,
+ * then execute it.
+ *
+ * for example:
+ *      @example
+ *      getScript(url, success, charset);
+ *      // or
+ *      getScript(url, {
+ *          charset: string
+ *          success: fn,
+ *          error: fn,
+ *          timeout: number
+ *      });
+ *
+ * Note 404/500 status in ie&lt;9 will trigger success callback.
+ * If you want a jsonp operation, please use {@link KISSY.IO} instead.
+ *
+ * @param {String} url resource's url
+ * @param {Function|Object} [success] success callback or config
+ * @param {Function} [success.success] success callback
+ * @param {Function} [success.error] error callback
+ * @param {Number} [success.timeout] timeout (s)
+ * @param {String} [success.charset] charset of current resource
+ * @param {String} [charset] charset of current resource
+ * @return {HTMLElement} script/style node
+ * @member KISSY
+ */</span>
+<span class="hljs-keyword">var</span> getScript = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url, success, charset)</span> </span>{
+    <span class="hljs-comment">/* can not use KISSY.Uri, url can not be encoded for some url */</span>
+    <span class="hljs-comment">/* eg: /??dom.js,event.js , ? , should not be encoded */</span>
+    <span class="hljs-keyword">var</span> config = success,
+        css = <span class="hljs-number">0</span>,
+        error,
+        timeout,
+        attrs,
+        callbacks,
+        timer;
+
+    <span class="hljs-keyword">if</span> (S.endsWith(url.toLowerCase(), <span class="hljs-string">'.css'</span>)) {
+        css = <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (S.isObject(config)) {
+        success = config.success;
+        error   = config.error;
+        timeout = config.timeout;
+        charset = config.charset;
+        attrs   = config.attrs;
+    }
+
+    callbacks = jsCssCallbacks[url] = jsCssCallbacks[url] || [];
+
+    callbacks.push([success, error]);
+
+    <span class="hljs-keyword">if</span> (callbacks.length &gt; <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> callbacks.node;
+    }
+
+    <span class="hljs-keyword">var</span> node = doc.createElement(css ? <span class="hljs-string">'link'</span> : <span class="hljs-string">'script'</span>),
+        clearTimer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">if</span> (timer) {
+                clearTimeout(timer);
+                timer = <span class="hljs-literal">undefined</span>;
+            }
+        };
+
+    <span class="hljs-keyword">if</span> (attrs) {
+        S.each(attrs, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v, n)</span> </span>{
+            node.setAttribute(n, v);
+        });
+    }
+
+    <span class="hljs-keyword">if</span> (charset) {
+        node.charset = charset;
+    }
+
+    <span class="hljs-keyword">if</span> (css) {
+        node.href = url;
+        node.rel = <span class="hljs-string">'stylesheet'</span>;
+    } <span class="hljs-keyword">else</span> {
+        node.src = url;
+        node.async = <span class="hljs-literal">true</span>;
+    }
+
+    callbacks.node = node;
+
+    <span class="hljs-keyword">var</span> end = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(error)</span> </span>{
+        <span class="hljs-keyword">var</span> index = error,
+            fn;
+        clearTimer();
+        S.each(jsCssCallbacks[url], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> </span>{
+            <span class="hljs-keyword">if</span> ((fn = callback[index])) {
+                fn.call(node);
+            }
+        });
+        <span class="hljs-keyword">delete</span> jsCssCallbacks[url];
+    };
+
+    <span class="hljs-keyword">var</span> useNative = <span class="hljs-string">'onload'</span> <span class="hljs-keyword">in</span> node;
+    <span class="hljs-comment">/*
+        onload for webkit 535.23  Firefox 9.0
+        https://bugs.webkit.org/show_activity.cgi?id=38995
+        https://bugzilla.mozilla.org/show_bug.cgi?id=185236
+        https://developer.mozilla.org/en/HTML/Element/link#Stylesheet_load_events
+        phantomjs 1.7 == webkit 534.34
+    */</span>
+    <span class="hljs-keyword">var</span> forceCssPoll = S.Config.forceCssPoll || (isOldWebKit);
+
+    <span class="hljs-keyword">if</span> (css &amp;&amp; forceCssPoll &amp;&amp; useNative) {
+        useNative = <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onload</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> readyState = node.readyState;
+        <span class="hljs-keyword">if</span> (!readyState ||
+            readyState === <span class="hljs-string">'loaded'</span> ||
+            readyState === <span class="hljs-string">'complete'</span>) {
+            node.onreadystatechange = node.onload = <span class="hljs-literal">null</span>;
+            end(<span class="hljs-number">0</span>);
+        }
+    }
+
+    <span class="hljs-comment">/* 标准浏览器 css and all script */</span>
+    <span class="hljs-keyword">if</span> (useNative) {
+        node.onload = onload;
+        node.onerror = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            node.onerror = <span class="hljs-literal">null</span>;
+            end(<span class="hljs-number">1</span>);
+        };
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (css) {
+        <span class="hljs-comment">/* old chrome/firefox for css */</span>
+        pollCss(node, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            end(<span class="hljs-number">0</span>);
+        });
+    } <span class="hljs-keyword">else</span> {
+        node.onreadystatechange = onload;
+    }
+
+    <span class="hljs-keyword">if</span> (timeout) {
+        timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            end(<span class="hljs-number">1</span>);
+        }, timeout * <span class="hljs-number">1000</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (css) {
+        <span class="hljs-comment">/* css order matters so can not use css in head */</span>
+        headNode.appendChild(node);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">/* can use js in head */</span>
+        headNode.insertBefore(node, headNode.firstChild);
+    }
+    <span class="hljs-keyword">return</span> node;
+};
+
+<span class="hljs-comment">/*
+ yiminghe@gmail.com refactor@2012-03-29
+ - 考虑连续重复请求单个 script 的情况，内部排队
+
+ yiminghe@gmail.com 2012-03-13
+ - getScript
+ - 404 in ie&lt;9 trigger success , others trigger error
+ - syntax error in all trigger success
+ */</span>
+
+mix(S, {
+    getScript: getScript
+});
+
+<span class="hljs-keyword">var</span> fns    = {},
+    config = {
+        debug : <span class="hljs-literal">false</span>,
+        fns   : fns
+    };
+
+S.Config = config;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p><strong>S.config(configName,configValue)</strong></p>
+<p>设置或获取 KISSY 配置参数，有三种用法</p>
+<pre><code>config(configJSON) <span class="hljs-comment">//⇒ void</span>
+config(name,value) <span class="hljs-comment">//⇒ void，name：参数名，value：参数值</span>
+config(name) <span class="hljs-comment">//⇒ data，返回参数名的值</span>
+</code></pre><p>其中<code>S.config(configJSON)</code>的用法参照：</p>
+<pre><code>KISSY.config({
+    <span class="hljs-comment">// 开启自动 combo 模式</span>
+    combine:<span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// kissy 库内置模块的时间戳</span>
+    tag:<span class="hljs-string">'2012'</span>,
+    <span class="hljs-comment">// kissy 的基准路径</span>
+    base:<span class="hljs-string">'http://x.com/a'</span>,
+    packages:{},
+    modules:{}
+})
+</code></pre><p>完整参数可以参照<a href="http://docs.kissyui.com/1.4/docs/html/guideline/loader.html">KISSY1.4的loader用法</a>的config部分</p>
+<p><a href="../mini.js">mini.js</a>支持完整的KISSY模块规范（KMD），<a href="http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html">规范详情移步这里</a></p>
+<pre><code><span class="hljs-comment">// 判断是否引用mini版本</span>
+<span class="hljs-keyword">var</span> isMini = S.config(<span class="hljs-string">'mini'</span>);
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.config = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(configName, configValue)</span> </span>{
+    <span class="hljs-keyword">var</span> cfg,
+        r,
+        self = <span class="hljs-keyword">this</span>,
+        fn,
+        Config = S.Config,
+        configFns = Config.fns;
+    <span class="hljs-keyword">if</span> (S.isObject(configName)) {
+        S.each(configName, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(configValue, p)</span> </span>{
+            fn = configFns[p];
+            <span class="hljs-keyword">if</span> (fn) {
+                fn.call(self, configValue);
+            } <span class="hljs-keyword">else</span> {
+                Config[p] = configValue;
+            }
+        });
+    } <span class="hljs-keyword">else</span> {
+        cfg = configFns[configName];
+        <span class="hljs-keyword">if</span> (configValue === <span class="hljs-literal">undefined</span>) {
+            <span class="hljs-keyword">if</span> (cfg) {
+                r = cfg.call(self);
+            } <span class="hljs-keyword">else</span> {
+                r = Config[configName];
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (cfg) {
+                r = cfg.call(self, configValue);
+            } <span class="hljs-keyword">else</span> {
+                Config[configName] = configValue;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> r;
+};
+
+S.config(<span class="hljs-string">'mini'</span>,<span class="hljs-literal">true</span>);
+
+<span class="hljs-keyword">var</span> modules = {};
+
+<span class="hljs-keyword">var</span> isString   = S.isString,
+    isFunction = S.isFunction;
+
+<span class="hljs-keyword">var</span> RE_DIRNAME = <span class="hljs-regexp">/[^?#]*\//</span>,
+    RE_DOT = <span class="hljs-regexp">/\/\.\//g</span>,
+    RE_DOUBLE_DOT = <span class="hljs-regexp">/\/[^/]+\/\.\.\//</span>,
+    RE_DOUBLE_SLASH = <span class="hljs-regexp">/([^:/])\/\//g</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseDirName</span><span class="hljs-params">(name)</span> </span>{
+    <span class="hljs-keyword">var</span> mat = name.match(RE_DIRNAME);
+    <span class="hljs-keyword">return</span> name ? mat[<span class="hljs-number">0</span>] : name + <span class="hljs-string">'/'</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseRelativeName</span><span class="hljs-params">(name, refName)</span> </span>{
+    <span class="hljs-keyword">if</span> (refName &amp;&amp; <span class="hljs-regexp">/^[\.\/]/</span>.test(name)) {
+        name = parseDirName(refName) + name;
+        <span class="hljs-comment">/* /a/b/./c/./d ==&gt; /a/b/c/d */</span>
+        name = name.replace(RE_DOT, <span class="hljs-string">'/'</span>);
+
+        <span class="hljs-comment">/* a/b/c/../../d  ==&gt;  a/b/../d  ==&gt;  a/d */</span>
+        <span class="hljs-keyword">while</span> (name.match(RE_DOUBLE_DOT)) {
+            name = name.replace(RE_DOUBLE_DOT, <span class="hljs-string">'/'</span>);
+        }
+
+        <span class="hljs-comment">/* a//b/c  ==&gt;  a/b/c  */</span>
+        name = name.replace(RE_DOUBLE_SLASH, <span class="hljs-string">'$1/'</span>);
+    }
+    <span class="hljs-keyword">return</span> name;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseModuleName</span><span class="hljs-params">(name, refName)</span> </span>{
+    <span class="hljs-keyword">if</span> (name.charAt(name.length - <span class="hljs-number">1</span>) === <span class="hljs-string">'/'</span>) {
+        name += <span class="hljs-string">'index'</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/.js$/</span>.test(name)) {
+        name = name.slice(<span class="hljs-number">0</span>, -<span class="hljs-number">3</span>);
+    }
+
+    <span class="hljs-keyword">return</span> parseRelativeName(name, refName);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">execFnWithModules</span><span class="hljs-params">(fn, modNames, refName)</span>  </span>{
+    <span class="hljs-keyword">var</span> args = S.map(modNames || [], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modName)</span> </span>{
+        <span class="hljs-keyword">return</span> S.require(modName, refName);
+    });
+    <span class="hljs-keyword">return</span> isFunction(fn) ? fn.apply(S, [S].concat(args)) : <span class="hljs-literal">undefined</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">execFnWithCJS</span><span class="hljs-params">(fn)</span> </span>{
+    <span class="hljs-keyword">return</span> isFunction(fn) ? fn.apply(S, [S, S.require]) : <span class="hljs-literal">undefined</span>;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p><strong>S.add(name,fn,[cfg])</strong></p>
+<p>KISSY 添加模块/逻辑片段的函数，<code>config</code>为配置对象，包括<code>config.requires</code>，给出当前模块的依赖模块。模块返回一个对象，通过引用它的时候来调用到。</p>
+<ul>
+<li>name (string) – 模块名。可选。</li>
+<li>fn (function) – 模块定义函数</li>
+<li>config (object) – 模块的一些格外属性, 是JSON对象，包含属性：</li>
+<li>requires (Array) – 模块的一些依赖</li>
+</ul>
+<p>core中的<code>S.add()</code>只有基本功能，只支持上面三个参数</p>
+<p>在<a href="../mini-full.js">mini-full.js</a>中，包含完整的KMD规范的实现的loader。</p>
+<pre><code><span class="hljs-comment">// package/a.js</span>
+KISSY.add(<span class="hljs-string">'a'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+ <span class="hljs-keyword">return</span> ObjA;
+},{
+     <span class="hljs-comment">// 当前逻辑依赖一个包内的文件b，一个全局模块base</span>
+     requires:[<span class="hljs-string">'b'</span>,<span class="hljs-string">'base'</span>]
+});
+</code></pre><p><code>add()</code>方法符合基本的KMD规范，可以参照<a href="http://docs.kissyui.com/1.4/docs/html/guideline/loader.html">KISSY 1.4 Loader的文档</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+S.add = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, factory, config)</span> </span>{
+    <span class="hljs-keyword">if</span> (isString(name)) {
+        name = parseModuleName(name);
+        modules[name] = {
+            factory  : factory,
+            requires : config &amp;&amp; config.requires
+        };
+    }
+    <span class="hljs-keyword">return</span> S;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p><strong>S.require(name,[refName])</strong></p>
+<p>如果模块已经载入，则可以通过<code>S.require()</code>方法来调用这个模块，通常如果use()的模块过多，回调参数需要和模块列表一一对应，最简单的办法就是使用<code>S.require()</code>方法</p>
+<p>比如这段代码：</p>
+<pre><code><span class="hljs-comment">// use 的模块太多，用肉眼来对应模块名称？</span>
+S.use(<span class="hljs-string">'a,b,c,d,e,f,g'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S,A,B,C,D,E,F,G)</span></span>{
+    <span class="hljs-comment">// Your code...</span>
+});
+
+<span class="hljs-comment">// 可以简写为这样</span>
+S.use(<span class="hljs-string">'a,b,c,d,e,f,g'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+    <span class="hljs-keyword">var</span> A = S.require(<span class="hljs-string">'a'</span>);
+    <span class="hljs-keyword">var</span> B = S.require(<span class="hljs-string">'b'</span>);
+    <span class="hljs-keyword">var</span> C = S.require(<span class="hljs-string">'c'</span>);
+    <span class="hljs-comment">// Your code...</span>
+});
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.require = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, refName)</span> </span>{
+    <span class="hljs-keyword">var</span> mod;
+    <span class="hljs-keyword">if</span> (isString(name)) {
+        name = parseModuleName(name, refName);
+        mod  = modules[name];
+        <span class="hljs-keyword">if</span> (mod) {
+            <span class="hljs-keyword">if</span> (!mod.exports) {
+                mod.exports = isFunction(mod.factory) ?
+                    mod.requires ?
+                        execFnWithModules(mod.factory, mod.requires, name) :
+                        execFnWithCJS(mod.factory)
+                    :
+                    mod.factory;
+            }
+            <span class="hljs-keyword">return</span> mod.exports;
+        }
+    }
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p><strong>S.use(names, callback)</strong></p>
+<p>载入并运行模块,和add一起使用，详细用法参照<a href="http://docs.kissyui.com/1.4/docs/html/kmd.html">KISSY模块规范</a>（KMD），fn 类型是functio。参数说明：</p>
+<ul>
+<li>modNames (String) – 以逗号（,）分割的模块名称,例如 <code>S.use(&quot;custommod,custommod2&quot;)</code></li>
+<li>callback (function|Object) – 当 modNames 中所有模块载入并执行完毕后执行的函数或者对象描述</li>
+</ul>
+<p>当callback类型为Object时，可传入两个属性：</p>
+<ol>
+<li>success (function) : 当 modNames 中所有模块加载完毕后执行的函数</li>
+<li>error (function) : 当前 use 失败时调用的函数，参数为失败的模块对象</li>
+</ol>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.use = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(names, success)</span> </span>{
+    <span class="hljs-comment">/* assign callback functions */</span>
+    <span class="hljs-keyword">if</span> (S.isObject(success)) {
+        success = success.success;
+    }
+    <span class="hljs-comment">/* parse string to array */</span>
+    <span class="hljs-keyword">if</span> (isString(names)) {
+        names = names.replace(<span class="hljs-regexp">/\s+/g</span>, <span class="hljs-string">''</span>).split(<span class="hljs-string">','</span>);
+    }
+
+    execFnWithModules(success, names);
+
+    <span class="hljs-keyword">return</span> S;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p><strong>S.log(msg,[cat,type])</strong></p>
+<p>输出调试信息</p>
+<ul>
+<li>msg : 试信息</li>
+<li>cat : 调试信息类别. 可以取 info, warn, error, dir, time 等 console 对象的方法名, 默认为 log.</li>
+<li>src : 调试代码所在的源信息</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.log = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, cat, type)</span> </span>{
+    <span class="hljs-keyword">var</span> logger = <span class="hljs-built_in">console</span>;
+    cat = cat &amp;&amp; logger[cat] ? cat : <span class="hljs-string">'log'</span>;
+    logger[cat](type ? type + <span class="hljs-string">': '</span> + msg : msg);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p><strong>S.error(msg)</strong></p>
+<p>抛出错误异常</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>S.error = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+    <span class="hljs-keyword">if</span> (S.config(<span class="hljs-string">'debug'</span>)) {
+        <span class="hljs-keyword">throw</span> msg <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Error</span> ? msg : <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(msg);
+    }
+};
+
+root.KISSY = S;
+
+
+}(<span class="hljs-keyword">this</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <style>pre{-moz-tab-size:4;-webkit-tab-size:4;tab-size:4;}</style>
+<style>td {border-top:1px solid #ccc} table {border-collapse: collapse;}</style>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

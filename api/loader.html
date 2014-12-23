@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Loader API</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="anim.html">
+                anim.js
+              </a>
+            
+              
+              <a class="source" href="core.html">
+                core.js
+              </a>
+            
+              
+              <a class="source" href="event.html">
+                event.js
+              </a>
+            
+              
+              <a class="source" href="io.html">
+                io.js
+              </a>
+            
+              
+              <a class="source" href="loader.html">
+                loader.js
+              </a>
+            
+              
+              <a class="source" href="node.html">
+                node.js
+              </a>
+            
+              
+              <a class="source" href="ua.html">
+                ua.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="loader-api">Loader API</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3 id="how-to-use">How to use</h3>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>用法同KISSY Seed</p>
+<pre><code><span class="hljs-comment">//定義模塊</span>
+KISSY.add(<span class="hljs-string">'pkg/mod1'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S, Dep)</span> </span>{
+    <span class="hljs-keyword">return</span> {
+        name: <span class="hljs-string">'mod1'</span>
+    };
+}, {
+    requires: [
+        <span class="hljs-string">'dep1'</span>
+    ]
+})
+
+<span class="hljs-comment">//使用模塊</span>
+KISSY.use(<span class="hljs-string">'pkg/mod1'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S, Mod1)</span> </span>{
+    alert(Mod1.name);
+});
+</code></pre><h3 id="api-delete">API Delete</h3>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>未列出的API與KISSY保持用法一致 (包括 CMD, Combo, download CSS, etc. )</strong></p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th style="text-align:center">KISSY</th>
+<th style="text-align:center">KISSY-MINI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getScript</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>importStyle</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-differences">API Differences</h3>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>－ package config不支持 <strong>group</strong> 參數</p>
+<p>－ package config不支持 <strong>suffix</strong> 參數</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+;(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(root)</span> </span>{
+
+<span class="hljs-comment">/* cache KISSY object */</span>
+<span class="hljs-keyword">var</span> S = root.KISSY;
+
+<span class="hljs-keyword">var</span> Env      = S.Env,
+    Config   = S.Config,
+    config   = S.config,
+    log      = S.log;
+
+<span class="hljs-keyword">var</span> mix        = S.mix,
+    map        = S.map,
+    each       = S.each,
+    isObject   = S.isObject,
+    isArray    = S.isArray,
+    isString   = S.isString,
+    isFunction = S.isFunction,
+    startsWith = S.startsWith,
+    endsWith   = S.endsWith,
+    getScript  = S.getScript;
+
+<span class="hljs-comment">/* cache native object */</span>
+<span class="hljs-keyword">var</span> doc      = root.document,
+    ua       = root.navigator.userAgent,
+    loc      = root.location,
+    href     = loc.href,
+    protocol = loc.protocol;
+
+<span class="hljs-keyword">var</span> substring     = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, start, end)</span> </span>{
+    <span class="hljs-keyword">return</span> str.substring(start, end);
+},  indexOf    = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, value, index)</span> </span>{
+    <span class="hljs-keyword">return</span> str.indexOf(value, index);
+},  slice      = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, start, end)</span> </span>{
+    <span class="hljs-keyword">return</span> str.slice(start, end);
+},  charAt     = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, index)</span> </span>{
+    <span class="hljs-keyword">return</span> str.charAt(index);
+},  split      = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, flag)</span> </span>{
+    <span class="hljs-keyword">return</span> str.split(flag);
+},  replace    = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, reg, val)</span> </span>{
+    <span class="hljs-keyword">return</span> str.replace(reg, val);
+},  toLowerCase = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span> </span>{
+    <span class="hljs-keyword">return</span> str.toLowerCase();
+};
+
+
+<span class="hljs-keyword">var</span> now = <span class="hljs-built_in">Date</span>.now,
+    keys = <span class="hljs-built_in">Object</span>.keys,
+    reduce = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arr, fn, initialVal)</span> </span>{
+        <span class="hljs-keyword">return</span> arr.reduce(fn, initialVal);
+    },
+    filter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arr, fn)</span> </span>{
+        <span class="hljs-keyword">return</span> arr.filter(fn);
+    },
+    indexOf = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arr, val)</span> </span>{
+        <span class="hljs-keyword">return</span> arr.indexOf(val);
+    },
+    setImmediate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(fn)</span>  </span>{
+        setTimeout(fn, <span class="hljs-number">0</span>);
+    };
+
+<span class="hljs-keyword">var</span> noop  = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{},
+    TRUE  = !<span class="hljs-number">0</span>,
+    FALSE = !<span class="hljs-number">1</span>;
+
+<span class="hljs-comment">/* Remove .. and . in path array */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeArray</span><span class="hljs-params">(parts, allowAboveRoot)</span> </span>{
+    <span class="hljs-comment">/* level above root */</span>
+    <span class="hljs-keyword">var</span> up = <span class="hljs-number">0</span>,
+        i = parts.length - <span class="hljs-number">1</span>,
+        newParts = [],
+        last;
+
+    <span class="hljs-keyword">for</span> (; i &gt;= <span class="hljs-number">0</span>; i--) {
+        last = parts[i];
+        <span class="hljs-keyword">if</span> (last !== <span class="hljs-string">'.'</span>) {
+            <span class="hljs-keyword">if</span> (last === <span class="hljs-string">'..'</span>) {
+                up++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (up) {
+                up--;
+            } <span class="hljs-keyword">else</span> {
+                newParts[newParts.length] = last;
+            }
+        }
+    }
+
+    <span class="hljs-comment">/* if allow above root, has to add .. */</span>
+    <span class="hljs-keyword">if</span> (allowAboveRoot) {
+        <span class="hljs-keyword">for</span> (; up--; up) {
+            newParts[newParts.length] = <span class="hljs-string">'..'</span>;
+        }
+    }
+
+    newParts = newParts.reverse();
+
+    <span class="hljs-keyword">return</span> newParts;
+}
+
+<span class="hljs-comment">/* Extract the directory portion of a path
+* dirname("a/b/c.js?t=123#xx/zz") ==&gt; "a/b/"
+* ref: http://jsperf.com/regex-vs-split/2
+*/</span>
+<span class="hljs-keyword">var</span> RE_DIRNAME = <span class="hljs-regexp">/[^?#]*\//</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathGetDirName</span><span class="hljs-params">(path)</span> </span>{
+    <span class="hljs-keyword">var</span> mat = path.match(RE_DIRNAME);
+    <span class="hljs-keyword">return</span> mat ? mat[<span class="hljs-number">0</span>] : <span class="hljs-string">'.'</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathRemoveExt</span><span class="hljs-params">(path)</span> </span>{
+    <span class="hljs-keyword">return</span> path.replace(<span class="hljs-regexp">/\.[^\/]+$/</span>, <span class="hljs-string">''</span>);
+}
+
+<span class="hljs-keyword">var</span> RE_DOT = <span class="hljs-regexp">/\/\.\//g</span>,
+    RE_DOUBLE_DOT = <span class="hljs-regexp">/\/[^/]+\/\.\.\//</span>,
+    RE_DOUBLE_SLASH = <span class="hljs-regexp">/([^:/])\/\//g</span>;
+
+<span class="hljs-comment">/* Canonicalize a path */</span>
+<span class="hljs-comment">/* realpath("http://test.com/a//./b/../c") ==&gt; "http://test.com/a/c" */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathParseRelative</span><span class="hljs-params">(path)</span> </span>{
+    <span class="hljs-comment">/* /a/b/./c/./d ==&gt; /a/b/c/d */</span>
+    path = path.replace(RE_DOT, <span class="hljs-string">"/"</span>);
+
+    <span class="hljs-comment">/* a/b/c/../../d  ==&gt;  a/b/../d  ==&gt;  a/d */</span>
+    <span class="hljs-keyword">while</span> (path.match(RE_DOUBLE_DOT)) {
+        path = path.replace(RE_DOUBLE_DOT, <span class="hljs-string">"/"</span>);
+    }
+
+    <span class="hljs-comment">/* a//b/c  ==&gt;  a/b/c */</span>
+    path = path.replace(RE_DOUBLE_SLASH, <span class="hljs-string">"$1/"</span>);
+
+    <span class="hljs-keyword">return</span> path;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathResolveRelative</span><span class="hljs-params">(from, to)</span> </span>{
+    <span class="hljs-keyword">var</span> resolvedPath = <span class="hljs-string">''</span>,
+        resolvedPathStr,
+        i,
+        args = (<span class="hljs-built_in">arguments</span>),
+        path,
+        absolute = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (i = args.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span> &amp;&amp; !absolute; i--) {
+        path = args[i];
+        <span class="hljs-keyword">if</span> (!isString(path) || !path) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        resolvedPath = path + <span class="hljs-string">'/'</span> + resolvedPath;
+        absolute = charAt(path, <span class="hljs-number">0</span>) === <span class="hljs-string">'/'</span>;
+    }
+
+    resolvedPathStr = normalizeArray(filter(split(resolvedPath, <span class="hljs-string">'/'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> </span>{
+        <span class="hljs-keyword">return</span> !!p;
+    }), !absolute).join(<span class="hljs-string">'/'</span>);
+
+    <span class="hljs-keyword">return</span> ((absolute ? <span class="hljs-string">'/'</span> : <span class="hljs-string">''</span>) + resolvedPathStr) || <span class="hljs-string">'.'</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathGetRelative</span><span class="hljs-params">(from, to)</span> </span>{
+    from = pathParseRelative(from);
+    to = pathParseRelative(to);
+
+    <span class="hljs-keyword">var</span> fromParts = filter(split(from, <span class="hljs-string">'/'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> </span>{
+            <span class="hljs-keyword">return</span> !!p;
+        }),
+        path = [],
+        sameIndex,
+        sameIndex2,
+        toParts = filter(split(to, <span class="hljs-string">'/'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> </span>{
+            <span class="hljs-keyword">return</span> !!p;
+        }), commonLength = <span class="hljs-built_in">Math</span>.min(fromParts.length, toParts.length);
+
+    <span class="hljs-keyword">for</span> (sameIndex = <span class="hljs-number">0</span>; sameIndex &lt; commonLength; sameIndex++) {
+        <span class="hljs-keyword">if</span> (fromParts[sameIndex] !== toParts[sameIndex]) {
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+
+    sameIndex2 = sameIndex;
+
+    <span class="hljs-keyword">while</span> (sameIndex &lt; fromParts.length) {
+        path.push(<span class="hljs-string">'..'</span>);
+        sameIndex++;
+    }
+
+    path = path.concat(slice(toParts, sameIndex2));
+
+    path = path.join(<span class="hljs-string">'/'</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-comment">/**@type String  @ignore*/</span>path;
+}
+
+<span class="hljs-comment">/* Normalize an id
+*  normalize("path/to/a") ==&gt; "path/to/a.js"
+* NOTICE: substring is faster than negative slice and RegExp
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathNormalizeName</span><span class="hljs-params">(id)</span> </span>{
+    <span class="hljs-keyword">var</span> last = id.length - <span class="hljs-number">1</span>,
+        lastC = charAt(id, last);
+
+    <span class="hljs-comment">/* If the uri ends with `#`, just return it without '#' */</span>
+    <span class="hljs-keyword">if</span> (lastC === <span class="hljs-string">"#"</span>) {
+        <span class="hljs-keyword">return</span> id.substring(<span class="hljs-number">0</span>, last);
+    }
+
+    <span class="hljs-keyword">return</span> (endsWith(id, <span class="hljs-string">'.js'</span>)  ||
+            endsWith(id, <span class="hljs-string">'.css'</span>) ||
+            indexOf(id, <span class="hljs-string">'?'</span>) &gt; <span class="hljs-number">0</span> ||
+            lastC === <span class="hljs-string">'/'</span> ) ? id :
+                              id + <span class="hljs-string">'.js'</span>;
+}
+
+
+<span class="hljs-keyword">var</span> RE_ABSOLUTE = <span class="hljs-regexp">/^\/\/.|:\//</span>,
+    RE_ROOT_DIR = <span class="hljs-regexp">/^.*?\/\/.*?\//</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathNormalizeBase</span><span class="hljs-params">(base)</span> </span>{
+    <span class="hljs-keyword">if</span> (!base) { <span class="hljs-keyword">return</span> loaderDir; }
+    base = base.replace(<span class="hljs-regexp">/\\/g</span>, <span class="hljs-string">'/'</span>);
+    <span class="hljs-keyword">if</span> (!endsWith(base, <span class="hljs-string">'/'</span>)) {
+        base += <span class="hljs-string">'/'</span>;
+    }
+
+    <span class="hljs-keyword">return</span> pathAddBase(base);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathAddBase</span><span class="hljs-params">(id, base)</span> </span>{
+    <span class="hljs-keyword">var</span> result, baseDir, mat;
+        firstC = charAt(id, <span class="hljs-number">0</span>);
+
+    baseDir = base ? pathGetDirName(base) : workDir;
+
+    <span class="hljs-comment">/* Absolute */</span>
+    <span class="hljs-keyword">if</span> (RE_ABSOLUTE.test(id)) {
+        result = id;
+    }
+    <span class="hljs-comment">/* Relative */</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (firstC === <span class="hljs-string">"."</span>) {
+        result  = pathParseRelative(baseDir + id);
+    }
+    <span class="hljs-comment">/* Root */</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (firstC === <span class="hljs-string">"/"</span>) {
+        mat = baseDir.match(RE_ROOT_DIR);
+        result = mat ? mat[<span class="hljs-number">0</span>] + substring(id, <span class="hljs-number">1</span>) : id;
+    }
+    <span class="hljs-comment">/* Top-level */</span>
+    <span class="hljs-keyword">else</span> {
+        result = baseDir + id;
+    }
+
+    <span class="hljs-comment">/* Add default protocol when uri begins with "//" */</span>
+    <span class="hljs-keyword">if</span> (startsWith(result, <span class="hljs-string">'//'</span>)) {
+        result = protocol + result;
+    }
+
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pathAddQuery</span><span class="hljs-params">(path, key, value)</span> </span>{
+    <span class="hljs-keyword">return</span> path + ( indexOf(path, <span class="hljs-string">'?'</span>) &gt; -<span class="hljs-number">1</span> ? <span class="hljs-string">'&amp;'</span> : <span class="hljs-string">'?'</span> ) + key + <span class="hljs-string">'='</span> + value;
+}
+
+<span class="hljs-keyword">var</span> workDir   = pathGetDirName(doc.URL);
+<span class="hljs-keyword">var</span> loaderDir = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">var</span> src = getMiniSrc();
+    <span class="hljs-keyword">return</span> src ? pathGetDirName(src) : workDir;
+}());
+
+<span class="hljs-comment">/**
+ * @ignore
+ * setup data structure for kissy loader
+ * @author yiminghe@gmail.com
+ */</span>
+
+<span class="hljs-keyword">var</span> Loader = S.Loader = {};
+
+    <span class="hljs-comment">/** error */</span>
+<span class="hljs-keyword">var</span> ERROR = -<span class="hljs-number">1</span>,
+    <span class="hljs-comment">/** init */</span>
+    INIT  = <span class="hljs-number">0</span>,
+    <span class="hljs-comment">/** loading */</span>
+    LOADING = <span class="hljs-number">1</span>,
+    <span class="hljs-comment">/** loaded */</span>
+    LOADED = <span class="hljs-number">2</span>,
+    <span class="hljs-comment">/**dependencies are loaded or attached*/</span>
+    READY_TO_ATTACH = <span class="hljs-number">3</span>,
+    <span class="hljs-comment">/** attaching */</span>
+    ATTACHING = <span class="hljs-number">4</span>,
+    <span class="hljs-comment">/** attached */</span>
+    ATTACHED = <span class="hljs-number">5</span>;
+
+<span class="hljs-comment">/**
+ * Loader Status Enum
+ * @enum {Number} KISSY.Loader.Status
+ */</span>
+Loader.Status = {
+    <span class="hljs-comment">/** error */</span>
+    ERROR: ERROR,
+    <span class="hljs-comment">/** init */</span>
+    INIT: INIT,
+    <span class="hljs-comment">/** loading */</span>
+    LOADING: LOADING,
+    <span class="hljs-comment">/** loaded */</span>
+    LOADED: LOADED,
+    <span class="hljs-comment">/**dependencies are loaded or attached*/</span>
+    READY_TO_ATTACH: READY_TO_ATTACH,
+    <span class="hljs-comment">/** attaching */</span>
+    ATTACHING: ATTACHING,
+    <span class="hljs-comment">/** attached */</span>
+    ATTACHED: ATTACHED
+};
+
+<span class="hljs-comment">/**
+ * @ignore
+ * Utils for kissy loader
+ * @author yiminghe@gmail.com
+ */</span>
+
+<span class="hljs-comment">/**
+ * @class KISSY.Loader.Utils
+ * Utils for KISSY Loader
+ * @singleton
+ * @private
+ */</span>
+
+<span class="hljs-comment">/* http://wiki.commonjs.org/wiki/Packages/Mappings/A */</span>
+<span class="hljs-comment">/* 如果模块名以 / 结尾，自动加 index */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addIndexAndRemoveJsExt</span><span class="hljs-params">(s)</span> </span>{
+    <span class="hljs-keyword">if</span> (isString(s)) {
+        <span class="hljs-keyword">return</span> addIndexAndRemoveJsExtFromName(s);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">var</span> ret = [],
+            i = <span class="hljs-number">0</span>,
+            l = s.length;
+        <span class="hljs-keyword">for</span> (; i &lt; l; i++) {
+            ret[i] = addIndexAndRemoveJsExtFromName(s[i]);
+        }
+        <span class="hljs-keyword">return</span> ret;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addIndexAndRemoveJsExtFromName</span><span class="hljs-params">(name)</span> </span>{
+    <span class="hljs-comment">/* 'x/' 'x/y/z/' */</span>
+    <span class="hljs-keyword">if</span> (charAt(name, name.length - <span class="hljs-number">1</span>) === <span class="hljs-string">'/'</span>) {
+        name += <span class="hljs-string">'index'</span>;
+    }
+    <span class="hljs-keyword">if</span> (endsWith(name, <span class="hljs-string">'.js'</span>)) {
+        name = slice(name, <span class="hljs-number">0</span>, -<span class="hljs-number">3</span>);
+    }
+    <span class="hljs-keyword">return</span> name;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pluginAlias</span><span class="hljs-params">(runtime, name)</span> </span>{
+    <span class="hljs-keyword">var</span> index = indexOf(name, <span class="hljs-string">'!'</span>);
+    <span class="hljs-keyword">if</span> (index !== -<span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">var</span> pluginName = substring(name, <span class="hljs-number">0</span>, index);
+        name = substring(name, index + <span class="hljs-number">1</span>);
+        S.use(pluginName, {
+            sync: <span class="hljs-literal">true</span>,
+            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(S, Plugin)</span> </span>{
+                <span class="hljs-keyword">if</span> (Plugin.alias) {
+                    <span class="hljs-comment">/* noinspection JSReferencingMutableVariableFromClosure */</span>
+                    name = Plugin.alias(runtime, name, pluginName);
+                }
+            }
+        });
+    }
+    <span class="hljs-keyword">return</span> name;
+}
+
+
+
+<span class="hljs-comment">/**
+ * Get absolute path of dep module.similar to {@link KISSY.Path#resolve}
+ * @param {String} moduleName current module 's name
+ * @param {String|String[]} depName dependency module 's name
+ * @return {String|String[]} normalized dependency module 's name
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalDepModuleName</span><span class="hljs-params">(moduleName, depName)</span> </span>{
+    <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l;
+
+    <span class="hljs-keyword">if</span> (!depName) {
+        <span class="hljs-keyword">return</span> depName;
+    }
+
+    <span class="hljs-keyword">if</span> (isString(depName)) {
+        <span class="hljs-keyword">if</span> (startsWith(depName, <span class="hljs-string">'../'</span>) || startsWith(depName, <span class="hljs-string">'./'</span>)) {
+            <span class="hljs-comment">/* x/y/z -&gt; x/y/ */</span>
+            <span class="hljs-keyword">return</span> pathResolveRelative(pathGetDirName(moduleName), depName);
+        }
+
+        <span class="hljs-keyword">return</span> pathParseRelative(depName);
+    }
+
+    <span class="hljs-keyword">for</span> (l = depName.length; i &lt; l; i++) {
+        depName[i] = normalDepModuleName(moduleName, depName[i]);
+    }
+    <span class="hljs-keyword">return</span> depName;
+}
+
+<span class="hljs-comment">/**
+ * create modules info
+ * @param runtime Module container, such as KISSY
+ * @param {String[]} modNames to be created module names
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createModulesInfo</span><span class="hljs-params">(runtime, modNames)</span> </span>{
+    each(modNames, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(m)</span> </span>{
+        createModuleInfo(runtime, m);
+    });
+}
+
+<span class="hljs-comment">/**
+ * create single module info
+ * @param runtime Module container, such as KISSY
+ * @param {String} modName to be created module name
+ * @param {Object} [cfg] module config
+ * @return {KISSY.Loader.Module}
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createModuleInfo</span><span class="hljs-params">(runtime, modName, cfg)</span> </span>{
+    modName = addIndexAndRemoveJsExtFromName(modName);
+
+    <span class="hljs-keyword">var</span> mods = runtime.Env.mods,
+        <span class="hljs-built_in">module</span> = mods[modName];
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>;
+    }
+
+    <span class="hljs-comment">/* 防止 cfg 里有 tag，构建 fullpath 需要 */</span>
+    mods[modName] = <span class="hljs-built_in">module</span> = <span class="hljs-keyword">new</span> Module(mix({
+        name: modName,
+        runtime: runtime
+    }, cfg));
+
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>;
+}
+
+<span class="hljs-comment">/**
+ * Get modules exports
+ * @param runtime Module container, such as KISSY
+ * @param {String[]} modNames module names
+ * @return {Array} modules exports
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getModules</span><span class="hljs-params">(runtime, modNames)</span> </span>{
+    <span class="hljs-keyword">var</span> mods = [runtime], <span class="hljs-built_in">module</span>,
+        unaliasArr,
+        allOk,
+        m,
+        runtimeMods = runtime.Env.mods;
+
+    each(modNames, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modName)</span> </span>{
+        <span class="hljs-built_in">module</span> = runtimeMods[modName];
+        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">module</span> || <span class="hljs-built_in">module</span>.getType() !== <span class="hljs-string">'css'</span>) {
+            unaliasArr = unalias(runtime, modName);
+            allOk = reduce(unaliasArr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, n)</span> </span>{
+                m = runtimeMods[n];
+                <span class="hljs-comment">/* allow partial module (circular dependency) */</span>
+                <span class="hljs-keyword">return</span> a &amp;&amp; m &amp;&amp; m.status &gt;= ATTACHING;
+            }, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">if</span> (allOk) {
+                mods.push(runtimeMods[unaliasArr[<span class="hljs-number">0</span>]].exports);
+            } <span class="hljs-keyword">else</span> {
+                mods.push(<span class="hljs-literal">null</span>);
+            }
+        } <span class="hljs-keyword">else</span> {
+            mods.push(<span class="hljs-literal">undefined</span>);
+        }
+    });
+
+    <span class="hljs-keyword">return</span> mods;
+}
+
+<span class="hljs-comment">/**
+ * attach modules and their dependency modules recursively
+ * @param {String[]} modNames module names
+ * @param runtime Module container, such as KISSY
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">attachModsRecursively</span><span class="hljs-params">(modNames, runtime)</span> </span>{
+    <span class="hljs-keyword">var</span> i,
+        l = modNames.length;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; l; i++) {
+        attachModRecursively(modNames[i], runtime);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkModsLoadRecursively</span><span class="hljs-params">(modNames, runtime, stack, errorList, cache)</span> </span>{
+    <span class="hljs-comment">/* for debug. prevent circular dependency */</span>
+    stack = stack || [];
+    <span class="hljs-comment">/* for efficiency. avoid duplicate non-attach check */</span>
+    cache = cache || {};
+    <span class="hljs-keyword">var</span> i,
+        s = <span class="hljs-number">1</span>,
+        l = modNames.length,
+        stackDepth = stack.length;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; l; i++) {
+        s = s &amp;&amp; checkModLoadRecursively(modNames[i], runtime, stack, errorList, cache);
+        stack.length = stackDepth;
+    }
+    <span class="hljs-keyword">return</span> !!s;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkModLoadRecursively</span><span class="hljs-params">(modName, runtime, stack, errorList, cache)</span> </span>{
+    <span class="hljs-keyword">var</span> mods = runtime.Env.mods,
+        status,
+        m = mods[modName];
+    <span class="hljs-keyword">if</span> (modName <span class="hljs-keyword">in</span> cache) {
+        <span class="hljs-keyword">return</span> cache[modName];
+    }
+    <span class="hljs-keyword">if</span> (!m) {
+        cache[modName] = FALSE;
+        <span class="hljs-keyword">return</span> FALSE;
+    }
+    status = m.status;
+    <span class="hljs-keyword">if</span> (status === ERROR) {
+        errorList.push(m);
+        cache[modName] = FALSE;
+        <span class="hljs-keyword">return</span> FALSE;
+    }
+    <span class="hljs-keyword">if</span> (status &gt;= READY_TO_ATTACH) {
+        cache[modName] = TRUE;
+        <span class="hljs-keyword">return</span> TRUE;
+    }
+    <span class="hljs-keyword">if</span> (status !== LOADED) {
+        cache[modName] = FALSE;
+        <span class="hljs-keyword">return</span> FALSE;
+    }
+
+    <span class="hljs-keyword">if</span> (indexOf(stack, modName) &gt; -<span class="hljs-number">1</span>) {
+        <span class="hljs-comment">/*'find cyclic dependency between mods */</span>
+        cache[modName] = TRUE;
+        <span class="hljs-keyword">return</span> TRUE;
+    }
+    stack.push(modName);
+
+    <span class="hljs-keyword">if</span> (checkModsLoadRecursively(m.getNormalizedRequires(),
+        runtime, stack, errorList, cache)) {
+        m.status = READY_TO_ATTACH;
+        cache[modName] = TRUE;
+        <span class="hljs-keyword">return</span> TRUE;
+    }
+
+    cache[modName] = FALSE;
+    <span class="hljs-keyword">return</span> FALSE;
+}
+
+<span class="hljs-comment">/**
+ * attach module and its dependency modules recursively
+ * @param {String} modName module name
+ * @param runtime Module container, such as KISSY
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">attachModRecursively</span><span class="hljs-params">(modName, runtime)</span> </span>{
+    <span class="hljs-keyword">var</span> mods = runtime.Env.mods,
+        status,
+        m = mods[modName];
+    status = m.status;
+    <span class="hljs-comment">/* attached or circular dependency */</span>
+    <span class="hljs-keyword">if</span> (status &gt;= ATTACHING) {
+        <span class="hljs-keyword">return</span>;
+    }
+    m.status = ATTACHING;
+    <span class="hljs-keyword">if</span> (m.cjs) {
+        <span class="hljs-comment">/* commonjs format will call require in module code again */</span>
+        attachMod(runtime, m);
+    } <span class="hljs-keyword">else</span> {
+        attachModsRecursively(m.getNormalizedRequires(), runtime);
+        attachMod(runtime, m);
+    }
+}
+
+<span class="hljs-comment">/**
+ * Attach specified module.
+ * @param runtime Module container, such as KISSY
+ * @param {KISSY.Loader.Module} module module instance
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">attachMod</span><span class="hljs-params">(runtime, module)</span> </span>{
+    <span class="hljs-keyword">var</span> factory = <span class="hljs-built_in">module</span>.factory,
+        exports;
+
+    <span class="hljs-keyword">if</span> (isFunction(factory)) {
+        <span class="hljs-comment">/* compatible and efficiency */</span>
+        <span class="hljs-comment">/* KISSY.add(function(S,undefined){}) */</span>
+        <span class="hljs-keyword">var</span> <span class="hljs-built_in">require</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.requires &amp;&amp; <span class="hljs-built_in">module</span>.requires.length) {
+            <span class="hljs-built_in">require</span> = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>.require.apply(<span class="hljs-built_in">module</span>, <span class="hljs-built_in">arguments</span>);
+            };
+        }
+        <span class="hljs-comment">/* 需要解开 index，相对路径 */</span>
+        <span class="hljs-comment">/* 但是需要保留 alias，防止值不对应 */</span>
+        <span class="hljs-comment">/* noinspection JSUnresolvedFunction */</span>
+        exports = factory.apply(<span class="hljs-built_in">module</span>,
+            <span class="hljs-comment">/* KISSY.add(function(S){module.require}) lazy initialize */</span>
+            (<span class="hljs-built_in">module</span>.cjs ? [runtime, <span class="hljs-built_in">require</span>, <span class="hljs-built_in">module</span>.exports, <span class="hljs-built_in">module</span>] : getModules(runtime, <span class="hljs-built_in">module</span>.getRequiresWithAlias())));
+        <span class="hljs-keyword">if</span> (exports !== <span class="hljs-literal">undefined</span>) {
+            <span class="hljs-comment">/* noinspection JSUndefinedPropertyAssignment */</span>
+            <span class="hljs-built_in">module</span>.exports = exports;
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">/* noinspection JSUndefinedPropertyAssignment */</span>
+        <span class="hljs-built_in">module</span>.exports = factory;
+    }
+
+    <span class="hljs-built_in">module</span>.status = ATTACHED;
+}
+
+<span class="hljs-comment">/**
+ * Get module names as array.
+ * @param {String|String[]} modNames module names array or  module names string separated by ','
+ * @return {String[]}
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getModNamesAsArray</span><span class="hljs-params">(modNames)</span> </span>{
+    <span class="hljs-keyword">if</span> (isString(modNames)) {
+        modNames = split(replace(modNames, <span class="hljs-regexp">/\s+/g</span>, <span class="hljs-string">''</span>), <span class="hljs-string">','</span>);
+    }
+    <span class="hljs-keyword">return</span> modNames;
+}
+
+<span class="hljs-comment">/**
+ * normalize module names
+ * 1. add index : / =&gt; /index
+ * 2. unalias : core =&gt; dom,event,ua
+ * 3. relative to absolute : ./x =&gt; y/x
+ * @param {KISSY} runtime Global KISSY instance
+ * @param {String|String[]} modNames Array of module names
+ *  or module names string separated by comma
+ * @param {String} [refModName]
+ * @return {String[]} normalized module names
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeModNames</span><span class="hljs-params">(runtime, modNames, refModName)</span> </span>{
+    <span class="hljs-keyword">return</span> unalias(runtime,
+        normalizeModNamesWithAlias(runtime, modNames, refModName));
+}
+
+<span class="hljs-comment">/**
+ * unalias module name.
+ * @param runtime Module container, such as KISSY
+ * @param {String|String[]} names moduleNames
+ * @return {String[]} unalias module names
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unalias</span><span class="hljs-params">(runtime, names)</span> </span>{
+    <span class="hljs-keyword">var</span> ret = [].concat(names),
+        i,
+        m,
+        alias,
+        ok = <span class="hljs-number">0</span>,
+        j;
+    <span class="hljs-keyword">while</span> (!ok) {
+        ok = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (i = ret.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">if</span> ((m = createModuleInfo(runtime, ret[i])) &amp;&amp; ((alias = m.getAlias()) !== <span class="hljs-literal">undefined</span>)) {
+                ok = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> alias === <span class="hljs-string">'string'</span>) {
+                    alias = [alias];
+                }
+                <span class="hljs-keyword">for</span> (j = alias.length - <span class="hljs-number">1</span>; j &gt;= <span class="hljs-number">0</span>; j--) {
+                    <span class="hljs-keyword">if</span> (!alias[j]) {
+                        alias.splice(j, <span class="hljs-number">1</span>);
+                    }
+                }
+                ret.splice.apply(ret, [i, <span class="hljs-number">1</span>].concat(addIndexAndRemoveJsExt(alias)));
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> ret;
+}
+
+<span class="hljs-comment">/**
+ * normalize module names with alias
+ * @param runtime Module container, such as KISSY
+ * @param {String[]} modNames module names
+ * @param [refModName] module to be referred if module name path is relative
+ * @return {String[]} normalize module names with alias
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeModNamesWithAlias</span><span class="hljs-params">(runtime, modNames, refModName)</span> </span>{
+    <span class="hljs-keyword">var</span> ret = [], i, l;
+    <span class="hljs-keyword">if</span> (modNames) {
+        <span class="hljs-comment">/* 1. index map */</span>
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, l = modNames.length; i &lt; l; i++) {
+            <span class="hljs-keyword">if</span> (modNames[i]) {
+                ret.push(pluginAlias(runtime, addIndexAndRemoveJsExt(modNames[i])));
+            }
+        }
+    }
+    <span class="hljs-comment">/* 2. relative to absolute (optional) */</span>
+    <span class="hljs-keyword">if</span> (refModName) {
+        ret = normalDepModuleName(refModName, ret);
+    }
+    <span class="hljs-keyword">return</span> ret;
+}
+
+<span class="hljs-comment">/**
+ * register module with factory
+ * @param runtime Module container, such as KISSY
+ * @param {String} name module name
+ * @param {Function|*} factory module's factory or exports
+ * @param [config] module config, such as dependency
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">registerModule</span><span class="hljs-params">(runtime, name, factory, config)</span> </span>{
+    name = addIndexAndRemoveJsExtFromName(name);
+
+    <span class="hljs-keyword">var</span> mods = runtime.Env.mods,
+        <span class="hljs-built_in">module</span> = mods[name];
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span> &amp;&amp; <span class="hljs-built_in">module</span>.factory !== <span class="hljs-literal">undefined</span>) {
+        <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-comment">/* 没有 use，静态载入的 add 可能执行 */</span>
+    createModuleInfo(runtime, name);
+
+    <span class="hljs-built_in">module</span> = mods[name];
+
+    <span class="hljs-comment">/* 注意：通过 S.add(name[, factory[, config]]) 注册的代码，无论是页面中的代码， */</span>
+    <span class="hljs-comment">/* 还是 js 文件里的代码，add 执行时，都意味着该模块已经 LOADED */</span>
+    mix(<span class="hljs-built_in">module</span>, {
+        name    : name,
+        status  : LOADED,
+        factory : factory
+    });
+
+    mix(<span class="hljs-built_in">module</span>, config);
+}
+
+<span class="hljs-comment">/**
+ * Returns hash code of a string djb2 algorithm
+ * @param {String} str
+ * @returns {String} hash code
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHash</span><span class="hljs-params">(str)</span> </span>{
+    <span class="hljs-keyword">var</span> hash = <span class="hljs-number">5381</span>,
+        i;
+    <span class="hljs-keyword">for</span> (i = str.length; --i &gt; -<span class="hljs-number">1</span>;) {
+        hash = ((hash &lt;&lt; <span class="hljs-number">5</span>) + hash) + str.charCodeAt(i);
+        <span class="hljs-comment">/* hash * 33 + char */</span>
+    }
+    <span class="hljs-keyword">return</span> hash + <span class="hljs-string">''</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRequiresFromFn</span><span class="hljs-params">(fn)</span> </span>{
+    <span class="hljs-keyword">var</span> requires = [];
+    fn.toString()
+        .replace(commentRegExp, <span class="hljs-string">''</span>)
+        .replace(requireRegExp, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(match, dep)</span> </span>{
+            requires.push(getRequireVal(dep));
+        });
+    <span class="hljs-keyword">return</span> requires;
+}
+
+
+<span class="hljs-keyword">var</span> commentRegExp = <span class="hljs-regexp">/(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg</span>,
+    requireRegExp = <span class="hljs-regexp">/[^.'"]\s*require\s*\(([^)]+)\)/g</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRequireVal</span><span class="hljs-params">(str)</span> </span>{
+    <span class="hljs-keyword">var</span> m = str.match(<span class="hljs-regexp">/^\s*["']([^'"\s]+)["']\s*$/</span>);
+    <span class="hljs-keyword">return</span> m ? m[<span class="hljs-number">1</span>] : <span class="hljs-string">''</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forwardSystemPackage</span><span class="hljs-params">(self, property)</span> </span>{
+    <span class="hljs-keyword">return</span> property <span class="hljs-keyword">in</span> self ?
+        self[property] :
+        self.runtime.Config[property];
+}
+
+<span class="hljs-comment">/**
+ * @class KISSY.Loader.Package
+ * @private
+ * This class should not be instantiated manually.
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Package</span><span class="hljs-params">(cfg)</span> </span>{
+    mix(<span class="hljs-keyword">this</span>, cfg);
+}
+
+Package.prototype = {
+    constructor: Package,
+
+    reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cfg)</span> </span>{
+        mix(<span class="hljs-keyword">this</span>, cfg);
+    },
+
+    <span class="hljs-comment">/**
+     * Tag for package.
+     * tag can not contain ".", eg: Math.random() !
+     * @return {String}
+     */</span>
+    getTag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> forwardSystemPackage(<span class="hljs-keyword">this</span>, <span class="hljs-string">'tag'</span>);
+    },
+
+    <span class="hljs-comment">/**
+     * Get package name.
+     * @return {String}
+     */</span>
+    getName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.name;
+    },
+
+    getPath: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.path || (<span class="hljs-keyword">this</span>.path = <span class="hljs-keyword">this</span>.getUri());
+    },
+
+    <span class="hljs-comment">/**
+     * get package uri
+     */</span>
+    getUri: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.uri;
+    },
+
+    <span class="hljs-comment">/**
+     * Whether is debug for this package.
+     * @return {Boolean}
+     */</span>
+    isDebug: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> forwardSystemPackage(<span class="hljs-keyword">this</span>, <span class="hljs-string">'debug'</span>);
+    },
+
+    <span class="hljs-comment">/**
+     * Get charset for package.
+     * @return {String}
+     */</span>
+    getCharset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> forwardSystemPackage(<span class="hljs-keyword">this</span>, <span class="hljs-string">'charset'</span>);
+    },
+
+    <span class="hljs-comment">/**
+     * Whether modules are combined for this package.
+     * @return {Boolean}
+     */</span>
+    isCombine: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> forwardSystemPackage(<span class="hljs-keyword">this</span>, <span class="hljs-string">'combine'</span>);
+    },
+
+    <span class="hljs-comment">/**
+     * Get package group (for combo).
+     * @returns {String}
+     */</span>
+    getGroup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> forwardSystemPackage(<span class="hljs-keyword">this</span>, <span class="hljs-string">'group'</span>);
+    }
+};
+
+Loader.Package = Package;
+
+<span class="hljs-keyword">var</span> systemPackage = <span class="hljs-keyword">new</span> Package({
+    name: <span class="hljs-string">''</span>,
+    runtime: S
+});
+
+systemPackage.getUri = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.runtime.Config.baseUri;
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getPackage</span><span class="hljs-params">(self, modName)</span> </span>{
+    <span class="hljs-keyword">var</span> packages = self.Config.packages || {},
+        modNameSlash = modName + <span class="hljs-string">'/'</span>,
+        pName = <span class="hljs-string">''</span>,
+        p;
+    <span class="hljs-keyword">for</span> (p <span class="hljs-keyword">in</span> packages) {
+        <span class="hljs-keyword">if</span> (startsWith(modNameSlash, p + <span class="hljs-string">'/'</span>) &amp;&amp; p.length &gt; pName.length) {
+            pName = p;
+        }
+    }
+    <span class="hljs-keyword">return</span> packages[pName] || systemPackage;
+}
+
+
+<span class="hljs-comment">/**
+ * @class KISSY.Loader.Module
+ * @private
+ * This class should not be instantiated manually.
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Module</span><span class="hljs-params">(cfg)</span> </span>{
+    <span class="hljs-comment">/**
+     * exports of this module
+     */</span>
+    <span class="hljs-keyword">this</span>.exports = {};
+
+    <span class="hljs-comment">/**
+     * status of current modules
+     */</span>
+    <span class="hljs-keyword">this</span>.status = INIT;
+
+    <span class="hljs-comment">/**
+     * name of this module
+     */</span>
+    <span class="hljs-keyword">this</span>.name = <span class="hljs-literal">undefined</span>;
+
+    <span class="hljs-comment">/**
+     * factory of this module
+     */</span>
+    <span class="hljs-keyword">this</span>.factory = <span class="hljs-literal">undefined</span>;
+
+    <span class="hljs-comment">/**
+     * lazy initialize and commonjs module format
+     */</span>
+    <span class="hljs-keyword">this</span>.cjs = <span class="hljs-number">1</span>;
+    mix(<span class="hljs-keyword">this</span>, cfg);
+    <span class="hljs-keyword">this</span>.waitedCallbacks = [];
+}
+
+Module.prototype = {
+    kissy: <span class="hljs-number">1</span>,
+
+    constructor: Module,
+
+    <span class="hljs-comment">/**
+     * resolve module by name.
+     * @param {String|String[]} relativeName relative module's name
+     * @param {Function|Object} fn KISSY.use callback
+     * @returns {String} resolved module name
+     */</span>
+    use: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(relativeName, fn)</span> </span>{
+        relativeName = getModNamesAsArray(relativeName);
+        <span class="hljs-keyword">return</span> S.use(normalDepModuleName(<span class="hljs-keyword">this</span>.name, relativeName), fn);
+    },
+
+    <span class="hljs-comment">/**
+     * resolve path
+     * @param {String} relativePath relative path
+     * @returns {KISSY.Uri} resolve uri
+     */</span>
+    resolve: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(relativePath)</span> </span>{
+        <span class="hljs-keyword">return</span> pathAddBase(relativePath, <span class="hljs-keyword">this</span>.getUri());
+    },
+
+    <span class="hljs-comment">/* use by xtemplate include */</span>
+    resolveByName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(relativeName)</span> </span>{
+        <span class="hljs-keyword">return</span> normalDepModuleName(<span class="hljs-keyword">this</span>.name, relativeName);
+    },
+
+    <span class="hljs-comment">/**
+     * require other modules from current modules
+     * @param {String} moduleName name of module to be required
+     * @returns {*} required module exports
+     */</span>
+    <span class="hljs-built_in">require</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(moduleName)</span> </span>{
+        <span class="hljs-keyword">return</span> S.require(moduleName, <span class="hljs-keyword">this</span>.name);
+    },
+
+    wait: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> </span>{
+        <span class="hljs-keyword">this</span>.waitedCallbacks.push(callback);
+    },
+
+    notifyAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> callback;
+        <span class="hljs-keyword">var</span> len = <span class="hljs-keyword">this</span>.waitedCallbacks.length,
+            i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (; i &lt; len; i++) {
+            callback = <span class="hljs-keyword">this</span>.waitedCallbacks[i];
+            <span class="hljs-keyword">try</span> {
+                callback(<span class="hljs-keyword">this</span>);
+            } <span class="hljs-keyword">catch</span> (e) {
+                <span class="hljs-comment">/*jshint loopfunc:true*/</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                    <span class="hljs-keyword">throw</span> e;
+                }, <span class="hljs-number">0</span>);
+            }
+        }
+        <span class="hljs-keyword">this</span>.waitedCallbacks = [];
+    },
+
+    <span class="hljs-comment">/**
+     * Get the type if current Module
+     * @return {String} css or js
+     */</span>
+    getType: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> v = <span class="hljs-keyword">this</span>.type;
+        <span class="hljs-keyword">if</span> (!v) {
+            <span class="hljs-keyword">if</span> (endsWith(toLowerCase(<span class="hljs-keyword">this</span>.name), <span class="hljs-string">'.css'</span>)) {
+                v = <span class="hljs-string">'css'</span>;
+            } <span class="hljs-keyword">else</span> {
+                v = <span class="hljs-string">'js'</span>;
+            }
+            <span class="hljs-keyword">this</span>.type = v;
+        }
+        <span class="hljs-keyword">return</span> v;
+    },
+
+    getAlias: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> name = <span class="hljs-keyword">this</span>.name,
+            aliasFn,
+            packageInfo,
+            alias = <span class="hljs-keyword">this</span>.alias;
+        <span class="hljs-keyword">if</span> (!(<span class="hljs-string">'alias'</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>)) {
+            packageInfo = <span class="hljs-keyword">this</span>.getPackage();
+            <span class="hljs-keyword">if</span> (packageInfo.alias) {
+                alias = packageInfo.alias(name);
+            }
+            <span class="hljs-keyword">if</span> (!alias &amp;&amp; (aliasFn = <span class="hljs-keyword">this</span>.runtime.Config.alias)) {
+                alias = aliasFn(name);
+            }
+        }
+        <span class="hljs-keyword">return</span> alias;
+    },
+
+    <span class="hljs-comment">/**
+     * Get the path uri of current module if load dynamically
+     * @return String
+     */</span>
+    getUri: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> uri;
+        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.uri) {
+            <span class="hljs-comment">/* path can be specified */</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.path) {
+                uri = <span class="hljs-keyword">this</span>.path;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">var</span> name        = <span class="hljs-keyword">this</span>.name,
+                    packageInfo = <span class="hljs-keyword">this</span>.getPackage(),
+                    packageUri  = packageInfo.getUri(),
+                    packageName = packageInfo.getName(),
+                    extname     = <span class="hljs-string">'.'</span> + <span class="hljs-keyword">this</span>.getType(),
+                    tag         = <span class="hljs-keyword">this</span>.getTag(),
+                    min         = <span class="hljs-string">'-min'</span>, subPath;
+                <span class="hljs-comment">/* name = Path.join(Path.dirname(name), Path.basename(name, extname)); */</span>
+                <span class="hljs-keyword">if</span> (packageInfo.isDebug()) {
+                    min = <span class="hljs-string">''</span>;
+                }
+                subPath = pathRemoveExt(name) + min + extname;
+                <span class="hljs-keyword">if</span> (packageName) {
+                    subPath = pathGetRelative(packageName, subPath);
+                }
+                uri = pathAddBase(subPath, packageUri);
+
+                <span class="hljs-keyword">if</span> (tag) {
+                    uri = pathAddQuery(uri, <span class="hljs-string">'t'</span>, tag + extname);
+                }
+            }
+            <span class="hljs-keyword">this</span>.uri = uri;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.uri;
+    },
+
+    <span class="hljs-comment">/**
+     * Get the path of current module if load dynamically
+     * @return {String}
+     */</span>
+    getPath: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.path || (<span class="hljs-keyword">this</span>.path = <span class="hljs-keyword">this</span>.getUri());
+    },
+
+    <span class="hljs-comment">/**
+     * Get the name of current module
+     * @return {String}
+     */</span>
+    getName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.name;
+    },
+
+    <span class="hljs-comment">/**
+     * Get the package which current module belongs to.
+     * @return {KISSY.Loader.Package}
+     */</span>
+    getPackage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.packageInfo ||
+            (<span class="hljs-keyword">this</span>.packageInfo = getPackage(<span class="hljs-keyword">this</span>.runtime, <span class="hljs-keyword">this</span>.name));
+    },
+
+    <span class="hljs-comment">/**
+     * Get the tag of current module.
+     * tag can not contain ".", eg: Math.random() !
+     * @return {String}
+     */</span>
+    getTag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tag || <span class="hljs-keyword">this</span>.getPackage().getTag();
+    },
+
+    <span class="hljs-comment">/**
+     * Get the charset of current module
+     * @return {String}
+     */</span>
+    getCharset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.charset || <span class="hljs-keyword">this</span>.getPackage().getCharset();
+    },
+
+    <span class="hljs-comment">/**
+     * get alias required module names
+     * @returns {String[]} alias required module names
+     */</span>
+    getRequiresWithAlias: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> requiresWithAlias = <span class="hljs-keyword">this</span>.requiresWithAlias,
+            requires = <span class="hljs-keyword">this</span>.requires;
+        <span class="hljs-keyword">if</span> (!requires || !requires.length) {
+            <span class="hljs-keyword">return</span> requires || [];
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!requiresWithAlias) {
+            <span class="hljs-keyword">this</span>.requiresWithAlias = requiresWithAlias =
+                normalizeModNamesWithAlias(<span class="hljs-keyword">this</span>.runtime, requires, <span class="hljs-keyword">this</span>.name);
+        }
+        <span class="hljs-keyword">return</span> requiresWithAlias;
+    },
+
+    <span class="hljs-comment">/**
+     * Get module objects required by this module
+     * @return {KISSY.Loader.Module[]}
+     */</span>
+    getRequiredMods: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> runtime = <span class="hljs-keyword">this</span>.runtime;
+        <span class="hljs-keyword">return</span> map(<span class="hljs-keyword">this</span>.getNormalizedRequires(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(r)</span> </span>{
+            <span class="hljs-keyword">return</span> createModuleInfo(runtime, r);
+        });
+    },
+
+    <span class="hljs-comment">/**
+     * Get module names required by this module
+     * @return {String[]}
+     */</span>
+    getNormalizedRequires: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> normalizedRequires,
+            normalizedRequiresStatus = <span class="hljs-keyword">this</span>.normalizedRequiresStatus,
+            status = <span class="hljs-keyword">this</span>.status,
+            requires = <span class="hljs-keyword">this</span>.requires;
+        <span class="hljs-keyword">if</span> (!requires || !requires.length) {
+            <span class="hljs-keyword">return</span> requires || [];
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((normalizedRequires = <span class="hljs-keyword">this</span>.normalizedRequires) &amp;&amp;
+            <span class="hljs-comment">/* 事先声明的依赖不能当做 loaded 状态下真正的依赖 */</span>
+            (normalizedRequiresStatus === status)) {
+            <span class="hljs-keyword">return</span> normalizedRequires;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">this</span>.normalizedRequiresStatus = status;
+            <span class="hljs-keyword">this</span>.normalizedRequires = normalizeModNames(<span class="hljs-keyword">this</span>.runtime, requires, <span class="hljs-keyword">this</span>.name);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.normalizedRequires;
+        }
+    }
+};
+
+Loader.Module = Module;
+
+<span class="hljs-comment">/**
+ * @ignore
+ * Declare config info for KISSY.
+ * @author yiminghe@gmail.com
+ */</span>
+
+<span class="hljs-keyword">var</span> PACKAGE_MEMBERS = [<span class="hljs-string">'alias'</span>, <span class="hljs-string">'debug'</span>, <span class="hljs-string">'tag'</span>, <span class="hljs-string">'group'</span>, <span class="hljs-string">'combine'</span>, <span class="hljs-string">'charset'</span>];
+mix(Config.fns, {
+    packages : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(config)</span> </span>{
+        <span class="hljs-keyword">var</span> name,
+            Config = <span class="hljs-keyword">this</span>.Config,
+            ps = Config.packages = Config.packages || {};
+        <span class="hljs-keyword">if</span> (config) {
+            each(config, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cfg, key)</span> </span>{
+                <span class="hljs-comment">/* 兼容数组方式 */</span>
+                name = cfg.name || key;
+                <span class="hljs-keyword">var</span> path = cfg.base || cfg.path;
+                <span class="hljs-keyword">var</span> newConfig = {
+                    runtime: S,
+                    name: name
+                };
+                each(PACKAGE_MEMBERS, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(m)</span> </span>{
+                    <span class="hljs-keyword">if</span> (m <span class="hljs-keyword">in</span> cfg) {
+                        newConfig[m] = cfg[m];
+                    }
+                });
+                <span class="hljs-keyword">if</span> (path) {
+                    <span class="hljs-keyword">if</span> (!endsWith(path, <span class="hljs-string">'/'</span>)) {
+                        path += <span class="hljs-string">'/'</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (!cfg.ignorePackageNameInUri) {
+                        path += name + <span class="hljs-string">'/'</span>;
+                    }
+                    newConfig.uri = normalizeBase(path);
+                }
+                <span class="hljs-keyword">if</span> (ps[name]) {
+                    ps[name].reset(newConfig);
+                } <span class="hljs-keyword">else</span> {
+                    ps[name] = <span class="hljs-keyword">new</span> Package(newConfig);
+                }
+            });
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (config === <span class="hljs-literal">false</span>) {
+            Config.packages = {};
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> ps;
+        }
+    },
+    modules: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modules)</span> </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+        <span class="hljs-keyword">if</span> (modules) {
+            each(modules, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modCfg, modName)</span> </span>{
+                <span class="hljs-keyword">var</span> mod = createModuleInfo(self, modName, modCfg);
+                <span class="hljs-keyword">if</span> (mod.status === INIT) {
+                    mix(mod, modCfg);
+                }
+            });
+        }
+    },
+    base: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base)</span> </span>{
+        <span class="hljs-keyword">if</span> (!base) {
+            <span class="hljs-keyword">return</span> Config.baseUri;
+        } <span class="hljs-keyword">else</span> {
+            Config.baseUri = normalizeBase(base);
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+        }
+    }
+});
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeBase</span><span class="hljs-params">(base)</span> </span>{
+
+    base = replace(base, <span class="hljs-regexp">/\\/g</span>, <span class="hljs-string">'/'</span>);
+    <span class="hljs-keyword">if</span> (charAt(base, base.length - <span class="hljs-number">1</span>) !== <span class="hljs-string">'/'</span>) {
+        base += <span class="hljs-string">'/'</span>;
+    }
+    <span class="hljs-keyword">return</span> pathAddBase(base);
+}
+
+<span class="hljs-comment">/**
+ * combo loader for KISSY. using combo to load module files.
+ * @ignore
+ * @author yiminghe@gmail.com
+ */</span>
+
+<span class="hljs-comment">/* ie11 is a new one! */</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loadScripts</span><span class="hljs-params">(runtime, rss, callback, charset, timeout)</span> </span>{
+    <span class="hljs-keyword">var</span> count = rss &amp;&amp; rss.length,
+        errorList = [],
+        successList = [];
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">complete</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">if</span> (!(--count)) {
+            callback(successList, errorList);
+        }
+    }
+
+    each(rss, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(rs)</span> </span>{
+        <span class="hljs-keyword">var</span> mod;
+        <span class="hljs-keyword">var</span> config = {
+            timeout: timeout,
+            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                successList.push(rs);
+                <span class="hljs-keyword">if</span> (mod &amp;&amp; currentMod) {
+                    <span class="hljs-comment">/* standard browser(except ie9) fire load after KISSY.add immediately */</span>
+                    registerModule(runtime, mod.name, currentMod.factory, currentMod.config);
+                    currentMod = <span class="hljs-literal">undefined</span>;
+                }
+                complete();
+            },
+            error: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                errorList.push(rs);
+                complete();
+            },
+            charset: charset
+        };
+        <span class="hljs-keyword">if</span> (!rs.combine) {
+            mod = rs.mods[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">if</span> (mod.getType() === <span class="hljs-string">'css'</span>) {
+                mod = <span class="hljs-literal">undefined</span>;
+            }
+        }
+
+        getScript(rs.path, config);
+    });
+}
+
+
+
+
+<span class="hljs-comment">/**
+ * @class KISSY.Loader.ComboLoader
+ * using combo to load module files
+ * @param runtime KISSY
+ * @param waitingModules
+ * @private
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ComboLoader</span><span class="hljs-params">(runtime, waitingModules)</span> </span>{
+    <span class="hljs-keyword">this</span>.runtime = runtime;
+    <span class="hljs-keyword">this</span>.waitingModules = waitingModules;
+}
+
+
+<span class="hljs-keyword">var</span> currentMod,
+    startLoadModName,
+    startLoadModTime,
+    groupTag = now();
+
+ComboLoader.groupTag = groupTag;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkKISSYRequire</span><span class="hljs-params">(config, factory)</span> </span>{
+    <span class="hljs-comment">/* use require primitive statement */</span>
+    <span class="hljs-comment">/* function(S,require){require('node')} */</span>
+    <span class="hljs-keyword">if</span> (!config &amp;&amp; isFunction(factory) &amp;&amp; factory.length &gt; <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">var</span> requires = getRequiresFromFn(factory);
+        <span class="hljs-keyword">if</span> (requires.length) {
+            config = config || {};
+            config.requires = requires;
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">/* KISSY.add(function(){},{requires:[]}) */</span>
+        <span class="hljs-keyword">if</span> (config &amp;&amp; config.requires &amp;&amp; !config.cjs) {
+            config.cjs = <span class="hljs-number">0</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> config;
+}
+
+ComboLoader.add = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, factory, config, runtime, argsLen)</span> </span>{
+    <span class="hljs-comment">/* KISSY.add('xx',[],function(){}); */</span>
+    <span class="hljs-keyword">if</span> (argsLen === <span class="hljs-number">3</span> &amp;&amp; isArray(factory)) {
+        <span class="hljs-keyword">var</span> tmp = factory;
+        factory = config;
+        config = {
+            requires: tmp,
+            cjs: <span class="hljs-number">1</span>
+        };
+    }
+    <span class="hljs-comment">/* KISSY.add(function(){}), KISSY.add('a'), KISSY.add(function(){},{requires:[]}) */</span>
+    <span class="hljs-keyword">if</span> (isFunction(name) || argsLen === <span class="hljs-number">1</span>) {
+        config = factory;
+        factory = name;
+        config = checkKISSYRequire(config, factory);
+        <span class="hljs-comment">/* 其他浏览器 onload 时，关联模块名与模块定义 */</span>
+        currentMod = {
+            factory: factory,
+            config: config
+        };
+    } <span class="hljs-keyword">else</span> {
+        currentMod = <span class="hljs-literal">undefined</span>;
+        config = checkKISSYRequire(config, factory);
+        registerModule(runtime, name, factory, config);
+    }
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCommonPrefix</span><span class="hljs-params">(str1, str2)</span> </span>{
+    str1 = split(str1, <span class="hljs-regexp">/\//</span>);
+    str2 = split(str2, <span class="hljs-regexp">/\//</span>);
+    <span class="hljs-keyword">var</span> l = <span class="hljs-built_in">Math</span>.min(str1.length, str2.length);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; l; i++) {
+        <span class="hljs-keyword">if</span> (str1[i] !== str2[i]) {
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> slice(str1, <span class="hljs-number">0</span>, i).join(<span class="hljs-string">'/'</span>) + <span class="hljs-string">'/'</span>;
+}
+
+ComboLoader.prototype = {
+    <span class="hljs-comment">/**
+     * load modules asynchronously
+     */</span>
+    use: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(normalizedModNames)</span> </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
+            allModNames,
+            comboUrls,
+            timeout = Config.timeout,
+            runtime = self.runtime;
+
+        allModNames = keys(self.calculate(normalizedModNames));
+
+        createModulesInfo(runtime, allModNames);
+
+        comboUrls = self.getComboUrls(allModNames);
+
+        <span class="hljs-comment">/* load css first to avoid page blink */</span>
+        each(comboUrls.css, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cssOne)</span> </span>{
+            loadScripts(runtime, cssOne, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> </span>{
+
+                each(success, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(one)</span> </span>{
+                    each(one.mods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mod)</span> </span>{
+                        registerModule(runtime, mod.name, noop);
+                        mod.notifyAll();
+                    });
+                });
+
+                each(error, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(one)</span> </span>{
+                    each(one.mods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mod)</span> </span>{
+                        mod.status = ERROR;
+                        mod.notifyAll();
+                    });
+                });
+            }, cssOne.charset, timeout);
+        });
+
+        <span class="hljs-comment">/* jss css download in parallel */</span>
+        each(comboUrls.js, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jsOne)</span> </span>{
+            loadScripts(runtime, jsOne, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success)</span> </span>{
+
+                each(jsOne, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(one)</span> </span>{
+                    each(one.mods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mod)</span> </span>{
+                        <span class="hljs-keyword">if</span> (!mod.factory) {
+                            mod.status = ERROR;
+                        }
+                        mod.notifyAll();
+                    });
+                });
+            }, jsOne.charset, timeout);
+        });
+    },
+
+    <span class="hljs-comment">/**
+     * calculate dependency
+     */</span>
+    calculate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modNames, cache, ret)</span> </span>{
+        <span class="hljs-keyword">var</span> i,
+            m,
+            mod,
+            modStatus,
+            self = <span class="hljs-keyword">this</span>,
+            waitingModules = self.waitingModules,
+            runtime = self.runtime;
+
+        ret = ret || {};
+        cache = cache || {};
+
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; modNames.length; i++) {
+            m = modNames[i];
+            <span class="hljs-keyword">if</span> (cache[m]) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            cache[m] = <span class="hljs-number">1</span>;
+            mod = createModuleInfo(runtime, m);
+            modStatus = mod.status;
+            <span class="hljs-keyword">if</span> (modStatus &gt;= READY_TO_ATTACH) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">if</span> (modStatus !== LOADED) {
+                <span class="hljs-keyword">if</span> (!waitingModules.contains(m)) {
+                    <span class="hljs-keyword">if</span> (modStatus !== LOADING) {
+                        mod.status = LOADING;
+                        ret[m] = <span class="hljs-number">1</span>;
+                    }
+                    <span class="hljs-comment">/*jshint loopfunc:true*/</span>
+                    mod.wait(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mod)</span> </span>{
+                        waitingModules.remove(mod.name);
+                        <span class="hljs-comment">/* notify current loader instance */</span>
+                        waitingModules.notifyAll();
+                    });
+                    waitingModules.add(m);
+                }
+            }
+            self.calculate(mod.getNormalizedRequires(), cache, ret);
+        }
+
+        <span class="hljs-keyword">return</span> ret;
+    },
+
+    <span class="hljs-comment">/**
+     * get combo mods for modNames
+     */</span>
+    getComboMods: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modNames, comboPrefixes)</span> </span>{
+        <span class="hljs-keyword">var</span> comboMods = {},
+            runtime = <span class="hljs-keyword">this</span>.runtime,
+
+            packageUri, mod, packageInfo, type, typedCombos, mods,
+            tag, charset, comboName, packageName;
+
+        each(modNames, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modName)</span> </span>{
+            mod = createModuleInfo(runtime, modName);
+            type = mod.getType();
+
+            packageInfo = mod.getPackage();
+            packageName = packageInfo.name;
+            charset = packageInfo.getCharset();
+            tag = packageInfo.getTag();
+
+            packageUri = packageInfo.getUri();
+            comboName = packageName;
+
+            <span class="hljs-comment">/* remove group feature, leave the origin definition code here */</span>
+            mod.canBeCombined = packageInfo.isCombine();
+
+            comboPrefixes[packageName] = packageUri;
+
+            typedCombos = comboMods[type] = comboMods[type] || {};
+            <span class="hljs-keyword">if</span> (!(mods = typedCombos[comboName])) {
+                mods = typedCombos[comboName] = [];
+                mods.charset = charset;
+                mods.tags = [tag];
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (!(mods.tags.length === <span class="hljs-number">1</span> &amp;&amp; mods.tags[<span class="hljs-number">0</span>] === tag)) {
+                    mods.tags.push(tag);
+                }
+            }
+            mods.push(mod);
+        });
+
+        <span class="hljs-keyword">return</span> comboMods;
+    },
+
+    <span class="hljs-comment">/**
+     * Get combo urls
+     */</span>
+    getComboUrls: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modNames)</span> </span>{
+        <span class="hljs-keyword">var</span> runtime = <span class="hljs-keyword">this</span>.runtime,
+            Config = runtime.Config,
+            comboPrefix = Config.comboPrefix,
+            comboSep = Config.comboSep,
+            maxFileNum = Config.comboMaxFileNum,
+            maxUrlLength = Config.comboMaxUrlLength;
+
+        <span class="hljs-keyword">var</span> comboPrefixes = {};
+        <span class="hljs-comment">/* {type, {comboName, [modInfo]}}} */</span>
+        <span class="hljs-keyword">var</span> comboMods = <span class="hljs-keyword">this</span>.getComboMods(modNames, comboPrefixes);
+        <span class="hljs-comment">/* {type, {comboName, [url]}}} */</span>
+        <span class="hljs-keyword">var</span> comboRes = {};
+
+        <span class="hljs-comment">/* generate combo urls */</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> type <span class="hljs-keyword">in</span> comboMods) {
+            comboRes[type] = {};
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> comboName <span class="hljs-keyword">in</span> comboMods[type]) {
+                <span class="hljs-keyword">var</span> currentComboUrls = [];
+                <span class="hljs-keyword">var</span> currentComboMods = [];
+                <span class="hljs-keyword">var</span> mods = comboMods[type][comboName];
+                <span class="hljs-keyword">var</span> tags = mods.tags;
+                <span class="hljs-keyword">var</span> tag = tags.length &gt; <span class="hljs-number">1</span> ? getHash(tags.join(<span class="hljs-string">''</span>)) : tags[<span class="hljs-number">0</span>];
+
+                <span class="hljs-keyword">var</span> suffix = (tag ? <span class="hljs-string">'?t='</span> + <span class="hljs-built_in">encodeURIComponent</span>(tag) + <span class="hljs-string">'.'</span> + type : <span class="hljs-string">''</span>),
+                    suffixLength = suffix.length,
+                    basePrefix = comboPrefixes[comboName].toString(),
+                    baseLen = basePrefix.length,
+                    prefix = basePrefix + comboPrefix,
+                    res = comboRes[type][comboName] = [];
+
+                <span class="hljs-keyword">var</span> l = prefix.length;
+                res.charset = mods.charset;
+                res.mods = [];
+
+                <span class="hljs-comment">/*jshint loopfunc:true*/</span>
+                <span class="hljs-keyword">var</span> pushComboUrl = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                    res.push({
+                        combine: <span class="hljs-number">1</span>,
+                        path: prefix + currentComboUrls.join(comboSep) + suffix,
+                        mods: currentComboMods
+                    });
+                };
+
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; mods.length; i++) {
+                    <span class="hljs-keyword">var</span> currentMod = mods[i];
+                    res.mods.push(currentMod);
+                    <span class="hljs-keyword">var</span> path = currentMod.getPath();
+                    <span class="hljs-keyword">if</span> (!currentMod.canBeCombined) {
+                        res.push({
+                            combine: <span class="hljs-number">0</span>,
+                            path: path,
+                            mods: [currentMod]
+                        });
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    <span class="hljs-comment">/* ignore query parameter */</span>
+                    <span class="hljs-keyword">var</span> subPath = path.slice(baseLen).replace(<span class="hljs-regexp">/\?.*$/</span>, <span class="hljs-string">''</span>);
+                    currentComboUrls.push(subPath);
+                    currentComboMods.push(currentMod);
+
+                    <span class="hljs-keyword">if</span> (currentComboUrls.length &gt; maxFileNum ||
+                        (l + currentComboUrls.join(comboSep).length + suffixLength &gt; maxUrlLength)) {
+                        currentComboUrls.pop();
+                        currentComboMods.pop();
+                        pushComboUrl();
+                        currentComboUrls = [];
+                        currentComboMods = [];
+                        i--;
+                    }
+                }
+                <span class="hljs-keyword">if</span> (currentComboUrls.length) {
+                    pushComboUrl();
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> comboRes;
+    }
+};
+
+Loader.ComboLoader = ComboLoader;
+
+<span class="hljs-comment">/*
+ 2013-09-11
+ - union simple loader and combo loader
+
+ 2013-07-25 阿古, yiminghe
+ - support group combo for packages
+
+ 2013-06-04 yiminghe@gmail.com
+ - refactor merge combo loader and simple loader
+ - support error callback
+
+ 2012-02-20 yiminghe note:
+ - three status
+ 0: initialized
+ LOADED: load into page
+ ATTACHED: factory executed
+ */</span>
+
+<span class="hljs-comment">/**
+ * @ignore
+ * mix loader into KISSY and infer KISSY baseUrl if not set
+ * @author yiminghe@gmail.com
+ */</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">WaitingModules</span><span class="hljs-params">(fn)</span> </span>{
+    <span class="hljs-keyword">this</span>.fn = fn;
+    <span class="hljs-keyword">this</span>.waitMods = {};
+    <span class="hljs-keyword">this</span>.waitModsNum = <span class="hljs-number">0</span>;
+}
+
+WaitingModules.prototype = {
+    constructor: WaitingModules,
+
+    notifyAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> fn = <span class="hljs-keyword">this</span>.fn;
+        <span class="hljs-keyword">if</span> (fn &amp;&amp; !<span class="hljs-keyword">this</span>.waitModsNum) {
+            <span class="hljs-keyword">this</span>.fn = <span class="hljs-literal">null</span>;
+            fn();
+        }
+    },
+
+    add: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modName)</span> </span>{
+        <span class="hljs-keyword">this</span>.waitMods[modName] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">this</span>.waitModsNum++;
+    },
+
+    remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modName)</span> </span>{
+        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.waitMods[modName];
+        <span class="hljs-keyword">this</span>.waitModsNum--;
+    },
+
+    contains: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modName)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.waitMods[modName];
+    }
+};
+
+Loader.WaitingModules = WaitingModules;
+
+mix(S, {
+    <span class="hljs-comment">/**
+     * Registers a module with the KISSY global.
+     * @param {String} name module name.
+     * it must be set if combine is true in {@link KISSY#config}
+     * @param {Function} factory module definition function that is used to return
+     * exports of this module
+     * @param {KISSY} factory.S KISSY global instance
+     * @param {Object} [cfg] module optional config data
+     * @param {String[]} cfg.requires this module's required module name list
+     * @member KISSY
+     *
+     *
+     *      // dom module's definition
+     *      KISSY.add('dom', function(S, xx){
+     *          return {css: function(el, name, val){}};
+     *      },{
+     *          requires:['xx']
+     *      });
+     */</span>
+    add: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, factory, cfg)</span> </span>{
+        ComboLoader.add(name, factory, cfg, S, <span class="hljs-built_in">arguments</span>.length);
+    },
+    <span class="hljs-comment">/**
+     * Attached one or more modules to global KISSY instance.
+     * @param {String|String[]} modNames moduleNames. 1-n modules to bind(use comma to separate)
+     * @param {Function} success callback function executed
+     * when KISSY has the required functionality.
+     * @param {KISSY} success.S KISSY instance
+     * @param success.x... modules exports
+     * @member KISSY
+     *
+     *
+     *      // loads and attached overlay,dd and its dependencies
+     *      KISSY.use('overlay,dd', function(S, Overlay){});
+     */</span>
+    use: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modNames, success)</span> </span>{
+        <span class="hljs-keyword">var</span> normalizedModNames,
+            loader,
+            error,
+            sync,
+            tryCount = <span class="hljs-number">0</span>,
+            finalSuccess,
+            waitingModules = <span class="hljs-keyword">new</span> WaitingModules(loadReady);
+
+        <span class="hljs-keyword">if</span> (isObject(success)) {
+            sync = success.sync;
+            error = success.error;
+            success = success.success;
+        }
+
+        finalSuccess = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            success.apply(S, getModules(S, modNames));
+        };
+
+        modNames = getModNamesAsArray(modNames);
+        modNames = normalizeModNamesWithAlias(S, modNames);
+
+        normalizedModNames = unalias(S, modNames);
+
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loadReady</span><span class="hljs-params">()</span> </span>{
+            ++tryCount;
+            <span class="hljs-keyword">var</span> errorList = [],
+                start = now(),
+                ret;
+            ret = checkModsLoadRecursively(normalizedModNames, S, <span class="hljs-literal">undefined</span>, errorList);
+
+            <span class="hljs-keyword">if</span> (ret) {
+                attachModsRecursively(normalizedModNames, S);
+                <span class="hljs-keyword">if</span> (success) {
+                    <span class="hljs-keyword">if</span> (sync) {
+                        finalSuccess();
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-comment">/* standalone error trace */</span>
+                        setImmediate(finalSuccess);
+                    }
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (errorList.length) {
+                <span class="hljs-keyword">if</span> (error) {
+                    <span class="hljs-keyword">if</span> (sync) {
+                        error.apply(S, errorList);
+                    } <span class="hljs-keyword">else</span> {
+                        setImmediate(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                            error.apply(S, errorList);
+                        });
+                    }
+                }
+            } <span class="hljs-keyword">else</span> {
+
+                waitingModules.fn = loadReady;
+                loader.use(normalizedModNames);
+            }
+        }
+
+        loader = <span class="hljs-keyword">new</span> ComboLoader(S, waitingModules);
+
+        <span class="hljs-comment">/*  in case modules is loaded statically
+            synchronous check
+            but always async for loader
+        */</span>
+        <span class="hljs-keyword">if</span> (sync) {
+            waitingModules.notifyAll();
+        } <span class="hljs-keyword">else</span> {
+            setImmediate(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                waitingModules.notifyAll();
+            });
+        }
+        <span class="hljs-keyword">return</span> S;
+    },
+
+    <span class="hljs-comment">/**
+     * get module exports from KISSY module cache
+     * @param {String} moduleName module name
+     * @param {String} refName internal usage
+     * @member KISSY
+     * @return {*} exports of specified module
+     */</span>
+    <span class="hljs-built_in">require</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(moduleName, refName)</span> </span>{
+        <span class="hljs-keyword">if</span> (moduleName) {
+            <span class="hljs-keyword">var</span> moduleNames = unalias(S, normalizeModNamesWithAlias(S, [moduleName], refName));
+            attachModsRecursively(moduleNames, S);
+            <span class="hljs-keyword">return</span> getModules(S, moduleNames)[<span class="hljs-number">1</span>];
+        }
+    }
+});
+
+Env.mods = {}; <span class="hljs-comment">/* all added mods */</span>
+
+
+<span class="hljs-comment">/*
+ 2013-06-04 yiminghe@gmail.com
+ - refactor merge combo loader and simple loader
+ - support error callback
+ */</span>
+
+<span class="hljs-comment">/**
+ * @ignore
+ * init loader, set config
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>get mini.js src</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMiniSrc</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>cache</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (getMiniSrc.miniSrc) { <span class="hljs-keyword">return</span> getMiniSrc.miniSrc; }
+    
+    <span class="hljs-keyword">var</span> scripts      = doc.scripts,
+        len          = scripts.length,
+        baseTestReg  = <span class="hljs-regexp">/(mini|mini-full|mini-all)(?:-min)?\.js/i</span>,
+        src          = len ? scripts[len - <span class="hljs-number">1</span>].src : <span class="hljs-string">''</span>;
+    
+    <span class="hljs-keyword">while</span> (len-- &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (baseTestReg.test(scripts[len].src)) {
+            src = scripts[len].src;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    
+    <span class="hljs-keyword">return</span> (getMiniSrc.miniSrc = src);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>获取kissy mini目录
+relative: ../../kissy/build/mini-full.js -&gt; ../../kissy/build/
+uncombo: <a href="http://g.tbcdn.cn/kissy/m/0.2.8/mini-full.js">http://g.tbcdn.cn/kissy/m/0.2.8/mini-full.js</a> -&gt; <a href="http://g.tbcdn.cn/kissy/m/0.2.8/">http://g.tbcdn.cn/kissy/m/0.2.8/</a>
+combo: <a href="http://g.tbcdn.cn/kissy/??m/0.2.8/mini-full.js">http://g.tbcdn.cn/kissy/??m/0.2.8/mini-full.js</a> -&gt; <a href="http://g.tbcdn.cn/kissy/m/0.2.8/">http://g.tbcdn.cn/kissy/m/0.2.8/</a>
+combo: <a href="http://g.tbcdn.cn/??a.js,kissy/m/0.2.8/mini-full.js,b.js">http://g.tbcdn.cn/??a.js,kissy/m/0.2.8/mini-full.js,b.js</a> -&gt; <a href="http://g.tbcdn.cn/kissy/m/0.2.8/">http://g.tbcdn.cn/kissy/m/0.2.8/</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBaseDir</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">var</span> src = getMiniSrc() || doc.URL;
+    
+    <span class="hljs-keyword">try</span> {
+        src = src.match(<span class="hljs-regexp">/.*(mini|mini-full|mini-all)(?:-min)?\.js/i</span>)[<span class="hljs-number">0</span>].replace(<span class="hljs-regexp">/(\?\?.*,|\?\?)/</span>, <span class="hljs-string">''</span>);
+    } <span class="hljs-keyword">catch</span> (err) {}
+    
+    <span class="hljs-keyword">return</span> src.match(<span class="hljs-regexp">/[^?#]*\//</span>)[<span class="hljs-number">0</span>];
+}
+
+<span class="hljs-comment">/* will transform base to absolute path */</span>
+config({
+    debug       : <span class="hljs-literal">false</span>,
+    base        : getBaseDir(),
+    comboPrefix : <span class="hljs-string">'??'</span>,
+    comboSep    : <span class="hljs-string">','</span>,
+    charset     : <span class="hljs-string">'utf-8'</span>,
+    lang        : <span class="hljs-string">'zh-cn'</span>,
+    comboMaxUrlLength: <span class="hljs-number">2000</span>,
+    comboMaxFileNum: <span class="hljs-number">40</span>
+});
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+
+	<span class="hljs-keyword">var</span> S = KISSY;
+	
+	S.config({
+		base: <span class="hljs-string">'http://g.tbcdn.cn/kissy/k/1.4.5'</span>,
+		packages:[
+			{
+				name:<span class="hljs-string">"gallery"</span>,
+				path:<span class="hljs-string">'http://g.tbcdn.cn/kg/'</span>,
+				charset:<span class="hljs-string">"utf-8"</span>,
+				ignorePackageNameInUri:<span class="hljs-literal">true</span>
+			},
+			{
+				name:<span class="hljs-string">"m"</span>,
+				path: getBaseDir(),
+				charset:<span class="hljs-string">"utf-8"</span>,
+				ignorePackageNameInUri:<span class="hljs-literal">true</span>
+			}
+		],
+		modules:{
+			<span class="hljs-string">'core'</span>:{
+				alias:[
+					<span class="hljs-string">'m/anim'</span>,
+					<span class="hljs-string">'m/touch'</span>,
+					<span class="hljs-string">'m/lang'</span>,
+					<span class="hljs-string">'m/base'</span>,
+					<span class="hljs-string">'m/ua'</span>,
+					<span class="hljs-string">'m/uri'</span>,
+					<span class="hljs-string">'m/juicer'</span>,
+					<span class="hljs-string">'m/form'</span>
+				]
+			},
+			<span class="hljs-string">'anim'</span>:{
+				alias:[<span class="hljs-string">'m/anim'</span>]
+			},
+			<span class="hljs-string">'touch'</span>:{
+				alias:[<span class="hljs-string">'m/touch'</span>]
+			},
+			<span class="hljs-string">'lang'</span>:{
+				alias:[<span class="hljs-string">'m/lang'</span>]
+			},
+			<span class="hljs-string">'base'</span>:{
+				alias:[<span class="hljs-string">'m/base'</span>]
+			},
+			<span class="hljs-string">'ua'</span>:{
+				alias:[<span class="hljs-string">'m/ua'</span>]
+			},
+			<span class="hljs-string">'uri'</span>:{
+				alias:[<span class="hljs-string">'m/uri'</span>]
+			},
+			<span class="hljs-string">'form'</span>:{
+				alias:[<span class="hljs-string">'m/form'</span>]
+			},
+			<span class="hljs-string">'juicer'</span>:{
+				alias:[<span class="hljs-string">'m/juicer'</span>]
+			}
+		}
+	});
+})();
+
+
+}(<span class="hljs-keyword">this</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <style>td {border-top:1px solid #ccc} table {border-collapse: collapse;}</style>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

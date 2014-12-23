@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>io.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="anim.html">
+                anim.js
+              </a>
+            
+              
+              <a class="source" href="core.html">
+                core.js
+              </a>
+            
+              
+              <a class="source" href="event.html">
+                event.js
+              </a>
+            
+              
+              <a class="source" href="io.html">
+                io.js
+              </a>
+            
+              
+              <a class="source" href="loader.html">
+                loader.js
+              </a>
+            
+              
+              <a class="source" href="node.html">
+                node.js
+              </a>
+            
+              
+              <a class="source" href="ua.html">
+                ua.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>io.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="io-">IO 模块</h2>
+<p><strong>IO的配置項说明：</strong></p>
+<p>timeout 值的單位為秒，與KISSY保持一致。</p>
+<p>contentType配置，若未配置值，且滿足以下條件</p>
+<ol>
+<li>data不為空</li>
+<li>type不為get</li>
+</ol>
+<p>此時默認</p>
+<pre><code>Content-Type=application/x-www-form-urlencoded
+</code></pre><p><strong>KISSY MINI 删除的 API</strong></p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th style="text-align:center">KISSY</th>
+<th style="text-align:center">KISSY-MINI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>setupConfig</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>upload</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>serialize</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>getResponseHeader</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>Promise API</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>配置项：</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th style="text-align:center">KISSY</th>
+<th style="text-align:center">KISSY-MINI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cfg.crossDomain</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>cfg.mimeType</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>cfg.password</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>cfg.username</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>cfg.xdr</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>cfg.xhrFields</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>cfg.form</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>KISSY VS KISSY-MINI，Ajax实现上的差异</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">KISSY</th>
+<th style="text-align:center">KISSY-MINI</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">回調函數的第二個參數支持更多的狀態</td>
+<td style="text-align:center">目前只支持  success/error/timeout/abort/parseerror</td>
+<td style="text-align:center">更多的錯誤狀態可以通過getNativeXhr()得到原生的xhr對象來獲取。</td>
+</tr>
+<tr>
+<td style="text-align:left">jsonp返回多個數據源時，success回調得到的數據是一個包含所有數據源的數組</td>
+<td style="text-align:center">目前只取第一個數據源</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:left">IO的別名有S.Ajax/S.io/S.IO</td>
+<td style="text-align:center">只有S.IO</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:left">jsonpCallback支持函數返回全局函數名</td>
+<td style="text-align:center">jsonpCallback只支持字符串</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:left">對於url上的參數，會與data參數重新組合</td>
+<td style="text-align:center">data附加在url上</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:left">cache增加的時間戳KISSY和KISSY MINI是不一致的</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:left">&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>实例代码</p>
+<pre><code>S.IO({
+    type: <span class="hljs-string">'get'</span>,
+    url: <span class="hljs-string">'http://www.taobao.com'</span>,
+    data: {...},
+    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(responseData,statusText,xhr)</span></span>{
+        <span class="hljs-comment">//...</span>
+    },
+    dataType:<span class="hljs-string">'json'</span> <span class="hljs-comment">// 可取值为'json'/'jsonp'</span>
+});
+</code></pre><p>快捷调用方法</p>
+<ul>
+<li>S.IO.get(url,fn)</li>
+<li>S.IO.post(url,fn)</li>
+<li>S.IO.jsonp(url,fn)</li>
+<li>S.IO.getJSON(url,fn)</li>
+<li>S.IO.getScript(url,fn) 等同于 S.getScript(url,fn)</li>
+<li>S.IO.jsonp(url,fn) 等同于 S.jsonp(url,fn)</li>
+</ul>
+<p>具体用法参照<a href="http://docs.kissyui.com/1.4/docs/html/guideline/io.html">KISSY1.4.0 Ajax文档</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>;(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(global, S)</span> </span>{
+
+<span class="hljs-keyword">var</span> doc = global.document,
+    location = global.location;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mix</span><span class="hljs-params">(target, source)</span> </span>{
+    <span class="hljs-keyword">var</span> k, key;
+    <span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> source) {
+        <span class="hljs-keyword">if</span>((k = source[key]) !== <span class="hljs-literal">undefined</span>) {
+            target[key] = k;
+        }
+    }
+    <span class="hljs-keyword">return</span> target;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">merge</span><span class="hljs-params">(d, n)</span> </span>{
+    <span class="hljs-keyword">return</span> mix(mix({}, d), n);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isType</span><span class="hljs-params">(type)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> </span>{
+        <span class="hljs-keyword">return</span> {}.toString.call(obj) == <span class="hljs-string">'[object '</span> + type + <span class="hljs-string">']'</span>;
+    }
+}
+
+<span class="hljs-keyword">var</span> isObject   = isType(<span class="hljs-string">'Object'</span>),
+    isArray    = <span class="hljs-built_in">Array</span>.isArray || isType(<span class="hljs-string">'Array'</span>),
+    isFunction = isType(<span class="hljs-string">'Function'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">each</span><span class="hljs-params">(obj, iterator, context)</span> </span>{
+    <span class="hljs-keyword">var</span> keys = <span class="hljs-built_in">Object</span>.keys(obj), i, len;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, len = keys.length; i &lt; len; i++) {
+        <span class="hljs-keyword">if</span> (iterator.call(context, obj[keys[i]], keys[i], obj) === <span class="hljs-literal">false</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+    }
+}
+
+<span class="hljs-keyword">var</span> jsonpID = <span class="hljs-number">1</span>,
+    TRUE = !<span class="hljs-number">0</span>,
+    FALSE = !TRUE,
+    NULL = <span class="hljs-literal">null</span>,
+    ABORT = <span class="hljs-string">"abort"</span>,
+    SUCCESS = <span class="hljs-string">"success"</span>,
+    ERROR = <span class="hljs-string">"error"</span>,
+    EMPTY = <span class="hljs-string">""</span>,
+    getScript = S.getScript,
+    noop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
+
+<span class="hljs-keyword">var</span> transports = {},
+    def = {
+        type: <span class="hljs-string">'GET'</span>,
+        async: TRUE,
+        serializeArray: TRUE,
+        <span class="hljs-comment">/* whether data will be serialized as String */</span>
+        processData: TRUE,
+		<span class="hljs-comment">/* contentType: "application/x-www-form-urlencoded; charset=UTF-8" */</span>
+        <span class="hljs-comment">/* Callback that is executed before request */</span>
+        beforeSend: noop,
+        <span class="hljs-comment">/* Callback that is executed if the request succeeds */</span>
+        success: noop,
+        <span class="hljs-comment">/* Callback that is executed the the server drops error */</span>
+        error: noop,
+        <span class="hljs-comment">/* Callback that is executed on request complete (both: error and success) */</span>
+        complete: noop,
+        context: NULL,
+        <span class="hljs-comment">/* MIME types mapping */</span>
+        accepts: {
+            script: <span class="hljs-string">'text/javascript,application/javascript'</span>,
+            json:   <span class="hljs-string">"application/json,text/json"</span>,
+            xml:    <span class="hljs-string">'application/xml,text/xml'</span>,
+            html:   <span class="hljs-string">"text/html"</span>,
+            text:   <span class="hljs-string">'text/plain'</span>
+        },
+        <span class="hljs-comment">/* Default timeout */</span>
+        timeout: <span class="hljs-number">0</span>,
+        cache: TRUE
+    };
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">presetConfig</span><span class="hljs-params">(cfg)</span> </span>{
+    <span class="hljs-keyword">if</span>(!cfg.url) {
+        cfg.url = location.toString();
+    }
+
+    <span class="hljs-comment">/* 序列化data參數 */</span>
+    <span class="hljs-keyword">if</span> (cfg.processData &amp;&amp; isObject(cfg.data)) {
+        cfg.data = param(cfg.data, cfg.serializeArray)
+    }
+
+    cfg.type = cfg.type.toUpperCase();
+
+    <span class="hljs-keyword">if</span> (cfg.data &amp;&amp; cfg.type == <span class="hljs-string">'GET'</span>) {
+        cfg.url = appendURL(cfg.url, cfg.data)
+    }
+
+    <span class="hljs-keyword">if</span> (cfg.cache === FALSE) {
+        cfg.url = appendURL(cfg.url, <span class="hljs-string">'t='</span> + <span class="hljs-built_in">Date</span>.now());
+    }
+
+    <span class="hljs-keyword">var</span> testURL = <span class="hljs-regexp">/^([\w-]+:)?\/\/([^\/]+)/</span>.test(cfg.url),
+        protocol = testURL ? <span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span> : location.protocol;
+
+    cfg.local = protocol == <span class="hljs-string">'file:'</span>;
+
+    <span class="hljs-comment">/* KISSY默認的上下文是config而不是io實例*/</span>
+    cfg.context || (cfg.context = cfg);
+
+    <span class="hljs-keyword">return</span> cfg;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fireEvent</span><span class="hljs-params">(type, io)</span> </span>{
+    IO.fire(type, {io: io});
+}
+
+<span class="hljs-comment">/**
+ * IO異步請求對象
+ * @param config
+ * @returns IO instance
+ * @constructor
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">IO</span><span class="hljs-params">(config)</span> </span>{
+    <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+
+    <span class="hljs-keyword">if</span> (!(self <span class="hljs-keyword">instanceof</span> IO)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> IO(config);
+    }
+    <span class="hljs-comment">/* 所有的io類型都先進行數據預處理。 */</span>
+    <span class="hljs-keyword">var</span> cfg = presetConfig(merge(def, config)),
+        timeout = cfg.timeout;
+
+    self.cfg = cfg;
+
+    fireEvent(<span class="hljs-string">'start'</span>, self);
+
+    <span class="hljs-comment">/* 根據dataType獲取對應的transport對象。 */</span>
+    <span class="hljs-comment">/* 每個transport實現對應的send、abort方法。 */</span>
+    <span class="hljs-keyword">var</span> dataType = cfg.dataType,
+        Transport = transports[dataType] || transports[EMPTY];
+
+    <span class="hljs-keyword">var</span> transport = <span class="hljs-keyword">new</span> Transport(self);
+
+    self.transport = transport;
+
+    <span class="hljs-comment">/* beforeSend回調可以阻止異步請求的發送。*/</span>
+    <span class="hljs-keyword">var</span> fnBeforeSend = cfg.beforeSend;
+    <span class="hljs-keyword">if</span>(fnBeforeSend &amp;&amp; fnBeforeSend.call(cfg.context, self, cfg) === <span class="hljs-literal">false</span>) {
+        self.abort();
+        <span class="hljs-keyword">return</span> self;
+    }
+
+    fireEvent(<span class="hljs-string">'send'</span>, self);
+
+    <span class="hljs-keyword">if</span>(timeout &gt; <span class="hljs-number">0</span>) {
+        self._timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+
+            self.abort(<span class="hljs-string">"timeout"</span>);
+
+        }, timeout * <span class="hljs-number">1000</span>);
+    }
+
+    <span class="hljs-keyword">try</span> {
+
+        transport.send();
+
+    }<span class="hljs-keyword">catch</span>(ex) {
+        self._complete(FALSE, ex.message);
+    }
+
+    <span class="hljs-keyword">return</span> self;
+}
+
+mix(IO, S.Event.Target);
+
+mix(IO.prototype, {
+    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(s)</span> </span>{
+        <span class="hljs-keyword">this</span>.transport.abort(s);
+    },
+    <span class="hljs-comment">/* 一個IO請求，必然要調用success或者error方法中的一個。*/</span>
+    <span class="hljs-comment">/* 最終都需要調用complete回調方法，在這裡統一控制。*/</span>
+    _complete: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(status, statusText)</span> </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
+            cfg = self.cfg,
+            context = cfg.context,
+            param = [self.responseData, statusText, self],
+            TYPE = status ? SUCCESS : ERROR,
+            COMPLETE = <span class="hljs-string">"complete"</span>;
+
+        <span class="hljs-comment">/* IO對象不允許重複執行。*/</span>
+        <span class="hljs-keyword">if</span>(self._end) <span class="hljs-keyword">return</span>;
+        self._end = TRUE;
+
+        clearTimeout(self._timer);
+
+        cfg[TYPE].apply(context, param);
+        fireEvent(TYPE, self);
+
+        cfg[COMPLETE].apply(context, param);
+        fireEvent(COMPLETE, self);
+    }
+});
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setTransport</span><span class="hljs-params">(name, fn)</span> </span>{
+    transports[name] = fn;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">appendURL</span><span class="hljs-params">(url, query)</span> </span>{
+    <span class="hljs-keyword">return</span> (url + <span class="hljs-string">'&amp;'</span> + query).replace(<span class="hljs-regexp">/[&amp;?]{1,2}/</span>, <span class="hljs-string">'?'</span>);
+}
+
+<span class="hljs-keyword">var</span> encode = <span class="hljs-built_in">encodeURIComponent</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">param</span><span class="hljs-params">(o, arr)</span> </span>{
+    <span class="hljs-keyword">var</span> rt = [];
+    _serialize(rt, o, arr);
+    <span class="hljs-keyword">return</span> rt.join(<span class="hljs-string">"&amp;"</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_serialize</span><span class="hljs-params">(rt, o, arr, k)</span> </span>{
+    <span class="hljs-keyword">var</span> symbol = arr === <span class="hljs-literal">true</span> ? encode(<span class="hljs-string">"[]"</span>) : EMPTY;
+
+    each(o, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val, key)</span> </span>{
+        <span class="hljs-keyword">if</span>(k) {
+            key = k + symbol;
+        }
+        <span class="hljs-keyword">if</span>(isArray(val)) {
+            _serialize(rt, val, arr, key);
+        }<span class="hljs-keyword">else</span>{
+            rt.push(key + <span class="hljs-string">"="</span> + encode(val));
+        }
+    });
+}
+
+<span class="hljs-keyword">var</span> XHRNAME = <span class="hljs-string">"XMLHttpRequest"</span>,
+    reBlank = <span class="hljs-regexp">/^\s*$/</span>;
+
+<span class="hljs-comment">/* 標準的XMLHttpRequest對象 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createXHR</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> global[XHRNAME]();
+}
+
+<span class="hljs-comment">/**
+ * 基於XMLHttpRequest對象的異步請求處理。
+ * @constructor
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xhrTransport</span><span class="hljs-params">(io)</span> </span>{
+    <span class="hljs-keyword">this</span>.io = io;
+}
+
+mix(xhrTransport.prototype, {
+    _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
+            io = self.io,
+            cfg = io.cfg,
+            dataType = cfg.dataType,
+            mime = cfg.accepts[dataType],
+            baseHeaders = {},
+            xhr = createXHR();
+
+		<span class="hljs-comment">/* io.xhr = xhr; */</span>
+        io.getNativeXhr = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> xhr;
+        };
+
+        <span class="hljs-comment">/* 依照大部分庫的做法。 */</span>
+        <span class="hljs-keyword">if</span> (!cfg.crossDomain) {
+            baseHeaders[<span class="hljs-string">'X-Requested-With'</span>] = XHRNAME;
+        }
+
+        <span class="hljs-keyword">if</span> (mime) {
+            baseHeaders[<span class="hljs-string">'Accept'</span>] = mime;
+
+            <span class="hljs-keyword">if</span>(xhr.overrideMimeType) {
+                <span class="hljs-keyword">if</span> (mime.indexOf(<span class="hljs-string">','</span>) &gt; -<span class="hljs-number">1</span>) {
+                    mime = mime.split(<span class="hljs-string">','</span>, <span class="hljs-number">2</span>)[<span class="hljs-number">0</span>]
+                }
+
+                xhr.overrideMimeType(mime)
+            }
+        }
+
+        <span class="hljs-comment">/* 附加Content-Type */</span>
+        <span class="hljs-keyword">if</span> (cfg.contentType || (cfg.data &amp;&amp; cfg.type != <span class="hljs-string">'GET'</span>)) {
+            baseHeaders[<span class="hljs-string">'Content-Type'</span>] = cfg.contentType ||
+				<span class="hljs-string">'application/x-www-form-urlencoded'</span>;
+        }
+
+        cfg.headers = merge(baseHeaders, cfg.headers || {})
+
+        xhr.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">if</span> (xhr.readyState === <span class="hljs-number">4</span>) {
+
+                <span class="hljs-keyword">var</span> result, error = FALSE;
+
+                <span class="hljs-keyword">if</span> ((xhr.status &gt;= <span class="hljs-number">200</span> &amp;&amp;
+                    xhr.status &lt; <span class="hljs-number">300</span>) ||
+                    xhr.status == <span class="hljs-number">304</span> ||
+                    (xhr.status == <span class="hljs-number">0</span> &amp;&amp; cfg.local)) {
+
+                    <span class="hljs-comment">/* 若dataType未設置，則取得結果的時候根據mime信息推斷dataType值，並進行對應的數據處理。*/</span>
+                    dataType = dataType || mimeToDataType(xhr.getResponseHeader(<span class="hljs-string">'Content-Type'</span>));
+
+                    <span class="hljs-comment">/* 利用xhr對象來獲取數據。*/</span>
+                    result = io.responseText = xhr.responseText;
+                    io.responseXML = xhr.responseXML;
+
+                    <span class="hljs-keyword">try</span> {
+                        <span class="hljs-keyword">if</span> (dataType == <span class="hljs-string">'script'</span>) {
+
+                            (<span class="hljs-number">1</span>,<span class="hljs-built_in">eval</span>)(result);
+
+                        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(dataType == <span class="hljs-string">'xml'</span>) {
+
+                            result = xhr.responseXML;
+
+                        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dataType == <span class="hljs-string">'json'</span>) {
+
+                            result = reBlank.test(result) ? NULL : parseJSON(result);
+
+                        }
+                    } <span class="hljs-keyword">catch</span> (e) { error = e }
+
+                    io.responseData = result;
+                    <span class="hljs-keyword">if</span> (error) {
+                        io._complete(FALSE, <span class="hljs-string">'parsererror'</span>)
+                    }<span class="hljs-keyword">else</span> {
+                        io._complete(TRUE, SUCCESS);
+                    }
+
+                } <span class="hljs-keyword">else</span> {
+                    io._complete(FALSE, ERROR)
+                }
+            }
+        };
+
+        xhr.open(cfg.type, cfg.url, cfg.async);
+
+        each(cfg.headers, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v, k)</span> </span>{
+            xhr.setRequestHeader(k, v);
+        });
+
+        xhr.send(cfg.data ? cfg.data : NULL);
+
+    },
+    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(statusText)</span> </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
+            xhr = self.xhr,
+            io = self.io;
+
+        <span class="hljs-keyword">if</span>(xhr) {
+            xhr.onreadystatechange = noop;
+            xhr.abort();
+        }
+
+        io._complete(FALSE, statusText || ABORT);
+    },
+    send: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">this</span>._init();
+    }
+});
+
+setTransport(EMPTY, xhrTransport);
+
+<span class="hljs-keyword">var</span> regMimeType = <span class="hljs-regexp">/^(?:text|application)\/(json|javascript|xml|html)/i</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mimeToDataType</span><span class="hljs-params">(mime)</span> </span>{
+    <span class="hljs-keyword">var</span> result = mime &amp;&amp; regMimeType.test(mime),
+        type = result ? <span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span> : <span class="hljs-string">"text"</span>;
+
+    <span class="hljs-keyword">return</span> type === <span class="hljs-string">"javascript"</span> ? <span class="hljs-string">"script"</span> : type;
+	<span class="hljs-comment">/*
+    return mime &amp;&amp; ( mime == htmlType ? 'html' :
+        reJsonType.test(mime) ? 'json' :
+            reScriptType.test(mime) ? 'script' :
+                reXMLType.test(mime) &amp;&amp; 'xml' ) || 'text';
+	*/</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseJSON</span><span class="hljs-params">(text)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.parse(text);
+}
+
+<span class="hljs-comment">/**
+ * 基於script節點的異步請求處理，主要針對jsonp的場景
+ * @param io io實例
+ * @constructor
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ScriptTransport</span><span class="hljs-params">(io)</span> </span>{
+    <span class="hljs-keyword">this</span>.io = io;
+}
+
+mix(ScriptTransport.prototype, {
+    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(statusText)</span> </span>{
+        <span class="hljs-keyword">this</span>._end(FALSE, statusText || ABORT)
+    },
+    <span class="hljs-comment">/**
+     * 完成請求以後的清理工作。
+     * @param status
+     * @param statusText
+     * @private
+     */</span>
+    _end: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(status, statusText)</span> </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
+            script = self.script,
+            io = self.io,
+            gvar = self._globalVar;
+        <span class="hljs-comment">/* 不直接刪除，避免有請求返回以後調用導致的報錯。 */</span>
+        global[gvar] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">delete</span> global[gvar];
+        };
+
+        <span class="hljs-keyword">if</span>(script) {
+            script.src = NULL;
+            script.onload = script.onerror = noop;
+
+            script.parentNode.removeChild(script);
+        }
+        <span class="hljs-comment">/* 調用io實例的方法，完成io請求狀態 */</span>
+        io._complete(status, statusText);
+    },
+    send: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
+            io = self.io,
+            cfg = io.cfg,
+            callbackName = cfg.jsonp || <span class="hljs-string">"callback"</span>,
+            methodName = cfg.jsonpCallback || <span class="hljs-string">"jsonp"</span>+jsonpID ++;
+
+        <span class="hljs-comment">/* methodName = (S.isFunction(methodName) ? methodName() : methodName) ||
+		   "jsonp"+jsonpID ++; */</span>
+
+        self._globalVar = methodName;
+
+        <span class="hljs-comment">/* 添加jsonp的callback參數。 */</span>
+        <span class="hljs-keyword">var</span> url = appendURL(cfg.url, callbackName + <span class="hljs-string">"="</span> + methodName);
+
+        global[methodName] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
+			<span class="hljs-comment">/*
+			r = data;
+			*/</span>
+			<span class="hljs-comment">/* 如果是多個數據的情況下，返回的數據是數組。*/</span>
+			<span class="hljs-comment">/* 跟kissy保持一致。 */</span>
+			<span class="hljs-comment">/*
+			if(arguments.length &gt;1) {
+				r = makeArray(arguments);
+			}
+			*/</span>
+            io.responseData = data;
+
+            self._end(TRUE, SUCCESS);
+        };
+
+        <span class="hljs-comment">/* KISSY.getScript方法支持傳入指定的script節點元素。*/</span>
+        self.script = getScript(url, {
+            charset: cfg.scriptCharset,
+            error: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                self._end(FALSE, ERROR);
+            }
+        });
+    }
+});
+
+setTransport(<span class="hljs-string">"jsonp"</span>, ScriptTransport);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">factory</span><span class="hljs-params">(t, dt)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, data, callback, dataType, type)</span> </span>{
+        <span class="hljs-comment">/* data 参数可省略 */</span>
+        <span class="hljs-keyword">if</span> (isFunction(data)) {
+            dataType = callback;
+            callback = data;
+            data = NULL;
+        }
+
+        <span class="hljs-keyword">return</span> IO({
+            type: t || type,
+            url: url,
+            data: data,
+            success: callback,
+            dataType: dt || dataType
+        });
+    };
+}
+
+<span class="hljs-comment">/* 定義快捷方法 */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Ajax API</p>
+<p><strong>S.IO.get(url,callback)</strong></p>
+<p><strong>S.IO.post(url,callback)</strong></p>
+<p><strong>S.IO.jsonp(url,callback)</strong></p>
+<p><strong>S.IO.getJSON(url,callback)</strong></p>
+<p><strong>S.IO.getScript(url,callback)</strong> 同 <strong>S.getScript(url,callback)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>mix(IO, {
+    get: factory(<span class="hljs-string">"get"</span>),
+    post: factory(<span class="hljs-string">"post"</span>),
+    jsonp: factory(NULL, <span class="hljs-string">"jsonp"</span>),
+    getJSON: factory(NULL, <span class="hljs-string">"json"</span>),
+    getScript: getScript
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><strong>S.IO.jsonp(url,callback)</strong> 同 <strong>S.jsonp()</strong></p>
+<p><strong>S.getScript (url , config)</strong></p>
+<p>动态加载目标地址的资源文件，第二个参数可以是配置对象，也可以是回调函数</p>
+<p>如果是配置对象，参数可以是：</p>
+<ul>
+<li>charset：编码类型</li>
+<li>success：成功的回调函数</li>
+<li>error：失败的回调函数</li>
+</ul>
+<pre><code>S.getScript(url , { success : success , charset : charset });
+S.getScript(url, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{...});
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>mix(S, {
+    IO: IO,
+    jsonp: IO.jsonp
+});
+
+<span class="hljs-comment">/* KMD封裝 */</span>
+S.add(<span class="hljs-string">'io'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> IO;
+});
+
+
+})(<span class="hljs-keyword">this</span>, KISSY);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <style>td {border-top:1px solid #ccc} table {border-collapse: collapse;}</style>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
