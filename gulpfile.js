@@ -3,7 +3,6 @@
  */
 var gulp = require('gulp');
 var map = require('map-stream');
-var glob = require("glob");
 var markdown = require('gulp-markdown');
 var jade = require('jade');
 var gulpJade = require('gulp-jade');
