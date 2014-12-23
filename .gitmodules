@@ -1,0 +1,3 @@
+[submodule "m"]
+	path = m
+	url = git@gitlab.alibaba-inc.com:kissy/m.git
