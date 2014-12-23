@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>基于KISSY MINI的环状导航组件</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no;address=no;email=no" />
+    <meta name="mobileOptimized" content="width" />
+    <meta name="handheldFriendly" content="true" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="icon-wrench ringnav J_RingNav">
+	<ul class="navlist">
+		<li class="navitem" data-icon="&#xe000;"></li>
+		<li class="navitem" data-icon="&#xe001;"></li>
+		<li class="navitem" data-icon="&#xe002;"></li>
+		<li class="navitem" data-icon="&#xe003;"></li>
+		<li class="navitem" data-icon="&#xe004;"></li>
+	</ul>
+</div>
+<script src="http://g.assets.daily.taobao.net/kissy/m/0.1.1/mini-full-min.js"></script>
+<script src="ringnav.js"></script>
+<script>
+    KISSY.use('m/ringnav', function (S, RingNav) {
+		new RingNav({
+			trigger: ".J_RingNav",
+			displayArea: {
+				from: 0,
+				to: 90
+			},
+			speed: 0.5,
+			easing: "bounceOut",
+			expanded: true,
+			expandWay: "stepByStep",
+			toggle: true,
+			radius: 200
+		});
+    });
+</script>
+</body>
+</html>

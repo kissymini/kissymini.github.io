@@ -1,0 +1,36 @@
+doctype html
+html
+    head
+        title= 'KISSY MINI'
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        //- link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Russo+One')
+        //- link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Ruda')
+        link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/stylesheets/doc.css')
+        link(rel='stylesheet', href='/highlight/styles/github.css')
+    body
+        nav
+            div.navbox
+                a.logo(href='/')
+                    img(src='/images/logo.png' alt='KISSY MINI LOGO')
+                ul.clearfix
+                    li.home
+                        a(href='/') 首页
+                    li.quickstart
+                        a(href='/docs/quickstart.html') 快速上手
+                    li.api.dropdown
+                        a(href='/api/core.html', target='_blank') A P I 文档
+                    li.component
+                        a(href='http://gallery.kissyui.com/tag/kissy-mini', target='_blank') 组件
+                    li.example
+                        a(href='/docs/example.html') 案例
+                    li.about
+                        a(href='/docs/about.html') 关于我们
+
+        block content
+        footer
+            p &copy; Taobao 2014 （
+                span.glyphicon.glyphicon-heart
+                span   from kissy mini group）
+        script(src='http://g.tbcdn.cn/kissy/m/0.2.0/mini-min.js')
+        script(src='/javascripts/doc.js')

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>基于KISSY MINI的图片轮播</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no;address=no;email=no" />
+    <meta name="mobileOptimized" content="width" />
+    <meta name="handheldFriendly" content="true" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>图片轮播</h1>
+<div id="main">
+    <div id="wrap">
+        <div class="os-wrap os-official">
+    <div class="os-box of-slide">
+        <p class="ws-flipsnap">
+            <a href="#" class="ws-wrap">
+                <img src="1.jpg" />
+            </a>
+            <a href="#" class="ws-wrap">
+                <img src="2.jpg" />
+            </a>
+            <a href="#" class="ws-wrap">
+                <img src="3.jpg" />
+            </a>
+        </p>
+        <p class="ws-nav">
+            <span class="ws-selected"></span>
+            <span></span>
+            <span></span>
+        </p>
+    </div>
+        </div>  
+    </div>
+</div>
+<script src="http://g.tbcdn.cn/kissy/m/0.1.1/mini-min.js"></script>
+<script src="flipsnap.js"></script>
+<script src="slide.js"></script>
+<script>
+KISSY.use('m/slide', function(S, Slide) {
+    new Slide(S.one('.of-slide')[0]);
+});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,196 @@
+@font-face {
+    font-family: 'fifawelcome';
+    src:url('fifawelcome.eot');
+    src:url('fifawelcome.eot?#iefix') format('embedded-opentype'),
+        url('fifawelcome.woff') format('woff'),
+        url('fifawelcome.ttf') format('truetype'),
+        url('fifawelcome.svg#fifawelcome') format('svg');
+}
+body {
+    width: 100%;
+    padding-top: 80px;
+    overflow-x: hidden;
+    font: 16px/1.5 '微软雅黑', '宋体', sans-serif;
+    background: #fff;
+}
+body a:focus {
+    outline: none;
+}
+
+
+.navbox,
+.jumbotron .box,
+.marketing .box {
+  min-width: 900px;
+  width: 70%;
+  margin: 0 auto;  
+}
+ 
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  background: #333;
+}
+.navbox {
+  position: relative;
+  height: 80px;
+}
+.navbox .logo {
+    position: relative;
+    top: 15px;
+    display: block;
+    width: 80px;
+    overflow: hidden;
+}
+.navbox .logo img {
+    border: none;
+}
+.navbox ul {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+  list-style-type: none;
+}
+.navbox li {
+  float: left;
+  margin-left: 5px;
+  -webkit-transition: border 0.2s;
+  -moz-transition: border 0.2s;
+  -o-transition: border 0.2s;
+  transition: border 0.2s;
+}
+.navbox li a {
+  display: block;
+  height: 80px;
+  padding: 0 15px;
+  font-size: 16px;
+  line-height: 80px;
+  color: #ccc;
+  text-decoration: none;
+}
+.navbox li:hover a,
+.navbox li.selected a {
+  color: #39b3d7;
+  color: #66cdec;
+}
+
+.article {
+  width: 900px;
+  margin: 50px auto;
+}
+
+footer {
+    padding: 30px;
+    background: #333;
+    text-align: center;
+    color: #666;
+}
+footer p {
+  margin: 0;
+}
+ 
+.jumbotron,
+.marketing {
+    padding: 50px 0 70px 0;
+}
+/* 首页 */
+.jumbotron {
+    text-align: center;
+}
+.jumbotron h1,
+.jumbotron .lead {
+  font-family: 'fifawelcome';
+}
+.jumbotron h1 {
+    margin: 0 0 5px 0;
+  font-size: 120px;
+}
+.jumbotron .lead {
+    margin-bottom: 30px;
+    color: #999;
+}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+  margin: 0 20px;
+}
+.marketing h4 {
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    margin: 0 auto 30px auto;
+    font-family: '微软雅黑';
+    text-align: center;
+    border-width: 4px;
+    border-radius: 240px;
+    color: #fff;
+}
+.marketing .first h4 {
+    background: #39b3d7;
+}
+.marketing .second h4 {
+    background: #f18d05;
+}
+.marketing .last h4 {
+    background: #47a447;
+}
+.marketing p {
+    color: #999;
+}
+
+
+/* 案例展示页 */
+.demolist .thumbnail {
+  position: relative;
+  margin-bottom: 30px;
+}
+.demolist .qrcode,
+.demolist .media-list {
+    position: absolute;
+    left: 0;
+}
+.demolist .thumbnail:hover .qrcode {
+    display: block;
+}
+.demolist .thumbnail:hover .media-list {
+    display: none;
+}
+.demolist .qrcode {
+    display: none;
+    bottom: -10px;
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+}
+.demolist .qrcode a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); 
+}
+.demolist .qrcode img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -80px 0 0 -80px;
+}
+.demolist .media-list {
+    bottom: -6px;
+    width: 100%;
+    padding: 0 4px;
+}
+.demolist .media-body {
+    padding: 0 5px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7); 
+}
+.demolist .media-body h4 {
+    text-align: center;
+}
+.demolist .media-body p {
+    font-size: 13px;
+}
