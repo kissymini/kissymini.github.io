@@ -3,7 +3,7 @@
 ## init
 
 1. `tnpm install`
-2. `cd ./m;git pull`
+2. clone / pull kissy-mini source to `m` directory
 3. `gulp` rebuild
 
 ## Dev
