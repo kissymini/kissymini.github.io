@@ -229,7 +229,7 @@
     type: <span class="hljs-string">'get'</span>,
     url: <span class="hljs-string">'http://www.taobao.com'</span>,
     data: {...},
-    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(responseData,statusText,xhr)</span></span>{
+    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(responseData,statusText,xhr)</span>{</span>
         <span class="hljs-comment">//...</span>
     },
     dataType:<span class="hljs-string">'json'</span> <span class="hljs-comment">// 可取值为'json'/'jsonp'</span>
@@ -247,12 +247,12 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>;(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(global, S)</span> </span>{
+            <div class="content"><div class='highlight'><pre>;(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(global, S)</span> {</span>
 
 <span class="hljs-keyword">var</span> doc = global.document,
     location = global.location;
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mix</span><span class="hljs-params">(target, source)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mix</span><span class="hljs-params">(target, source)</span> {</span>
     <span class="hljs-keyword">var</span> k, key;
     <span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> source) {
         <span class="hljs-keyword">if</span>((k = source[key]) !== <span class="hljs-literal">undefined</span>) {
@@ -262,12 +262,12 @@
     <span class="hljs-keyword">return</span> target;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">merge</span><span class="hljs-params">(d, n)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">merge</span><span class="hljs-params">(d, n)</span> {</span>
     <span class="hljs-keyword">return</span> mix(mix({}, d), n);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isType</span><span class="hljs-params">(type)</span> </span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isType</span><span class="hljs-params">(type)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> {</span>
         <span class="hljs-keyword">return</span> {}.toString.call(obj) == <span class="hljs-string">'[object '</span> + type + <span class="hljs-string">']'</span>;
     }
 }
@@ -276,7 +276,7 @@
     isArray    = <span class="hljs-built_in">Array</span>.isArray || isType(<span class="hljs-string">'Array'</span>),
     isFunction = isType(<span class="hljs-string">'Function'</span>);
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">each</span><span class="hljs-params">(obj, iterator, context)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">each</span><span class="hljs-params">(obj, iterator, context)</span> {</span>
     <span class="hljs-keyword">var</span> keys = <span class="hljs-built_in">Object</span>.keys(obj), i, len;
     <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, len = keys.length; i &lt; len; i++) {
         <span class="hljs-keyword">if</span> (iterator.call(context, obj[keys[i]], keys[i], obj) === <span class="hljs-literal">false</span>) {
@@ -294,7 +294,7 @@
     ERROR = <span class="hljs-string">"error"</span>,
     EMPTY = <span class="hljs-string">""</span>,
     getScript = S.getScript,
-    noop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
+    noop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>};
 
 <span class="hljs-keyword">var</span> transports = {},
     def = {
@@ -326,7 +326,7 @@
         cache: TRUE
     };
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">presetConfig</span><span class="hljs-params">(cfg)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">presetConfig</span><span class="hljs-params">(cfg)</span> {</span>
     <span class="hljs-keyword">if</span>(!cfg.url) {
         cfg.url = location.toString();
     }
@@ -357,7 +357,7 @@
     <span class="hljs-keyword">return</span> cfg;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fireEvent</span><span class="hljs-params">(type, io)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fireEvent</span><span class="hljs-params">(type, io)</span> {</span>
     IO.fire(type, {io: io});
 }
 
@@ -367,7 +367,7 @@
  * @returns IO instance
  * @constructor
  */</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">IO</span><span class="hljs-params">(config)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">IO</span><span class="hljs-params">(config)</span> {</span>
     <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
 
     <span class="hljs-keyword">if</span> (!(self <span class="hljs-keyword">instanceof</span> IO)) {
@@ -400,7 +400,7 @@
     fireEvent(<span class="hljs-string">'send'</span>, self);
 
     <span class="hljs-keyword">if</span>(timeout &gt; <span class="hljs-number">0</span>) {
-        self._timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        self._timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
 
             self.abort(<span class="hljs-string">"timeout"</span>);
 
@@ -421,12 +421,12 @@
 mix(IO, S.Event.Target);
 
 mix(IO.prototype, {
-    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(s)</span> </span>{
+    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(s)</span> {</span>
         <span class="hljs-keyword">this</span>.transport.abort(s);
     },
     <span class="hljs-comment">/* 一個IO請求，必然要調用success或者error方法中的一個。*/</span>
     <span class="hljs-comment">/* 最終都需要調用complete回調方法，在這裡統一控制。*/</span>
-    _complete: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(status, statusText)</span> </span>{
+    _complete: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(status, statusText)</span> {</span>
         <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
             cfg = self.cfg,
             context = cfg.context,
@@ -448,25 +448,25 @@ mix(IO.prototype, {
     }
 });
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setTransport</span><span class="hljs-params">(name, fn)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setTransport</span><span class="hljs-params">(name, fn)</span> {</span>
     transports[name] = fn;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">appendURL</span><span class="hljs-params">(url, query)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">appendURL</span><span class="hljs-params">(url, query)</span> {</span>
     <span class="hljs-keyword">return</span> (url + <span class="hljs-string">'&amp;'</span> + query).replace(<span class="hljs-regexp">/[&amp;?]{1,2}/</span>, <span class="hljs-string">'?'</span>);
 }
 
 <span class="hljs-keyword">var</span> encode = <span class="hljs-built_in">encodeURIComponent</span>;
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">param</span><span class="hljs-params">(o, arr)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">param</span><span class="hljs-params">(o, arr)</span> {</span>
     <span class="hljs-keyword">var</span> rt = [];
     _serialize(rt, o, arr);
     <span class="hljs-keyword">return</span> rt.join(<span class="hljs-string">"&amp;"</span>);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_serialize</span><span class="hljs-params">(rt, o, arr, k)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_serialize</span><span class="hljs-params">(rt, o, arr, k)</span> {</span>
     <span class="hljs-keyword">var</span> symbol = arr === <span class="hljs-literal">true</span> ? encode(<span class="hljs-string">"[]"</span>) : EMPTY;
 
-    each(o, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val, key)</span> </span>{
+    each(o, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val, key)</span> {</span>
         <span class="hljs-keyword">if</span>(k) {
             key = k + symbol;
         }
@@ -482,7 +482,7 @@ mix(IO.prototype, {
     reBlank = <span class="hljs-regexp">/^\s*$/</span>;
 
 <span class="hljs-comment">/* 標準的XMLHttpRequest對象 */</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createXHR</span><span class="hljs-params">()</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createXHR</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> global[XHRNAME]();
 }
 
@@ -490,12 +490,12 @@ mix(IO.prototype, {
  * 基於XMLHttpRequest對象的異步請求處理。
  * @constructor
  */</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xhrTransport</span><span class="hljs-params">(io)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xhrTransport</span><span class="hljs-params">(io)</span> {</span>
     <span class="hljs-keyword">this</span>.io = io;
 }
 
 mix(xhrTransport.prototype, {
-    _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
             io = self.io,
             cfg = io.cfg,
@@ -505,7 +505,7 @@ mix(xhrTransport.prototype, {
             xhr = createXHR();
 
 		<span class="hljs-comment">/* io.xhr = xhr; */</span>
-        io.getNativeXhr = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        io.getNativeXhr = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> xhr;
         };
 
@@ -534,7 +534,7 @@ mix(xhrTransport.prototype, {
 
         cfg.headers = merge(baseHeaders, cfg.headers || {})
 
-        xhr.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        xhr.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (xhr.readyState === <span class="hljs-number">4</span>) {
 
                 <span class="hljs-keyword">var</span> result, error = FALSE;
@@ -582,14 +582,14 @@ mix(xhrTransport.prototype, {
 
         xhr.open(cfg.type, cfg.url, cfg.async);
 
-        each(cfg.headers, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v, k)</span> </span>{
+        each(cfg.headers, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v, k)</span> {</span>
             xhr.setRequestHeader(k, v);
         });
 
         xhr.send(cfg.data ? cfg.data : NULL);
 
     },
-    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(statusText)</span> </span>{
+    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(statusText)</span> {</span>
         <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
             xhr = self.xhr,
             io = self.io;
@@ -601,7 +601,7 @@ mix(xhrTransport.prototype, {
 
         io._complete(FALSE, statusText || ABORT);
     },
-    send: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    send: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">this</span>._init();
     }
 });
@@ -609,7 +609,7 @@ mix(xhrTransport.prototype, {
 setTransport(EMPTY, xhrTransport);
 
 <span class="hljs-keyword">var</span> regMimeType = <span class="hljs-regexp">/^(?:text|application)\/(json|javascript|xml|html)/i</span>;
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mimeToDataType</span><span class="hljs-params">(mime)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mimeToDataType</span><span class="hljs-params">(mime)</span> {</span>
     <span class="hljs-keyword">var</span> result = mime &amp;&amp; regMimeType.test(mime),
         type = result ? <span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span> : <span class="hljs-string">"text"</span>;
 
@@ -622,7 +622,7 @@ setTransport(EMPTY, xhrTransport);
 	*/</span>
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseJSON</span><span class="hljs-params">(text)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseJSON</span><span class="hljs-params">(text)</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.parse(text);
 }
 
@@ -631,12 +631,12 @@ setTransport(EMPTY, xhrTransport);
  * @param io io實例
  * @constructor
  */</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ScriptTransport</span><span class="hljs-params">(io)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ScriptTransport</span><span class="hljs-params">(io)</span> {</span>
     <span class="hljs-keyword">this</span>.io = io;
 }
 
 mix(ScriptTransport.prototype, {
-    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(statusText)</span> </span>{
+    abort: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(statusText)</span> {</span>
         <span class="hljs-keyword">this</span>._end(FALSE, statusText || ABORT)
     },
     <span class="hljs-comment">/**
@@ -645,13 +645,13 @@ mix(ScriptTransport.prototype, {
      * @param statusText
      * @private
      */</span>
-    _end: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(status, statusText)</span> </span>{
+    _end: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(status, statusText)</span> {</span>
         <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
             script = self.script,
             io = self.io,
             gvar = self._globalVar;
         <span class="hljs-comment">/* 不直接刪除，避免有請求返回以後調用導致的報錯。 */</span>
-        global[gvar] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        global[gvar] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">delete</span> global[gvar];
         };
 
@@ -664,7 +664,7 @@ mix(ScriptTransport.prototype, {
         <span class="hljs-comment">/* 調用io實例的方法，完成io請求狀態 */</span>
         io._complete(status, statusText);
     },
-    send: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    send: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
             io = self.io,
             cfg = io.cfg,
@@ -679,7 +679,7 @@ mix(ScriptTransport.prototype, {
         <span class="hljs-comment">/* 添加jsonp的callback參數。 */</span>
         <span class="hljs-keyword">var</span> url = appendURL(cfg.url, callbackName + <span class="hljs-string">"="</span> + methodName);
 
-        global[methodName] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
+        global[methodName] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span>{</span>
 			<span class="hljs-comment">/*
 			r = data;
 			*/</span>
@@ -698,7 +698,7 @@ mix(ScriptTransport.prototype, {
         <span class="hljs-comment">/* KISSY.getScript方法支持傳入指定的script節點元素。*/</span>
         self.script = getScript(url, {
             charset: cfg.scriptCharset,
-            error: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            error: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 self._end(FALSE, ERROR);
             }
         });
@@ -707,8 +707,8 @@ mix(ScriptTransport.prototype, {
 
 setTransport(<span class="hljs-string">"jsonp"</span>, ScriptTransport);
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">factory</span><span class="hljs-params">(t, dt)</span> </span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, data, callback, dataType, type)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">factory</span><span class="hljs-params">(t, dt)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, data, callback, dataType, type)</span> {</span>
         <span class="hljs-comment">/* data 参数可省略 */</span>
         <span class="hljs-keyword">if</span> (isFunction(data)) {
             dataType = callback;
@@ -773,7 +773,7 @@ setTransport(<span class="hljs-string">"jsonp"</span>, ScriptTransport);
 <li>error：失败的回调函数</li>
 </ul>
 <pre><code>S.getScript(url , { success : success , charset : charset });
-S.getScript(url, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{...});
+S.getScript(url, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>...});
 </code></pre>
             </div>
             
@@ -783,7 +783,7 @@ S.getScript(url, <span class="hljs-function"><span class="hljs-keyword">function
 });
 
 <span class="hljs-comment">/* KMD封裝 */</span>
-S.add(<span class="hljs-string">'io'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+S.add(<span class="hljs-string">'io'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">return</span> IO;
 });
 

@@ -77,14 +77,14 @@
 <p><strong>Event 用法：</strong></p>
 <p>1.直接使用</p>
 <pre><code><span class="hljs-keyword">var</span> $ = KISSY.Node.all;
-$(<span class="hljs-string">'body'</span>).on(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
-    <span class="hljs-built_in">console</span>.log(ev)
+$(<span class="hljs-string">'body'</span>).on(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span>{</span>
+    console.log(ev)
 });
 </code></pre><p>2.普通对象的自定义事件</p>
 <pre><code><span class="hljs-keyword">var</span> a = {}, S = KISSY;
 S.mix(a, S.Event.Target);
-a.on(<span class="hljs-string">'my_event'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
-    <span class="hljs-built_in">console</span>.log(ev)
+a.on(<span class="hljs-string">'my_event'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span>{</span>
+    console.log(ev)
 });
 a.fire(<span class="hljs-string">'my_event'</span>, {<span class="hljs-string">"data1"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"data2"</span>: <span class="hljs-number">2</span>});
 </code></pre><p><strong>未列出的Event API與KISSY保持用法一致</strong></p>
@@ -160,30 +160,30 @@ a.fire(<span class="hljs-string">'my_event'</span>, {<span class="hljs-string">"
             </div>
             
             <div class="content"><div class='highlight'><pre>
-(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span>{</span>
 
 S.Event || (S.Event = {});
 <span class="hljs-keyword">var</span> $ = S.all,
     Node = S.node,
     _eid = <span class="hljs-number">1</span>,
-    isFunction = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
+    isFunction = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span>{</span>
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj == <span class="hljs-string">'function'</span>;
     },
     <span class="hljs-comment">/* 简化 S.mix */</span>
-    mix = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(target, source)</span> </span>{
+    mix = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(target, source)</span> {</span>
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> source) {
             target[key] = source[key];
         }
     },
     <span class="hljs-comment">/* 简化 S.each */</span>
-    each = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, iterator, context)</span> </span>{
-        <span class="hljs-built_in">Object</span>.keys(obj).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{
+    each = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, iterator, context)</span> {</span>
+        <span class="hljs-built_in">Object</span>.keys(obj).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span>{</span>
             iterator.call(context, obj[name], name, obj);
         });
     },
     slice = [].slice,
     handlers = [],
-    focusinSupported = <span class="hljs-string">'onfocusin'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>,
+    focusinSupported = <span class="hljs-string">'onfocusin'</span> <span class="hljs-keyword">in</span> window,
     <span class="hljs-comment">/* 焦点事件代理 */</span>
     focusEvent = {
         focus: <span class="hljs-string">'focusin'</span>,
@@ -218,8 +218,8 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">returnBool</span><span class="hljs-params">(trueOrFalse)</span> </span>{
-   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{ <span class="hljs-keyword">return</span> trueOrFalse; };
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">returnBool</span><span class="hljs-params">(trueOrFalse)</span> {</span>
+   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span> <span class="hljs-keyword">return</span> trueOrFalse; };
 }
 
 <span class="hljs-comment">/**
@@ -242,7 +242,7 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eid</span><span class="hljs-params">(element)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eid</span><span class="hljs-params">(element)</span> {</span>
     <span class="hljs-keyword">return</span> element._eid || (element._eid = _eid++);
 }
 
@@ -266,7 +266,7 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parse</span><span class="hljs-params">(event)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parse</span><span class="hljs-params">(event)</span> {</span>
     <span class="hljs-keyword">var</span> parts = event.split(<span class="hljs-string">'.'</span>);
     <span class="hljs-keyword">return</span> {
         e : parts[<span class="hljs-number">0</span>],
@@ -294,7 +294,7 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">matcherFor</span><span class="hljs-params">(ns)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">matcherFor</span><span class="hljs-params">(ns)</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">'(?:^| )'</span> + ns.replace(<span class="hljs-string">' '</span>, <span class="hljs-string">' .* ?'</span>) + <span class="hljs-string">'(?: |S)'</span>);
 }
 
@@ -321,10 +321,10 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findHandlers</span><span class="hljs-params">(element, event, fn, selector, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findHandlers</span><span class="hljs-params">(element, event, fn, selector, scope)</span> {</span>
     <span class="hljs-keyword">var</span> evt = parse(event);
-    <span class="hljs-keyword">if</span> (evt.ns) <span class="hljs-keyword">var</span> matcher = matcherFor(event.ns);
-    <span class="hljs-keyword">return</span> (handlers[eid(element)] || []).filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler)</span> </span>{
+    <span class="hljs-keyword">if</span> (evt.ns) <span class="hljs-keyword">var</span> matcher = matcherFor(evt.ns);
+    <span class="hljs-keyword">return</span> (handlers[eid(element)] || []).filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler)</span> {</span>
         <span class="hljs-keyword">return</span> handler &amp;&amp;
             (!evt.e || handler.e == evt.e) &amp;&amp;
             (!evt.ns || matcher.test(handler.ns)) &amp;&amp;
@@ -355,7 +355,7 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isCapture</span><span class="hljs-params">(handler, capture)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isCapture</span><span class="hljs-params">(handler, capture)</span> {</span>
     <span class="hljs-keyword">return</span> handler.del &amp;&amp;
         (!focusinSupported &amp;&amp; (handler.e <span class="hljs-keyword">in</span> focusEvent)) || !!capture;
 }
@@ -380,7 +380,7 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eventCvt</span><span class="hljs-params">(type)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eventCvt</span><span class="hljs-params">(type)</span> {</span>
     <span class="hljs-keyword">return</span> (focusinSupported &amp;&amp; focusEvnet[type]) || type;
 }
 
@@ -404,7 +404,7 @@ S.Event || (S.Event = {});
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createProxy</span><span class="hljs-params">(event)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createProxy</span><span class="hljs-params">(event)</span> {</span>
     <span class="hljs-keyword">var</span> key, proxy = {
             originalEvent: event
         };
@@ -435,19 +435,19 @@ S.Event.createProxy = createProxy;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compatible</span><span class="hljs-params">(event, source)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compatible</span><span class="hljs-params">(event, source)</span> {</span>
     <span class="hljs-keyword">if</span> (source || !event.isDefaultPrevented) {
         source || (source = event);
-        each(eventMethods, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(predicate,name)</span> </span>{
+        each(eventMethods, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(predicate,name)</span> {</span>
             <span class="hljs-keyword">var</span> sourceMethod = source[name];
-            event[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            event[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>[predicate] = returnBool(<span class="hljs-literal">true</span>);
                 <span class="hljs-keyword">return</span> sourceMethod &amp;&amp; sourceMethod.apply(source, <span class="hljs-built_in">arguments</span>);
             };
             event[predicate] = returnBool(<span class="hljs-literal">false</span>);
         });
 
-		event.halt = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		event.halt = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
 			<span class="hljs-keyword">this</span>.preventDefault();
 			<span class="hljs-keyword">this</span>.stopPropagation();
 		};
@@ -481,8 +481,8 @@ S.Event.createProxy = createProxy;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createEvent</span><span class="hljs-params">(type, props)</span> </span>{
-    <span class="hljs-keyword">var</span> event = <span class="hljs-built_in">document</span>.createEvent(specialEvents[type] || <span class="hljs-string">'Events'</span>),
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createEvent</span><span class="hljs-params">(type, props)</span> {</span>
+    <span class="hljs-keyword">var</span> event = document.createEvent(specialEvents[type] || <span class="hljs-string">'Events'</span>),
         bubbles = <span class="hljs-literal">true</span>;
     <span class="hljs-keyword">if</span> (props) {
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> props) {
@@ -518,20 +518,20 @@ S.Event.createProxy = createProxy;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span><span class="hljs-params">(element, events, fn, selector, delegator, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span><span class="hljs-params">(element, events, fn, selector, delegator, scope)</span> {</span>
     <span class="hljs-keyword">var</span> id = eid(element),
         set = (handlers[id] || (handlers[id] = []));
     <span class="hljs-keyword">if</span> (events == <span class="hljs-string">'ready'</span>) <span class="hljs-keyword">return</span> S.ready(fn);
-    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> </span>{
+    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> {</span>
         <span class="hljs-keyword">var</span> handler = parse(event);
         handler.fn = fn;
         handler.sel = selector;
         handler.del = delegator;
         handler.scope = scope;
         <span class="hljs-keyword">var</span> callback = delegator || fn;
-        handler.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+        handler.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             e = compatible(e);
-            <span class="hljs-keyword">if</span> (e.isImmediatePropagationStopped()) <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">if</span> (e.isImmediatePropagationStopped &amp;&amp; e.isImmediatePropagationStopped()) <span class="hljs-keyword">return</span>;
             <span class="hljs-keyword">var</span> result = callback.apply(scope || element, e._args == <span class="hljs-literal">undefined</span> ? [e] : [e].concat(e._args));
             <span class="hljs-keyword">if</span> (result === <span class="hljs-literal">false</span>) {
                 e.preventDefault();
@@ -573,10 +573,10 @@ S.Event.createProxy = createProxy;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span><span class="hljs-params">(element, events, fn, selector, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span><span class="hljs-params">(element, events, fn, selector, scope)</span> {</span>
     <span class="hljs-keyword">var</span> id = eid(element),
-        removeHandlers = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(set)</span> </span>{
-            set.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler)</span></span>{
+        removeHandlers = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(set)</span> {</span>
+            set.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler)</span>{</span>
                 <span class="hljs-keyword">delete</span> handlers[id][handler.i];
                 element.removeEventListener(eventCvt(handler.e), handler.proxy, isCapture(handler));
                 <span class="hljs-comment">/* 自定义 DOM 事件处理，销毁*/</span>
@@ -586,7 +586,7 @@ S.Event.createProxy = createProxy;
             });
         };
     <span class="hljs-keyword">if</span>(events) {
-        events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> </span>{
+        events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> {</span>
             removeHandlers(findHandlers(element, event, fn, selector, scope));
         });
     }
@@ -613,17 +613,17 @@ S.Event.createProxy = createProxy;
               </div>
               <p><strong>S.Node.on(event,selector,callback,[scope])</strong></p>
 <p>事件绑定</p>
-<pre><code>S.Event.on(<span class="hljs-string">'click'</span>,<span class="hljs-string">'div'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span></span>{...})
+<pre><code>S.Event.on(<span class="hljs-string">'click'</span>,<span class="hljs-string">'div'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span>{</span>...})
 </code></pre><p>可以使用<code>els.on(&#39;click&#39;,callback)</code></p>
 <p><strong>el.on(eventType,callback)</strong></p>
 <p>在元素上进行事件绑定，el也可以是Node列表，比如</p>
-<pre><code>S.one(<span class="hljs-string">'div'</span>).on(<span class="hljs-string">'click'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+<pre><code>S.one(<span class="hljs-string">'div'</span>).on(<span class="hljs-string">'click'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
     alert(<span class="hljs-string">'ok'</span>);
 });
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>Node.on = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre>Node.on = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> {</span>
     <span class="hljs-keyword">var</span> delegator, _this = <span class="hljs-keyword">this</span>;
 
     <span class="hljs-comment">/* selector 为空的情况，即非 delegator */</span>
@@ -636,12 +636,12 @@ S.Event.createProxy = createProxy;
     <span class="hljs-comment">/* 阻止默认事件，kissy 不支持此方式 */</span>
     <span class="hljs-keyword">if</span> (callback === <span class="hljs-literal">false</span>) callback = returnFalse;
 
-    _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+    _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
         <span class="hljs-comment">/* delegate 处理逻辑 */</span>
-        <span class="hljs-keyword">if</span> (selector) delegator = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+        <span class="hljs-keyword">if</span> (selector) delegator = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> evt, match, matches = element.all(selector);
             <span class="hljs-keyword">if</span>(!matches || !matches.length) <span class="hljs-keyword">return</span>;
-            match = matches.filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{
+            match = matches.filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span>{</span>
                 <span class="hljs-keyword">return</span> (el == e.target) || ($(el).contains(e.target));
             })[<span class="hljs-number">0</span>];
             <span class="hljs-keyword">if</span> (match &amp;&amp; match !== element[<span class="hljs-number">0</span>]) {
@@ -683,7 +683,7 @@ S.Event.createProxy = createProxy;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Node.detach = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre>Node.detach = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> {</span>
     <span class="hljs-keyword">var</span> _this = <span class="hljs-keyword">this</span>;
 
     <span class="hljs-keyword">if</span> (isFunction(selector)) {
@@ -692,7 +692,7 @@ S.Event.createProxy = createProxy;
         selector = <span class="hljs-literal">undefined</span>;
     }
 
-    _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+    _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
         remove(element[<span class="hljs-number">0</span>], event, callback, selector, scope);
     });
 
@@ -724,7 +724,7 @@ S.Event.createProxy = createProxy;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Node.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre>Node.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.on(event, selector, callback, scope);
 };
 
@@ -753,7 +753,7 @@ S.Event.createProxy = createProxy;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Node.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre>Node.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, selector, callback, scope)</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.detach(event, selector, callback, scope);
 };
 
@@ -783,7 +783,7 @@ S.Event.createProxy = createProxy;
 <li>eventType: 事件类型</li>
 <li>props：触发事件的时候传入的回传参数</li>
 </ul>
-<pre><code>S.one(<span class="hljs-string">'div'</span>).on(<span class="hljs-string">'click'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span></span>{
+<pre><code>S.one(<span class="hljs-string">'div'</span>).on(<span class="hljs-string">'click'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span>{</span>
     alert(e.a);
 });
 S.one(<span class="hljs-string">'div'</span>).fire(<span class="hljs-string">'click'</span>,{
@@ -793,11 +793,11 @@ S.one(<span class="hljs-string">'div'</span>).fire(<span class="hljs-string">'cl
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>Node.fire = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(events, props)</span> </span>{
+            <div class="content"><div class='highlight'><pre>Node.fire = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(events, props)</span> {</span>
     <span class="hljs-keyword">var</span> _this = <span class="hljs-keyword">this</span>;
-    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>{
+    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span>{</span>
         event = createEvent(event, props);
-        _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+        _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-string">'dispatchEvent'</span> <span class="hljs-keyword">in</span> element[<span class="hljs-number">0</span>]) element[<span class="hljs-number">0</span>].dispatchEvent(event);
             <span class="hljs-keyword">else</span> element.fireHandler(events, props);
         });
@@ -830,26 +830,26 @@ S.one(<span class="hljs-string">'div'</span>).fire(<span class="hljs-string">'cl
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Node.fireHandler = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(events, props)</span> </span>{
+            <div class="content"><div class='highlight'><pre>Node.fireHandler = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(events, props)</span> {</span>
     <span class="hljs-keyword">var</span> e, result, _this = <span class="hljs-keyword">this</span>;
-    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>{
-        _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> </span>{
+    events.split(<span class="hljs-regexp">/\s/</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span>{</span>
+        _this.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
             e = createEvent(event);
             e.target = element[<span class="hljs-number">0</span>];
 			<span class="hljs-keyword">if</span>(e.target === <span class="hljs-literal">null</span>){
 				e = getCustomDOMEvent(e);
 			}
 			mix(e,props);
-            findHandlers(element[<span class="hljs-number">0</span>], event).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler, i)</span> </span>{
+            findHandlers(element[<span class="hljs-number">0</span>], event).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(handler, i)</span> {</span>
                 result = handler.proxy(e);
-                <span class="hljs-keyword">if</span> (e.isImmediatePropagationStopped()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (e.isImmediatePropagationStopped &amp;&amp; e.isImmediatePropagationStopped()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
             });
         });
     });
     <span class="hljs-keyword">return</span> _this;
 };
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCustomDOMEvent</span><span class="hljs-params">(e)</span></span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCustomDOMEvent</span><span class="hljs-params">(e)</span>{</span>
 	<span class="hljs-keyword">var</span> eProxy = {};
 	mix(eProxy,e);
 	eProxy.__proto__ = e.__proto__;
@@ -875,15 +875,15 @@ S.Event || (S.Event = {});
               <p><strong>S.Event.Target</strong></p>
 <p>简单自定义事件对象，将普通对象混入 <code>Event.Target</code> 后，即能拥有简单的自定义事件特性。</p>
 <p>事件本身是一个抽象概念，和平台无关、和设备无关、更和浏览器无关，浏览器只是使用“事件”的方法来触发特定的行为，进而触发某段网页逻辑。而常见的DOM事件诸如click,dbclick是浏览器帮我们实现的“特定行为”。而这里的“特定行为”就是触发事件的时机，是可以被重新定义的，原理上，事件都是需要精确的定义的，比如下面这个例子，我们定义了一个新事件：“初始化1秒后”</p>
-<pre><code><span class="hljs-keyword">var</span> EventFactory = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+<pre><code><span class="hljs-keyword">var</span> EventFactory = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
         <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>;
-        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
             that.fire(<span class="hljs-string">'afterOneSecond'</span>);
         },<span class="hljs-number">1000</span>);
 };
 S.augment(EventFactory,S.Event.Target);
 <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> EventFactory();
-a.on(<span class="hljs-string">'afterOneSecond'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+a.on(<span class="hljs-string">'afterOneSecond'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
         alert(<span class="hljs-string">'1秒后'</span>);
 });
 <span class="hljs-comment">// 1秒后弹框</span>
@@ -919,9 +919,9 @@ a.on(<span class="hljs-string">'afterOneSecond'</span>,<span class="hljs-functio
      * @param  {[type]}   scope     回调方法的 this 指针
      * @return {[type]}             返回对象本身
      */</span>
-    on: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, fn, scope)</span> </span>{
+    on: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, fn, scope)</span> {</span>
         <span class="hljs-keyword">var</span> eventArr = s2a(eventType), T = <span class="hljs-keyword">this</span>;
-        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span>{</span>
             <span class="hljs-keyword">var</span> evt = ev <span class="hljs-keyword">in</span> T._L ? T._L[ev] : (T._L[ev] = []);
             evt.push({
                 E: eventType,
@@ -954,13 +954,13 @@ a.on(<span class="hljs-string">'afterOneSecond'</span>,<span class="hljs-functio
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    fire: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, data)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    fire: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, data)</span> {</span>
         <span class="hljs-keyword">var</span> eventArr = s2a(eventType), T = <span class="hljs-keyword">this</span>;
-        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span>{</span>
             <span class="hljs-keyword">var</span> evt = T._L[ev], 
                 returnEv = S.mix(data || {}, {target: T, currentTarget: T});
             <span class="hljs-keyword">if</span>(!evt) <span class="hljs-keyword">return</span>;
-            evt.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(group)</span></span>{
+            evt.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(group)</span>{</span>
                 group.F.apply(group.S || T, [returnEv].concat([].slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">2</span>)));
             });
 
@@ -990,20 +990,21 @@ a.on(<span class="hljs-string">'afterOneSecond'</span>,<span class="hljs-functio
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    detach: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, fn, scope)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    detach: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventType, fn, scope)</span> {</span>
         <span class="hljs-keyword">var</span> eventArr = s2a(eventType), T = <span class="hljs-keyword">this</span>;
-        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
+        eventArr.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span>{</span>
             <span class="hljs-comment">/* 如果遇到相同事件，优先取消最新绑定的 */</span>
-            <span class="hljs-keyword">var</span> evt = T._L[ev];
+            <span class="hljs-keyword">var</span> evt = T._L[ev], group;
             <span class="hljs-keyword">if</span>(!evt) <span class="hljs-keyword">return</span>;
             <span class="hljs-keyword">if</span>(!fn &amp;&amp; (T._L[ev] = [])) <span class="hljs-keyword">return</span>;
-            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key=<span class="hljs-number">0</span>; key &lt; evT._Length; key++) {
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key=<span class="hljs-number">0</span>; key &lt; evt.length; key++) {
+                group = evt[key];
                 <span class="hljs-keyword">if</span>(group.F == fn &amp;&amp; group.S == scope) {
-                    evt.split(key, <span class="hljs-number">1</span>);
+                    evt.splice(key, <span class="hljs-number">1</span>);
                     <span class="hljs-keyword">continue</span>;
                 }
                 <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(group.F == fn) {
-                    evt.split(key, <span class="hljs-number">1</span>);
+                    evt.splice(key, <span class="hljs-number">1</span>);
                     <span class="hljs-keyword">continue</span>;
                 }
             }
@@ -1043,11 +1044,11 @@ S.Event.Special = {
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s2a</span><span class="hljs-params">(str)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s2a</span><span class="hljs-params">(str)</span> {</span>
     <span class="hljs-keyword">return</span> str.split(<span class="hljs-string">' '</span>);
 }
 
-S.add(<span class="hljs-string">'event'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+S.add(<span class="hljs-string">'event'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span>{</span>
 	<span class="hljs-keyword">return</span> S.Event;
 });
 

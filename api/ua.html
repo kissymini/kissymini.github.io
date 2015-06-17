@@ -94,7 +94,7 @@ m/ua
               </div>
               <h2 id="ua-">UA 模块</h2>
 <p>硬件设备探测模块，API 兼容KISSY，但去除了对IE老版本的支持。新增对kindle、touchpad、blackberry等设备的探测，这样来引入模块：</p>
-<pre><code>KISSY.use(<span class="hljs-string">'ua'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S,UA)</span></span>{
+<pre><code>KISSY.use(<span class="hljs-string">'ua'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S,UA)</span>{</span>
         <span class="hljs-comment">// S.UA.xx 或者 UA.xx 来获取设备探测字段</span>
 });
 </code></pre><p>使用方法</p>
@@ -132,7 +132,7 @@ S.UA.playbook <span class="hljs-comment">// PlayBook版本</span>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>KISSY.add(<span class="hljs-string">'m/ua'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span> </span>{
+            <div class="content"><div class='highlight'><pre>KISSY.add(<span class="hljs-string">'m/ua'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span> {</span>
 	<span class="hljs-keyword">var</span> ua = navigator.userAgent,m,core,shell,
 	UA = S.UA = {
 		<span class="hljs-comment">/**
@@ -264,10 +264,10 @@ S.UA.playbook <span class="hljs-comment">// PlayBook版本</span>
 		slik:<span class="hljs-literal">undefined</span>,
 		playbook:<span class="hljs-literal">undefined</span>
 	};
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">numberify</span><span class="hljs-params">(s)</span> </span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">numberify</span><span class="hljs-params">(s)</span> {</span>
 		<span class="hljs-keyword">var</span> c = <span class="hljs-number">0</span>;
 		<span class="hljs-comment">/* convert '1.2.3.4' to 1.234 */</span>
-		<span class="hljs-keyword">return</span> <span class="hljs-built_in">parseFloat</span>(s.replace(<span class="hljs-regexp">/\./g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-built_in">parseFloat</span>(s.replace(<span class="hljs-regexp">/\./g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
 			<span class="hljs-keyword">return</span> (c++ === <span class="hljs-number">0</span>) ? <span class="hljs-string">'.'</span>: <span class="hljs-string">''</span>;
 		}));
 	}
