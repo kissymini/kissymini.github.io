@@ -1,1 +1,91 @@
-<!DOCTYPE html><html><head><title>KISSY MINI</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="author" content="拔赤"><link rel="stylesheet" href="/stylesheets/2015-06-17.css"><link rel="stylesheet" href="/highlight/styles/github.css"></head><body><a href="http://gitlab.alibaba-inc.com/kissy/m/tree/master" class="forkme"><img style="position: absolute; top: 0; left: 0; border: 0;" src="/images/forkme.png"></a><div id="container"><header><h1>Kissy Mini</h1></header><div><ul class="nav"><li> <a href="/index.html">首页</a></li><li> <a href="/docs/quickstart.html">快速上手</a></li><li> <a href="/api/core.html">API 文档</a></li><li> <a href="/docs/example.html">案例</a></li><li> <a href="/docs/about.html">关于我们</a></li></ul><br style="clear:both"></div><div id="main" role="main"><br><section> <p>KISSY MINI 是 [KISSY](http://docs.kissyui.com/) 的移动端版本，专门为 H5 页面使用打造。体积瘦身，功能完整，能够兼容 KISSY，目前已经应用在阿里许多场景中。他的优势是：</p><ul><li>体积小：KISSY MINI 的体积非常小，gizp 后，文件大小约 8 ~ 13k。</li><li>无缝迁移：KISSY MINI 与 KISSY 遵循相同的模块规范，API 则是 KISSY 的子集，可轻易切换至 KISSY 。</li><li>社区支持：KISSY MINI 与 KISSY 共享社区，你可以使用来自社区的优质组件和工具，也可以向社区贡献自己的作品！</li></ul><p> <a href="https://gitter.im/kissymini?utm_source=share-link&amp;utm_medium=link&amp;utm_campaign=share-link"><img src="https://badges.gitter.im/Join%20Chat.svg"></a><a href="http://gitlab.alibaba-inc.com/kissy/m">查看源码</a></p><h3>脚本引用</h3><p>引用脚本</p><code><pre><script src="http://g.alicdn.com/kissy/m/0.3.11/mini-min.js"></script></pre></code><p>调用方式</p><code> <pre><KISSY node function(S){ S.one('#id').all('.list').css({ background:'red display:'block border-left':'2px }); } class="use"></KISSY></pre></code></section></div><section class="comment"><div id="disqus_thread"></div><script src="/javascripts/disqus.js"></script></section></div><script src="/javascripts/jquery.min.js"></script><script src="/javascripts/jquery.grumble.min.js"></script><script src="/javascripts/main.js"></script></body></html>
+<!DOCTYPE html><html><head><title>KISSY MINI</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="author" content="拔赤"><link rel="stylesheet" href="/stylesheets/2015-06-17.css"><link rel="stylesheet" href="/highlight/styles/github.css"></head><body><a href="http://gitlab.alibaba-inc.com/kissy/m/tree/master" class="forkme"><img style="position: absolute; top: 0; left: 0; border: 0;" src="/images/forkme.png"></a><div id="container"><header><h1>Kissy Mini</h1></header><div><ul class="nav"><li> <a href="/index.html">首页</a></li><li> <a href="/api/core.html">API 文档</a></li><li> <a href="/about.html">关于我们</a></li></ul><br style="clear:both"></div><div id="main" role="main"><br><div class="article"><p><a href="http://docs.kissyui.com/">Kissy</a> 是一款跨终端、模块化、高性能、使用简单的 JavaScript 框架。Kissy Mini 是其移动端版本，专门为移动端 Web 开发打造，并做了大量的性能优化和可靠性测试，功能完整、体积小巧，稳定可靠。特别是在事件处理、异步模块加载、面向对象的支持方面表现出众。目前已经应用在阿里许多场景中。他的优势是：</p>
+<ul>
+<li><strong>体积小</strong>：gizp 后，文件大小约 8 ~ 13k。</li>
+<li><strong>无缝迁移</strong>：与 Kissy 遵循相同的模块规范，两者之间可轻易切换。</li>
+<li><strong>社区支持</strong>：与 KISSY 共享社区，你可以使用来自社区的优质组件和工具，也可以向社区贡献自己的作品！</li>
+</ul>
+<p><span class="gitter"><a href="https://gitter.im/kissymini?utm_source=share-link&amp;utm_medium=link&amp;utm_campaign=share-link"><img src="/images/gitter.svg" alt=""></a></span></p>
+<h3 id="-">种子文件</h3>
+<p>获取最新的种子文件 <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-min.js">0.3.11</a></p>
+<p>Kissy Mini 对外提供了三个版本，以适用不同的使用场景：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">文件名</th>
+<th style="text-align:center">文件大小</th>
+<th style="text-align:center">包含模块</th>
+<th style="text-align:center">适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">全量版</td>
+<td style="text-align:center">mini-all.js</td>
+<td style="text-align:center">34k（gzip）</td>
+<td style="text-align:center">node，io，event，loader，base，ua，uri，<br />anim，touch，lang，juicer，form</td>
+<td style="text-align:center">官方仓库所有模块</td>
+</tr>
+<tr>
+<td style="text-align:center">推荐版</td>
+<td style="text-align:center">mini-full.js</td>
+<td style="text-align:center">13k（gzip）</td>
+<td style="text-align:center">node，io，event，Loader</td>
+<td style="text-align:center">核心模块 + Loader</td>
+</tr>
+<tr>
+<td style="text-align:center">精简版</td>
+<td style="text-align:center">mini.js</td>
+<td style="text-align:center">8k（gzip）</td>
+<td style="text-align:center">node，io，event，loader</td>
+<td style="text-align:center">仅核心模块</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">开始使用</h3>
+<p>脚本引用</p>
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://g.alicdn.com/kissy/m/0.3.11/mini-min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre><p>启动：Hello World!</p>
+<pre><code>KISSY.ready(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+    alert(<span class="hljs-string">'Hello World!'</span>);
+});
+</code></pre><p>DOM操作：获取一个<code>className</code>叫<code>continue</code>的<code>button</code>，并将它的内容改为&quot;Hello Kissy&quot;。</p>
+<pre><code>KISSY.<span class="hljs-keyword">use</span>(<span class="hljs-string">'node'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+    S.one(<span class="hljs-string">'button.continue'</span>).html(<span class="hljs-string">'Hello Kissy!'</span>);
+});
+</code></pre><p>Ajax 操作：</p>
+<pre><code>KISSY.<span class="hljs-keyword">use</span>(<span class="hljs-string">'io'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
+    S.IO.<span class="hljs-keyword">get</span>(<span class="hljs-string">"test.php"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span></span>{
+        alert(d);
+    });
+});
+</code></pre><p>说明：Loader 模块是 Kissy Mini 重要的核心模块，负责在<code>KISSY.use(&#39;模块名&#39;)</code>时自动载入外部模块，模块规范符合 <a href="http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html">Kissy 标准的模块规范 KMD</a>。比如几个和模块定义相关的代码片段：</p>
+<p>1）定义模块</p>
+<pre><code class="lang-javascript">KISSY.add(<span class="hljs-string">'pkg1/index'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S, Node)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Mod</span><span class="hljs-params">()</span> </span>{}
+    <span class="hljs-keyword">return</span> Mod;
+}, {requires: [
+    <span class="hljs-string">'node'</span>
+]});
+</code></pre>
+<p>2）使用模块</p>
+<pre><code class="lang-javascript">KISSY.<span class="hljs-keyword">use</span>(<span class="hljs-string">'pkg1/index'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Mod)</span> </span>{
+    <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> Mod();
+});
+</code></pre>
+<p>3）包配置</p>
+<pre><code class="lang-javascript"><span class="hljs-tag">KISSY</span><span class="hljs-class">.config</span>(<span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">packages</span>:<span class="hljs-value"> [{
+        name    : <span class="hljs-string">'pkg1'</span>,
+        path    : <span class="hljs-string">'./module'</span>,
+        charset : <span class="hljs-string">'utf-8'</span>
+    }]
+})</span></span>;</span>
+</code></pre>
+<h3 id="-demo">示例 Demo</h3>
+<ul>
+<li>组件：<a href="http://kissygalleryteam.github.io/slide/1.3/demo/index.html">Slide</a>（Kiss 官方组件）、<a href="/demo/slide/index.htm">Mini Slide</a>、<a href="/demo/ringnav/index.htm">仿 Path 的环状菜单</a></li>
+<li>项目：<a href="http://h5.m.taobao.com/trip/ticket/pad/search/index.html?ttid=703628@taobao_ipad_4.0">阿里旅行-景点门票 Pad 版</a>，<a href="http://wapp.m.taobao.com/mseckill/index.html?host=h5.m.taobao.com">淘宝秒杀手机版</a></li>
+</ul>
+<p><a href="http://h5.m.taobao.com/trip/home/index.html">阿里旅行·去啊</a> 无线 Web 产品均基于 Kissy Mini 搭建。</p>
+</div></div><section class="comment"><div id="disqus_thread"></div><script src="/javascripts/disqus.js"></script></section></div><script src="/javascripts/jquery.min.js"></script><script src="/javascripts/jquery.grumble.min.js"></script><script src="/javascripts/main.js"></script></body></html>

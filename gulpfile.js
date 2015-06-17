@@ -8,7 +8,7 @@ var jade = require('jade');
 var gulpJade = require('gulp-jade');
 var connect = require('gulp-connect');
 
-gulp.task('default', ['markdown', 'index']);
+gulp.task('default', ['markdown'/*, 'index'*/]);
 
 // 处理文档
 gulp.task('markdown', function(){
@@ -29,10 +29,11 @@ gulp.task('markdown', function(){
       }));
       cb(null, file);
     }))
-    .pipe(gulp.dest('docs'));
+    .pipe(gulp.dest('./'));
 });
 
 // 渲染首页
+/*
 gulp.task('index', function () {
 
   gulp.src('source/views/index.jade')
@@ -40,6 +41,7 @@ gulp.task('index', function () {
     .pipe(gulp.dest('./'));
 
 });
+*/
 
 gulp.task('serve', ['connect', 'watch']);
 
@@ -53,6 +55,6 @@ gulp.task('connect', function () {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(['source/**/*.jade'], ['index']);
+  //gulp.watch(['source/**/*.jade'], ['index']);
   gulp.watch(['docs/**/*.md'], ['markdown']);
 });

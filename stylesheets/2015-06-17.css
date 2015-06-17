@@ -73,7 +73,7 @@ code, pre, tt {
 	color: #444;
 	}
 code {
-	margin-left: 20px;
+	/*margin-left: 20px;*/
 	}
 pre {
 	font-size: 12px;
@@ -121,4 +121,29 @@ ul.nav a {
 }
 ul.nav a:hover{
 	background: yellow;
+}
+.gitter a,.gitter a:hover{
+	background: transparent;
+}
+
+table {
+	font-size:13px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #999;
+	border-collapse: collapse;
+}
+table th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #999;
+	background-color: #dedede;
+}
+table td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #999;
+	background-color: #ffffff;
 }
