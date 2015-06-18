@@ -19,3 +19,8 @@
 直接 fork 我们的 [source code](http://gitlab.alibaba-inc.com/kissy/m)，并给我们提交 Pull Request（目前仅支持内网访问）
 
 意见反馈和[Bug 提交](http://gitlab.alibaba-inc.com/kissy/m/issues)（目前仅支持内网访问）
+
+### 仓库说明
+
+- 本站仓库（http://m.kissyui.com）[地址](https://github.com/kissymini/kissymini.github.io)
+- [源码仓库](http://gitlab.alibaba-inc.com/kissy/m)，API 文档通过`grunt`编译源码仓库生成到源码的`docs`目录中，对`kissy/m`仓库的 push 操作会自动同步 API 文档到官网（http://m.kissyui.com）。（同步的 Hook 脚本[在这里](http://gitlab.alibaba-inc.com/trip-tools/kissy-mini-site)，部署在内网的开发机上）
