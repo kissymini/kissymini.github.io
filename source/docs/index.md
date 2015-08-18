@@ -26,13 +26,14 @@ KISSY MINI 所包含的核心模块：
 
 这些模块中的大部分通过 `KISSY` 全局对象来访问，比如`KISSY.Node`、`KISSY.Event`、`KISSY.IO`等，注意`KISSY.Anim`是不存在的
 
-API 文档入口：[core](./api/core.html)，[node](./api/node.html)，[io](./api/io.html)，[event](./api/event.html)，[loader](./api/loader.html)，[anim](./api/anim.html)，[touch](./api/touch.html)
+- API 文档入口：[core](./api/core.html)，[node](./api/node.html)，[io](./api/io.html)，[event](./api/event.html)，[loader](./api/loader.html)，[anim](./api/anim.html)，[touch](./api/touch.html)
+- 测试用例入口：
 
 ### 种子文件
 
 获取最新的种子文件 
 
-- [![](https://img.shields.io/badge/kissy%20mini-1.0.0-green.svg)](http://g.alicdn.com/kissy/m/1.0.0/mini-min.js) 新版
+- <a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js" style="background:none" >![](https://img.shields.io/badge/kissy%20mini-1.0.0-green.svg)]</a> 新版
 - [![](https://img.shields.io/badge/kissy%20mini-0.3.11-orange.svg)](http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js) 旧版
 
 注意，KISSY MINI 0.x 版本对外提供三个文件，分别是[mini.js](http://g.alicdn.com/kissy/m/0.3.11/mini-min.js)、[mini-full.js](http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js) 和 [mini-all.js](http://g.alicdn.com/kissy/m/0.3.11/mini-all-min.js)。
