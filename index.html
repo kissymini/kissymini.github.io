@@ -5,7 +5,7 @@
 <li><strong>dist</strong>：<a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js">mini-min.js</a> （<strong>gizp 压缩后为 17k</strong>）</li>
 <li><strong>源码</strong>：<a href="http://g.alicdn.com/kissy/m/1.0.0/mini.js">min.js</a></li>
 </ul>
-<p>KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（<a href="http://kpm.taobao.net/">KISSY Gallery</a>）管理，KISSY MINI 的自定义模块直接依赖于 git 仓库，通过 bower 来约束代码之间的依赖关系。这样，就剔除了 KISSY MINI 组件代码部署上线这个操作，这极大简化了 KISSY MINI 模块研发规范。因此需要注意，KISSY MINI 从 v1.0 版本开始，组件模块代码无法直接和 KISSY 6.x 兼容，但迁移成本其实非常小。</p>
+<p>KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（<a href="http://kpm.taobao.net/">KISSY Gallery</a>）管理，KISSY MINI 的自定义模块直接依赖于 git 仓库，通过 bower 来约束代码之间的依赖关系。这样，就剔除了 KISSY MINI 组件代码部署上线这个操作，这极大简化了 KISSY MINI 模块研发规范。因此需要注意，KISSY MINI 从 v1.0 版本开始，组件模块代码无法直接和 KISSY 6.x 兼容，但迁移成本其实非常小。同时，我们推荐使用 <a href="http://github.com/jayli/generator-mpi">MPI 脚手架</a>工具来生成模块代码骨架。</p>
 <p>KISSY MINI 所包含的核心模块：</p>
 <table>
 <thead>
@@ -54,16 +54,7 @@
 </tbody>
 </table>
 <p>这些模块中的大部分通过 <code>KISSY</code> 全局对象来访问，比如<code>KISSY.Node</code>、<code>KISSY.Event</code>、<code>KISSY.IO</code>等，注意<code>KISSY.Anim</code>是不存在的</p>
-<p>API 文档入口：</p>
-<ul>
-<li><a href="./api/core.html">core</a></li>
-<li><a href="./api/node.html">node</a></li>
-<li><a href="./api/io.html">io</a></li>
-<li><a href="./api/event.html">event</a></li>
-<li><a href="./api/loader.html">loader</a></li>
-<li><a href="./api/anim.html">anim</a></li>
-<li><a href="./api/touch.html">touch</a></li>
-</ul>
+<p>API 文档入口：<a href="./api/core.html">core</a>，<a href="./api/node.html">node</a>，<a href="./api/io.html">io</a>，<a href="./api/event.html">event</a>，<a href="./api/loader.html">loader</a>，<a href="./api/anim.html">anim</a>，<a href="./api/touch.html">touch</a></p>
 <h3 id="-">种子文件</h3>
 <p>获取最新的种子文件 </p>
 <ul>
