@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>KISSY MINI</title>
+	<script src="../../build/mini.js"></script>
+</head>
+<style>
+	#log p {
+		border-bottom:1px solid gray;
+	}
+
+</style>
+<body>
+	<h2>模块加载Demo</h2>
+	<div id="log">
+	</div>
+	<script>
+		KISSY.config({
+            packages: [{
+				name: 'example',
+				path: './' // 这里的配置可以指向线上地址，也可以指向当前目录
+			}]
+        });
+		var S = KISSY;
+		var $ = KISSY.all;
+		function log(msg){
+			$('#log').append('<p>' + msg + '</p>');
+		}
+		KISSY.use('example/index',function(S,Index){
+			Index.init();
+		});
+	</script>
+	
+</body>
+</html>

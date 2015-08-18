@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]><html class="no-js ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]><html class="no-js"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="http://g.tbcdn.cn/kissy/k/1.4.1/seed-min.js" data-config="{combine:true} "type="text/javascript"></script>
+	<script src="http://learning.github.io/underscore/underscore.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div class="container bs-docs-container"> 
+	<div class="row">
+		<div class="col-md-8">
+			<h2>
+				kissy mini v0.1.1 开发进度
+			</h2>
+			<h4>
+				源码部分
+			</h4>
+			<div id="content">
+				<table class="table table-bordered"><tbody>
+					<tr>
+						<td>
+							<strong>模块名称</strong>
+						</td>
+						<td>
+							<strong>buildin</strong>
+						</td>
+						<td>
+							<strong>开发者</strong>
+						</td>
+						<td>
+							<strong>说明</strong>
+						</td>
+						<td>
+							<strong>进度</strong>
+						</td>
+					</tr>
+					<tr>
+						<td><code>core</code></td>
+						<td>Yes</td>
+						<td>赫门</td>
+						<td>KISSY全局对象</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>loader</code></td>
+						<td>Yes</td>
+						<td>赫门</td>
+						<td>简版的Loader，待二期重构</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>node</code></td>
+						<td>Yes</td>
+						<td>莫争</td>
+						<td>Node模块</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>event</code></td>
+						<td>Yes</td>
+						<td>筱谷</td>
+						<td>Event模块</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>io</code></td>
+						<td>Yes</td>
+						<td>阿克，常胤</td>
+						<td>Ajax模块</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>base</code></td>
+						<td></td>
+						<td>拔赤</td>
+						<td>Base模块(复用KISSY)(待简化)</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>ua</code></td>
+						<td></td>
+						<td>赫门、拔赤</td>
+						<td>浏览器嗅探模块，API保持和KISSY一致，内容从简，和zepto有一定交集</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>uri</code></td>
+						<td></td>
+						<td>拔赤</td>
+						<td>kissy 主干的uri copy到本地</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>anim</code></td>
+						<td></td>
+						<td>拔赤</td>
+						<td>动画模块，<code>.anim()</code>和<code>.animate()</code>方法</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>lang</code></td>
+						<td></td>
+						<td>莫争</td>
+						<td>语言工具方法集合，保持和KISSY兼容，一定程度借鉴社区规范</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>juicer</code></td>
+						<td></td>
+						<td>拔赤</td>
+						<td>Juicer模版渲染引擎</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>form</code></td>
+						<td></td>
+						<td>阿克、拔赤</td>
+						<td>Form表单处理</td>
+						<td>100%</td>
+					</tr>
+					<tr>
+						<td><code>gesture</code></td>
+						<td></td>
+						<td>筱谷</td>
+						<td>手势事件支持(TODO)</td>
+						<td>0% v0.1.2</td>
+					</tr>
+					<tr>
+						<td><code>xtemplate</code></td>
+						<td></td>
+						<td>赫门</td>
+						<td>简版的xtemplate(TODO)</td>
+						<td>0% v0.1.2</td>
+					</tr>
+				</tbody></table>
+			</div>
+			<h4>
+				工具部分	
+			</h4>
+			<div>
+				<table class="table table-bordered"><tbody>
+					<tr>
+						<td>
+							<strong>任务</strong>
+						</td>
+						<td>
+							<strong>说明</strong>
+						</td>
+						<td>
+							<strong>开发者</strong>
+						</td>
+						<td>
+							<strong>进度</strong>
+						</td>
+					</tr>
+					<tr>
+						<td><code>KMC</code></td>
+						<td>本地、线上文件合并打包</td>
+						<td>拔赤、紫英</td>
+						<td>10%</td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	var S = KISSY;
+	S.config({
+		combime:true	
+	});
+	S.use('base');
+</script>
+
+</body>
+</html>

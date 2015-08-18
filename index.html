@@ -61,52 +61,55 @@
 <h3 id="-">种子文件</h3>
 <p>获取最新的种子文件 </p>
 <ul>
-<li><a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js" style="background:none" ><img src="https://img.shields.io/badge/kissy%20mini-1.0.0-green.svg" alt="">]</a> 新版</li>
-<li><a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js"><img src="https://img.shields.io/badge/kissy%20mini-0.3.11-orange.svg" alt=""></a> 旧版</li>
+<li><a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js" style="background:none" ><img src="https://img.shields.io/badge/kissy%20mini-1.0.0-green.svg" alt=""></a> 新版</li>
+<li><a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js" style="background:none"><img src="https://img.shields.io/badge/kissy%20mini-0.3.11-orange.svg" alt=""> 旧版</li>
 </ul>
-<p>注意，KISSY MINI 0.x 版本对外提供三个文件，分别是<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-min.js">mini.js</a>、<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js">mini-full.js</a> 和 <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-all-min.js">mini-all.js</a>。</p>
+<p>注意，KISSY MINI 0.x 版本对外提供三个文件，分别是<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-min.js">mini.js</a>、<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js">mini-full.js</a> 和 <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-all-min.js">mini-all.js</a>。这和 v1.x 不同。</p>
 <h3 id="-">开始使用</h3>
 <p>脚本引用</p>
-<pre><code><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://g.alicdn.com/kissy/m/0.3.11/mini-min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
-</code></pre><p>启动：Hello World!</p>
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://g.alicdn.com/kissy/m/1.0.0/mini-min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre><p>启动：DOMReady 后弹出 Hello World!</p>
 <pre><code>KISSY.ready(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
     alert(<span class="hljs-string">'Hello World!'</span>);
 });
 </code></pre><p>DOM操作：获取一个<code>className</code>叫<code>continue</code>的<code>button</code>，并将它的内容改为&quot;Hello Kissy&quot;。</p>
-<pre><code>KISSY.<span class="hljs-keyword">use</span>(<span class="hljs-string">'node'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
-    S.one(<span class="hljs-string">'button.continue'</span>).html(<span class="hljs-string">'Hello Kissy!'</span>);
-});
+<pre><code>var <span class="hljs-variable">$ </span>= <span class="hljs-constant">KISSY.</span>all;
+<span class="hljs-variable">$(</span><span class="hljs-string">'button.continue'</span>).html(<span class="hljs-string">'Hello Kissy!'</span>);
 </code></pre><p>Ajax 操作：</p>
-<pre><code>KISSY.<span class="hljs-keyword">use</span>(<span class="hljs-string">'io'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
-    S.IO.<span class="hljs-keyword">get</span>(<span class="hljs-string">"test.php"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span></span>{
-        alert(d);
-    });
+<pre><code><span class="hljs-keyword">var</span> S = KISSY;
+S.IO.<span class="hljs-keyword">get</span>(<span class="hljs-string">"test.php"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span></span>{
+    alert(d);
 });
-</code></pre><p>说明：Loader 模块是 Kissy Mini 重要的核心模块，负责在<code>KISSY.use(&#39;模块名&#39;)</code>时自动载入外部模块，模块规范符合 <a href="http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html">Kissy 标准的模块规范 KMD</a>。比如几个和模块定义相关的代码片段：</p>
+</code></pre><p>说明：Loader 模块是 Kissy Mini 重要的核心模块，负责在<code>KISSY.use(&#39;模块名&#39;)</code>时自动载入外部模块，模块规范符合 <a href="http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html">Kissy 标准的模块规范 KMD</a>。v1.x 的后续版本会对渐渐放弃对 KMD 的完全兼容（即不鼓励<code>KISSY.add(function(){},{requires:[&#39;a&#39;,&#39;b&#39;]})</code>这种载入依赖的写法），而更加强调对 CMD 语法的支持。因此我们推荐模块开发写法采用 CMD 格式。比如几个和模块定义相关的代码片段：</p>
+<p>同时 Loader 在 v1.0 之后就不在支持 Combo 了，因为出于简化场景的需要，我们更倾向于用离线包给前端页面提速，因此 KISSY MINI 不再优先支持载入线上资源文件的场景。Loader 在满足基本规范的前提下，会在 v1.x 的后续版本中逐步简化。</p>
 <p>1）定义模块</p>
-<pre><code class="lang-javascript">KISSY.add(<span class="hljs-string">'pkg1/index'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S, Node)</span> </span>{
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Mod</span><span class="hljs-params">()</span> </span>{}
+<p>这里采用 CMD 写法来引入外部依赖</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// ./index.js</span>
+KISSY.add(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">S, require, exports, module</span>) </span>{
+    <span class="hljs-comment">// 通过 require 引入外部模块</span>
+    <span class="hljs-keyword">var</span> myMode = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./my-mode'</span>);
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Mod</span>(<span class="hljs-params"></span>) </span>{}
     <span class="hljs-keyword">return</span> Mod;
-}, {requires: [
-    <span class="hljs-string">'node'</span>
-]});
+});
 </code></pre>
 <p>2）使用模块</p>
-<pre><code class="lang-javascript">KISSY.<span class="hljs-keyword">use</span>(<span class="hljs-string">'pkg1/index'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Mod)</span> </span>{
+<p>如果 HTML 页面和js代码在同一台服务器上，则可以直接用相对路径来访问js</p>
+<pre><code class="lang-javascript">KISSY.<span class="hljs-keyword">use</span>(<span class="hljs-string">'./index'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Mod)</span> </span>{
     <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> Mod();
 });
 </code></pre>
+<p>如果不在同一台服务器上，则需要配置“包”</p>
 <p>3）包配置</p>
 <pre><code class="lang-javascript"><span class="hljs-tag">KISSY</span><span class="hljs-class">.config</span>(<span class="hljs-rules">{
     <span class="hljs-rule"><span class="hljs-attribute">packages</span>:<span class="hljs-value"> [{
         name    : <span class="hljs-string">'pkg1'</span>,
         path    : <span class="hljs-string">'./module'</span>,
-        charset : <span class="hljs-string">'utf-8'</span>
     }]
 })</span></span>;</span>
 </code></pre>
 <h3 id="-demo">示例 Demo</h3>
 <ul>
+<li>Demo：[]</li>
 <li>组件：<a href="http://kissygalleryteam.github.io/slide/1.3/demo/index.html">Slide</a>（Kiss 官方组件）、<a href="/demo/slide/index.htm">Mini Slide</a>、<a href="/demo/ringnav/index.htm">仿 Path 的环状菜单</a></li>
 <li>项目：<a href="http://h5.m.taobao.com/trip/ticket/pad/search/index.html?ttid=703628@taobao_ipad_4.0">阿里旅行-景点门票 Pad 版</a>，<a href="http://wapp.m.taobao.com/mseckill/index.html?host=h5.m.taobao.com">淘宝秒杀手机版</a></li>
 </ul>

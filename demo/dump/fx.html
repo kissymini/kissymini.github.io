@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]><html class="no-js ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]><html class="no-js"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+	<title></title>
+	<script src="../../build/mini.js" type="text/javascript"></script>
+</head>
+<body>
+	<h2>给DOM节点添加自定义事件</h2>
+
+	<div id="test">
+		<ul>
+			<li>点击这里</li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<script>
+		var S = KISSY;
+
+		S.Event.Special['myEvent'] = {
+			setup:function(scope){
+				this.delegate('click',function(e){
+					S.one(e.currentTarget).fire('myEvent');	
+					return true;
+				});
+			},
+			teardown:function(){
+			}
+		};
+
+		S.one('#test').on('myEvent',function(e){
+			alert('ok');
+		});
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]><html class="no-js ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]><html class="no-js"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+	<title></title>
+	<script src="../../build/mini.js" type="text/javascript"></script>
+</head>
+<body>
+
+<style>
+	#test {
+		background:red;
+	}
+</style>
+
+	<div id="test">
+		<ul>
+			<li>点击这里应该弹出</li>
+			<li><a href="">asdf</a></li>
+			<li></li>
+		</ul>
+		<div>点击这里不应该触发事件</div>
+	</div>
+	<div id="log">
+
+	</div>
+	<script>
+		var S = KISSY;
+
+		var log = function(msg){
+			S.one('#log').append('<p>'+msg+'</p>');
+		};
+
+		S.one('div').animate({
+			background:'blue'	
+		},1,'easeNone',function(){
+			log('动画执行完毕');
+		});
+
+		S.one('#test').on('tap',function(e){
+			log(e.type);
+			log('----------');
+		});
+		S.one('#test').on('singleTap',function(e){
+			log(e.type);
+			log('----------');
+		});
+		S.one('#test').on('click',function(e){
+			log(e.type);
+			log('----------');
+		});
+		S.one(document).delegate('tap','#test',function(e){
+			log('document>#test')
+			log(e.type);
+			log(e.target);
+			log('---------------');
+		});
+		S.one('#test').delegate('tap','li',function(e){
+			log('#test>li');
+			log(e.type);
+			log(e.target);
+			log('---------------');
+		});
+
+	</script>
+</body>
+</html>

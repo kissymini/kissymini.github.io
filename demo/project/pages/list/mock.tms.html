@@ -1,0 +1,35 @@
+<!--Juicer Template convert to tms-->
+
+<!--#def
+	{
+		"tmsTitle": "LOGO",
+		"title": "测试图片",
+		"href": "http://gtms01.alicdn.com/tps/i1/T1QBDWFXxcXXXzCwr6-168-170.png"
+	}
+-->
+<img title="${title}" src="${href}"/>
+
+<!--#def
+	{
+		"list": [
+			{
+				"qt": "机票分会场",
+				"dz": "http://trip.taobao.com/jipiao"
+			},
+			{
+				"qt": "酒店分会场",
+				"dz": "http://trip.taobao.com/jiudian"
+			},
+			{
+				"qt": "度假分会场",
+				"dz": "http://trip.taobao.com/dujia"
+			}
+		],
+		"tmsTitle": "分会场列表"
+	}
+-->
+<ul class="other-link">
+	{@each list as item}
+		<li class="other-link-item"><a href="${item.dz}" target="_blank">${item.qt}</a></li>
+	{@/each}
+</ul>

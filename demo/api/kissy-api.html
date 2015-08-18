@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]><html class="no-js ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]><html class="no-js"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+	<title></title>
+	<script src="../../../build/mini.js" type="text/javascript"></script>
+	<script src="./underscore.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="./bootstrap.min.css" />
+</head>
+<body>
+	<h2>KISSY MINI 和 underscore 全局对象直辖的方法对比</h2>
+
+<div class="container bs-docs-container"> 
+	<div class="row">
+		<div class="col-md-5">
+			<div id="content">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	var S = KISSY;
+	var Funs = {};
+	var Obj = {
+		KISSY:false,
+		_:false
+		// es5:false
+	};
+
+	renderHTML(init());
+
+	function init(){
+		render('KISSY');
+		render('_');
+		return Funs;
+	}
+
+	function render(str){
+		var o = window[str];
+		for(var i in o){
+			if(S.isFunction(o[i])){
+				Funs[i] = Funs[i] || S.clone(Obj);
+				Funs[i][str] = true;
+			}
+		}
+	}
+
+	function renderHTML(Funs){
+		var str = renderHead();
+		for(var i in Funs){
+			str += renderRow(Funs,i);
+		}
+		S.one('#content').html('<table class="table table-condensed"><tbody>'+str+'</tbody></table>');
+	}
+
+	function renderHead(){
+		var str = '<td><strong>methods</strong></td>';
+		for(var i in Obj){
+			str += '<td><strong>'+i+'</strong></td>';
+		}
+		return '<tr>'+str+'</tr>';
+	}
+
+	function renderRow(Funs,key){
+		var str = '<td><code>'+key+'</code></td>';
+		var flag = true;
+		for(var i in Funs[key]){
+			if(Funs[key][i] === true){
+				str += '<td class="info">&#8730;</td>';
+			} else {
+				str += '<td></td>';
+				flag = false;
+			}
+		}
+		if(flag){
+			var hl = ' class="success"';
+		} else {
+			var hl = '';
+		}
+		return '<tr'+hl+'>'+str+'</tr>';
+	}
+
+</script>
+
+</body>
+</html>

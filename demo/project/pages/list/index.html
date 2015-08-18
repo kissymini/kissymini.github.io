@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title> Test - Aaa Demo </title>
+	<meta charset="utf-8" />
+    <!--import Kissy Seed 1.4.1 & Pi Seed 1.1.7-->
+	<!--import Page's Assets-->
+	<!--script src="http://g.tbcdn.cn/kissy/k/1.4.1/mini-full.js" type="text/javascript"></script-->
+	<script src="../../../../build/mini.js" type="text/javascript"></script>
+	<script>
+		KISSY.config({
+			packages:[
+				{
+					name:"h5-test",
+					path:'http://g.tbcdn.cn/trip/h5-test/0.1.28'
+				},
+				{
+					name:"m",
+					path: 'http://g.alicdn.com/kissy/m/0.3.11/'
+				}
+				],
+
+				modules:{
+					'base':{
+						alias:['m/base']
+					}
+				}
+		});
+
+	</script>
+</head>
+<body>
+	<div id="content">
+	</div>
+	<script>
+		KISSY.use('h5-test/pages/list/index', function(S, Aaa) {
+			new Aaa();
+		});	
+	</script>
+</body>
+</html>
