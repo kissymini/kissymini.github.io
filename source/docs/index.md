@@ -26,7 +26,7 @@ KISSY MINI 所包含的核心模块：
 
 这些模块中的大部分通过 `KISSY` 全局对象来访问，比如`KISSY.Node`、`KISSY.Event`、`KISSY.IO`等，注意`KISSY.Anim`是不存在的
 
-- API 文档入口：[core](./api/core.html)，[node](./api/node.html)，[io](./api/io.html)，[event](./api/event.html)，[loader](./api/loader.html)，[anim](./api/anim.html)，[touch](./api/touch.html)
+- API 文档入口：[core](./docs/core.html)，[node](./docs/node.html)，[io](./docs/io.html)，[event](./docs/event.html)，[loader](./docs/loader.html)，[anim](./docs/anim.html)，[touch](./docs/touch.html)
 - 测试用例入口：
 
 ### 种子文件
