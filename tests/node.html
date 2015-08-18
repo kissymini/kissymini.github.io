@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>DOM 模块测试</title>
+    <link rel="stylesheet" href="lib/mocha.css">
+    <script src="../build/mini.js"></script>
+</head>
+<body>
+<div id="mocha"></div>
+<script src="lib/mocha.js"></script>
+<script src="lib/chai.js"></script>
+<script type="text/javascript">
+    mocha.ui('bdd');
+    mocha.reporter('html');
+    chai.should();
+    expect = chai.expect;
+</script>
+<script src="node/attr.js"></script>
+<script src="node/class.js"></script>
+<script src="node/create.js"></script>
+<script src="node/insertion.js"></script>
+<script src="node/node.js"></script>
+<script src="node/offset.js"></script>
+<script src="node/selector.js"></script>
+<script src="node/style.js"></script>
+<script src="node/traversal.js"></script>
+<script type="text/javascript">
+    if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+    } else {
+        mocha.run();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>IO 模塊測試</title>
+    <link rel="stylesheet" href="./lib/mocha.css"/>
+    <script type="text/javascript" src="./lib/mocha.js"></script>
+
+    <script type="text/javascript" src="../build/mini.js"></script>
+    <!--<script type="text/javascript" src="http://g.assets.daily.taobao.net/kissy/m/0.1.1/mini-full.js"></script>-->
+</head>
+<body>
+<script type="text/javascript">
+    mocha.setup({
+        ui: "bdd",
+        ignoreLeaks: true
+    });
+
+    mocha.globals(['jsonp*']);
+</script>
+<div id="mocha"></div>
+<script type="text/javascript">
+    var jsonURL = "./io/json.html",
+        jsonpURL = "http://www.alitrip.com/go/rgn/trip/kissy-testcase-jsonp.php";//"./io/jsonp.php",
+        scriptURL = "./io/script.html",
+        dataURL = "./io/data.json",
+        phpJsonURL = "./io/json.php",
+        errorJsonURL = "./io/error.json";
+
+    var i = 1;
+    KISSY.IO.on('send', function(ev) {
+        console.log("{{==================")
+    })
+    KISSY.IO.on('complete', function(ev) {
+        console.log("==================}}" + i++)
+    })
+
+    describe("Mini IO", function() {
+        describe('.io', function() {
+            it('should fire "abort" error', function(done) {
+                KISSY.IO({
+                    url: jsonURL,
+                    dataType: "json",
+                    beforeSend: function() {
+                        return false;
+                    },
+                    error: function(n, error) {
+                        if(error == "abort"){
+                            done();
+                        }else {
+                            done(error);
+                        }
+                    },
+                    complete: function() {
+                        console.log("complete by abort case", arguments);
+                    }
+                });
+
+            });
+
+            it('should fire 404 error', function(done) {
+                var io = KISSY.IO({
+                    url: jsonURL + "1",
+                    dataType: "json",
+                    error: function(n, error) {
+                        if(io.getNativeXhr().status == "404") {
+                            done();
+                        }else {
+                            done(error);
+                        }
+                    }
+                })
+            });
+
+            it('should fire 404 error by jsonp', function(done) {
+                var io = KISSY.IO({
+                    url: jsonURL + "1",
+                    dataType: "jsonp",
+                    success: function() {
+                        done('should not success')
+                    },
+                    error: function(n, error) {
+                        done();
+                    }
+                })
+            });
+
+
+			// 过滤掉 php 的测试用例
+			/*
+            it('should fire timeout error', function(done) {
+                KISSY.IO({
+                    url: phpJsonURL,
+                    dataType: "jsonp",
+                    timeout: 0.5,
+                    success: function() {
+                        done("timeout case fire success callback");
+                    },
+                    error: function(n, error) {
+                        if(error == "timeout") {
+                            done();
+                        }else {
+                            done(error);
+                        }
+                    }
+                });
+            })
+			*/
+
+            it('should fire access error', function(done) {
+                KISSY.IO({
+                    url: "http://19lou.com",
+                    dataType: "json",
+                    success: function() {
+                        done("timeout case fire success callback");
+                    },
+                    error: function(n, error) {
+                        if(error == "error") {
+                            done();
+                        }else {
+                            done(error);
+                        }
+                    },
+                    complete: function() {
+                        console.log('complete by access error', arguments);
+                    }
+                })
+            });
+
+            it('should fire parser error', function(done) {
+                KISSY.IO({
+                    url: errorJsonURL,
+                    success: function(data) {
+                        done('parse success?')
+                    },
+                    error: function(n, error) {
+                        if(error == "parsererror") {
+                            done()
+                        }else {
+                            done(error);
+                        }
+                    },
+                    complete: function() {
+                    }
+                });
+            })
+
+            it('should fire success ', function(done) {
+                KISSY.IO({
+                    url: jsonURL,
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.result === true) {
+                            done();
+                        }else {
+                            done('error data');
+                        }
+                    },
+                    error: function(n, error) {
+                        done(error);
+                    },
+                    complete: function() {
+                        console.log('complete by success case', arguments);
+                    }
+                })
+            })
+
+            it('should fire complete', function(done) {
+                var times = 0;
+                KISSY.IO({
+                    url: jsonURL,
+                    dataType: "json",
+                    beforeSend: function() {
+                        times ++;
+                    },
+                    success: function() {
+                        times ++;
+                        console.log('fire success and complete callback')
+                    },
+                    error: function(n, error) {
+                        times ++;
+                    },
+                    complete: function() {
+                        if(times == 2) {
+                            done();
+                        }else {
+                            done(times);
+                        }
+                    }
+                });
+
+                var times2 = 0;
+                KISSY.IO({
+                    url: errorJsonURL,
+                    dataType: "json",
+                    beforeSend: function() {
+                        times2 ++;
+                    },
+                    success: function() {
+                        times2 ++;
+                    },
+                    error: function(n, error) {
+                        times2 ++;
+                        console.log('fire error and complete callback')
+                    },
+                    complete: function() {
+                        if(times2 == 2) {
+                            done();
+                        }else {
+                            done(times2);
+                        }
+                    }
+                });
+            })
+
+            it('should handle data by response head content-type', function(done) {
+                KISSY.IO({
+                    url: dataURL,
+                    success: function(data) {
+                        if(typeof data === "object") {
+                            done()
+                        }else {
+                            done('not object');
+                        }
+                    },
+                    error: function(n, error) {
+                        done(error);
+                    },
+                    complete: function() {
+                        console.log('complete by response case', arguments);
+                    }
+                });
+            })
+
+            it('should handle data as jsonp', function(done) {
+                KISSY.IO({
+                    url: jsonpURL,
+                    dataType:"jsonp",
+                    success: function(data) {
+                        console.log('fire success from jsonp', data);
+                        done();
+                    },
+                    error: function(n, error) {
+                        done(error);
+                    }
+                });
+            })
+
+            it('should handle data as script', function(done) {
+                var script = KISSY.getScript(scriptURL);
+                script.onload = function() {
+                    if(window.aketest == 1) {
+                        delete window.aketest;
+                        done();
+                    }else {
+                        done('nop');
+                    }
+                }
+
+            })
+
+            it('should abort to get jsonp data', function(done) {
+                var msg = 'case from'
+                var io = KISSY.IO({
+                    url: jsonpURL,
+                    dataType:"jsonp",
+                    success: function(data) {
+                        console.log()
+                        done("should not success");
+                    },
+                    error: function(n, error) {
+                        if(error == "abort") {
+                            done();
+                        }else {
+                            done(error);
+                        }
+                    },
+                    complete: function() {
+                        console.log('complete by abort to get jsonp data case', arguments);
+                    }
+                });
+
+                io.abort();
+
+            })
+
+            it('should success with getJSON', function(done) {
+                KISSY.use('io', function(S, IO) {
+                    IO.getJSON(jsonURL, function(data) {
+                        if(data.msg == "json data") {
+                            done();
+                        }else {
+                            done('error data');
+                        }
+                    });
+                });
+            });
+
+        })
+    })
+
+</script>
+
+<script type="text/javascript">
+    mocha.checkLeaks();
+    mocha.globals(['KISSY']);
+    mocha.run();
+</script>
+</body>
+</html>

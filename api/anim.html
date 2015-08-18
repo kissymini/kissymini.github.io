@@ -49,8 +49,8 @@
               </a>
             
               
-              <a class="source" href="ua.html">
-                ua.js
+              <a class="source" href="touch.html">
+                touch.js
               </a>
             
           </div>
@@ -96,7 +96,7 @@ m/anim
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>KISSY.add(<span class="hljs-string">'m/anim'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>KISSY.add(<span class="hljs-string">'anim'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">S</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -107,17 +107,15 @@ m/anim
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>调用方法</p>
-<pre><code>S.use(<span class="hljs-string">'anim'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span>{</span>
-    S.one(<span class="hljs-string">'#id'</span>).animate({
-        width:<span class="hljs-number">100</span>
-    },<span class="hljs-number">2</span><span class="hljs-comment">/*秒*/</span>,<span class="hljs-string">'easeNone'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
-        <span class="hljs-comment">// 2 秒后触发回调</span>
-    });
+              <p>动画组件调用方法，不需要再<code>S.use(&#39;anim&#39;)</code></p>
+<pre><code>S.one(<span class="hljs-string">'#id'</span>).animate({
+    width:<span class="hljs-number">100</span>
+},<span class="hljs-number">2</span><span class="hljs-comment">/*秒*/</span>,<span class="hljs-string">'easeNone'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-comment">// 2 秒后触发回调</span>
 });
 </code></pre><p>动画API参照 <a href="http://docs.kissyui.com/1.4/docs/html/api/node/animate.html">KISSY Anim</a></p>
 <pre><code>el.animate(properties, 
-        [duration, [easing, [<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span> 
+        [duration, [easing, [<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{ 
         <span class="hljs-comment">//...</span>
         }]]])  ⇒ self
 el.animate(properties, 
@@ -127,29 +125,29 @@ el.animate(properties,
             complete: fn })  ⇒ self
 </code></pre><p>代码差异</p>
 <pre><code><span class="hljs-comment">// 1.4.0，支持两种用法</span>
-S.Anim(<span class="hljs-string">'div'</span>,to,duration<span class="hljs-comment">/*秒*/</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+S.Anim(<span class="hljs-string">'div'</span>,to,duration<span class="hljs-comment">/*秒*/</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 }).run();
-S.one(<span class="hljs-string">'div'</span>).animate(to,duration<span class="hljs-comment">/*秒*/</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+S.one(<span class="hljs-string">'div'</span>).animate(to,duration<span class="hljs-comment">/*秒*/</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 });
 </code></pre><pre><code><span class="hljs-comment">// MINI，只支持一种用法，S.Anim不存在</span>
-S.one(<span class="hljs-string">'div'</span>).animate(to,duration<span class="hljs-comment">/*秒*/</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+S.one(<span class="hljs-string">'div'</span>).animate(to,duration<span class="hljs-comment">/*秒*/</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 });
 </code></pre><p>特别注意CSS3动画的回调时机
 CSS3动画的回调实例代码，同样效果的CSS3动画的实现差异：</p>
 <pre><code><span class="hljs-comment">// 1.4.0</span>
 el.animate({
     <span class="hljs-string">'-webkit-transition-duration'</span>:<span class="hljs-string">'2s'</span>
-},<span class="hljs-number">0.001</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+},<span class="hljs-number">0.001</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-comment">// 0.001 秒后触发回调    </span>
 });
-setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-comment">// 2秒后触发回调</span>
 },<span class="hljs-number">2000</span>);
 
 <span class="hljs-comment">// MINI</span>
 el.animate({
     <span class="hljs-string">'-webkit-transition-duration'</span>:<span class="hljs-string">'2s'</span>
-},<span class="hljs-number">2</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+},<span class="hljs-number">2</span>,easing,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-comment">// 2 秒后触发回调    </span>
 });
 </code></pre>
@@ -163,8 +161,8 @@ el.animate({
 		Moz: <span class="hljs-string">''</span>,
 		O: <span class="hljs-string">'o'</span>
 	},
-	document = window.document,
-	testEl = document.createElement(<span class="hljs-string">'div'</span>),
+	<span class="hljs-built_in">document</span> = <span class="hljs-built_in">window</span>.document,
+	testEl = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>),
 	supportedTransforms = <span class="hljs-regexp">/^((translate|rotate|scale)(X|Y|Z|3d)?|matrix(3d)?|perspective|skew(X|Y)?)$/i</span>,
 	transform,
 	transitionProperty,
@@ -177,14 +175,14 @@ el.animate({
 	animationDelay,
 	cssReset = {}
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dasherize</span><span class="hljs-params">(str)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dasherize</span>(<span class="hljs-params">str</span>) </span>{
 		<span class="hljs-keyword">return</span> str.replace(<span class="hljs-regexp">/([a-z])([A-Z])/</span>, <span class="hljs-string">'$1-$2'</span>).toLowerCase()
 	}
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeEvent</span><span class="hljs-params">(name)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeEvent</span>(<span class="hljs-params">name</span>) </span>{
 		<span class="hljs-keyword">return</span> eventPrefix ? eventPrefix + name: name.toLowerCase()
 	}
 
-	S.each(vendors, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, vendor)</span> {</span>
+	S.each(vendors, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event, vendor</span>) </span>{
 		<span class="hljs-keyword">if</span> (testEl.style[vendor + <span class="hljs-string">'TransitionProperty'</span>] !== <span class="hljs-literal">undefined</span>) {
 			prefix = <span class="hljs-string">'-'</span> + vendor.toLowerCase() + <span class="hljs-string">'-'</span>
 			eventPrefix = event
@@ -193,7 +191,14 @@ el.animate({
 	})
 
 	transform = prefix + <span class="hljs-string">'transform'</span>
-	cssReset[transitionProperty = prefix + <span class="hljs-string">'transition-property'</span>] = cssReset[transitionDuration = prefix + <span class="hljs-string">'transition-duration'</span>] = cssReset[transitionDelay = prefix + <span class="hljs-string">'transition-delay'</span>] = cssReset[transitionTiming = prefix + <span class="hljs-string">'transition-timing-function'</span>] = cssReset[animationName = prefix + <span class="hljs-string">'animation-name'</span>] = cssReset[animationDuration = prefix + <span class="hljs-string">'animation-duration'</span>] = cssReset[animationDelay = prefix + <span class="hljs-string">'animation-delay'</span>] = cssReset[animationTiming = prefix + <span class="hljs-string">'animation-timing-function'</span>] = <span class="hljs-string">''</span>
+	cssReset[transitionProperty = prefix + <span class="hljs-string">'transition-property'</span>] 
+		= cssReset[transitionDuration = prefix + <span class="hljs-string">'transition-duration'</span>] 
+		= cssReset[transitionDelay = prefix + <span class="hljs-string">'transition-delay'</span>] 
+		= cssReset[transitionTiming = prefix + <span class="hljs-string">'transition-timing-function'</span>] 
+		= cssReset[animationName = prefix + <span class="hljs-string">'animation-name'</span>] 
+		= cssReset[animationDuration = prefix + <span class="hljs-string">'animation-duration'</span>] 
+		= cssReset[animationDelay = prefix + <span class="hljs-string">'animation-delay'</span>] 
+		= cssReset[animationTiming = prefix + <span class="hljs-string">'animation-timing-function'</span>] = <span class="hljs-string">''</span>
 
 	S.mix(S,{
 		_fx : {
@@ -209,7 +214,7 @@ el.animate({
 		}
 	});
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animate</span><span class="hljs-params">(properties, duration, ease, callback, delay)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animate</span>(<span class="hljs-params">properties, duration, ease, callback, delay</span>) </span>{
 		<span class="hljs-keyword">if</span> (S.isFunction(duration)) callback = duration,
 		ease = <span class="hljs-literal">undefined</span>,
 		duration = <span class="hljs-literal">undefined</span>
@@ -224,7 +229,7 @@ el.animate({
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.anim(properties, duration, ease, callback, delay)
 	}
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">anim</span><span class="hljs-params">(properties, duration, ease, callback, delay)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">anim</span>(<span class="hljs-params">properties, duration, ease, callback, delay</span>) </span>{
 		<span class="hljs-comment">/* KISSY Anim 默认以秒为单位 */</span>
 		duration *= <span class="hljs-number">1000</span>;
 		<span class="hljs-keyword">var</span> key, cssValues = {},
@@ -262,7 +267,7 @@ el.animate({
 			}
 		}
 
-		wrappedCallback = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> {</span>
+		wrappedCallback = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> event !== <span class="hljs-string">'undefined'</span>) {
 				<span class="hljs-keyword">if</span> (event.target !== event.currentTarget) <span class="hljs-keyword">return</span> ;
 				$(event.target).detach(endEvent, wrappedCallback)
@@ -275,7 +280,7 @@ el.animate({
 			$(<span class="hljs-keyword">this</span>).on(endEvent, wrappedCallback)
 			<span class="hljs-comment">/* transitionEnd is not always firing on older Android phones
 			so make sure it gets fired */</span>
-			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">if</span> (fired) <span class="hljs-keyword">return</span> ;
 				wrappedCallback.call(that)
 			},
@@ -286,8 +291,8 @@ el.animate({
 
 		<span class="hljs-keyword">this</span>.css(cssValues)
 
-		<span class="hljs-keyword">if</span> (duration &lt;= <span class="hljs-number">0</span>) setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-			that.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+		<span class="hljs-keyword">if</span> (duration &lt;= <span class="hljs-number">0</span>) setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+			that.each(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 				wrappedCallback.call(<span class="hljs-keyword">this</span>)
 			})
 		},
@@ -303,7 +308,23 @@ el.animate({
 		animate:animate
 	});
 
-});</pre></div></div>
+});
+
+KISSY.require(<span class="hljs-string">'anim'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <style>td {border-top:1px solid #ccc} table {border-collapse: collapse;}</style>
+<style>pre{-moz-tab-size:4;-webkit-tab-size:4;tab-size:4;}</style>
+
+            </div>
             
         </li>
         

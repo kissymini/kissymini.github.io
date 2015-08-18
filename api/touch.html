@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>touch.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="anim.html">
+                anim.js
+              </a>
+            
+              
+              <a class="source" href="core.html">
+                core.js
+              </a>
+            
+              
+              <a class="source" href="event.html">
+                event.js
+              </a>
+            
+              
+              <a class="source" href="io.html">
+                io.js
+              </a>
+            
+              
+              <a class="source" href="loader.html">
+                loader.js
+              </a>
+            
+              
+              <a class="source" href="node.html">
+                node.js
+              </a>
+            
+              
+              <a class="source" href="touch.html">
+                touch.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>touch.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*
+combined files : 
+
+m/touch
+
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="touch-">Touch 模块</h2>
+<p>完成对常用移动设备触屏事件的封装，包括’tap’, ‘tapHold’, ‘singleTap’, ‘doubleTap’事件，用法和普通DOM事件一致</p>
+<ul>
+<li>tap：轻触</li>
+<li>tapHold：长按</li>
+<li>singleTap：单击</li>
+<li>doubleTap：双击</li>
+</ul>
+<pre><code><span class="hljs-keyword">var</span> $ = S.all;
+$(<span class="hljs-string">'#id'</span>).on(<span class="hljs-string">'tap'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
+        alert(<span class="hljs-string">'点击了tap事件'</span>);
+});
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @ignore
+ * @file touch
+ * @author 虎牙 &lt;huya.nzb@alibaba-inc.com&gt;
+ */</span>
+!(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">S</span>) </span>{
+    
+    <span class="hljs-keyword">if</span> (S.__touchModAdded) { <span class="hljs-keyword">return</span>; }<span class="hljs-comment">//预防重复绑定监听</span>
+    
+    <span class="hljs-keyword">var</span> TAP_MAX_TOUCH_TIME = <span class="hljs-number">200</span>, <span class="hljs-comment">//KISSY为300ms</span>
+        TAP_MAX_DISTANCE = <span class="hljs-number">10</span>, <span class="hljs-comment">//KISSY为5px</span>
+        TAP_HOLD_DELAY = <span class="hljs-number">500</span>, <span class="hljs-comment">//KISSY为1000ms</span>
+        SINGLE_TAP_DELAY = <span class="hljs-number">300</span>, <span class="hljs-comment">//KISSY为300ms，Zepto为250ms，太快无法触发doubleTap</span>
+        
+        docElem = <span class="hljs-built_in">document</span>.documentElement,
+        hasTouch = !!(<span class="hljs-string">'ontouchstart'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>桌面浏览器上用mousedown和mouseup模拟</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        EVT_TOUCH_START = hasTouch ? <span class="hljs-string">'touchstart'</span> : <span class="hljs-string">'mousedown'</span>,
+        EVT_TOUCH_MOVE = hasTouch ? <span class="hljs-string">'touchmove'</span> : <span class="hljs-string">'mousemove'</span>,
+        EVT_TOUCH_END = hasTouch ? <span class="hljs-string">'touchend'</span> : <span class="hljs-string">'mouseup'</span>,
+        EVT_TOUCH_CANCEL = <span class="hljs-string">'touchcancel'</span>,
+        EVT_SCROLL = <span class="hljs-string">'scroll'</span>,
+        
+        noop = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{},
+        
+        tapHoldTimer = <span class="hljs-literal">null</span>,
+        doubleTapTimmer = <span class="hljs-literal">null</span>,
+        singleTouch = <span class="hljs-literal">null</span>,
+        
+        touches = [
+        <span class="hljs-comment">/*{
+            startX:0,
+            startY:0,
+            endX:0,
+            endY:0,
+            startTime:0,
+            endTime:0,
+            deltaX:0,
+            deltaY:0,
+            distance:0,
+            timeSpan:0,
+       }*/</span>
+       ];
+    
+    <span class="hljs-comment">/* 清除多余触摸 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">clearTouchArray</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">if</span> (touches.length &gt; <span class="hljs-number">2</span>) {
+            <span class="hljs-keyword">var</span> tmpArray = [];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; touches.length; i++) {
+                tmpArray[i - <span class="hljs-number">1</span>] = touches[i];
+            }
+            touches = tmpArray;
+        }
+    }
+
+    <span class="hljs-comment">/* 排除多次绑定中的单次点击的多次记录 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shouldExcludeTouches</span>(<span class="hljs-params"></span>) </span>{
+        
+        clearTouchArray();
+        
+        <span class="hljs-keyword">if</span> (touches.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        
+        <span class="hljs-keyword">var</span> duration = singleTouch.startTime - touches[touches.length - <span class="hljs-number">1</span>].startTime;
+        
+        <span class="hljs-comment">/* 判断是否是同一次点击 */</span>
+        <span class="hljs-keyword">if</span> (duration &lt; <span class="hljs-number">10</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    }
+    
+    <span class="hljs-comment">/* 检查是否是两次tap */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkDoubleTap</span>(<span class="hljs-params"></span>) </span>{
+        
+        clearTouchArray();
+        
+        <span class="hljs-keyword">if</span> (touches.length == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        
+        <span class="hljs-comment">/* 检查两次tap的target是不是一致 */</span>
+        <span class="hljs-keyword">var</span> sameTarget = touches[<span class="hljs-number">0</span>].endEvent.target == touches[<span class="hljs-number">1</span>].endEvent.target;
+        <span class="hljs-keyword">var</span> duration = touches[<span class="hljs-number">1</span>].startTime - touches[<span class="hljs-number">0</span>].startTime;
+        
+        <span class="hljs-keyword">if</span> (sameTarget &amp;&amp; duration &lt; SINGLE_TAP_DELAY) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    }
+    
+    <span class="hljs-comment">/* 取消长按的延时器 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cancelTapHoldTimer</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">if</span> (tapHoldTimer) {
+            clearTimeout(tapHoldTimer);
+            tapHoldTimer = <span class="hljs-literal">null</span>;
+        }
+    }
+    
+    <span class="hljs-comment">/* 取消双击的延时器 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cancelDoubleTapTimer</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">if</span> (doubleTapTimmer) {
+            clearTimeout(doubleTapTimmer);
+            doubleTapTimmer = <span class="hljs-literal">null</span>;
+        }
+    }
+    
+    <span class="hljs-comment">/* 触摸开始回调 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">touchstartHandler</span>(<span class="hljs-params">e</span>) </span>{
+        
+        <span class="hljs-comment">/* 多指触摸 */</span>
+        <span class="hljs-keyword">if</span> (e.touches &amp;&amp; e.touches.length &gt; <span class="hljs-number">1</span>) {
+            singleTouch = <span class="hljs-literal">null</span>;
+            cancelDoubleTapTimer();
+            <span class="hljs-keyword">return</span>;
+        }
+        
+        <span class="hljs-keyword">var</span> target = e.target,
+            touch = e.changedTouches ? e.changedTouches[<span class="hljs-number">0</span>] : e,
+            startX = touch.pageX,
+            startY = touch.pageY;
+            
+        singleTouch = {
+            startX: startX,
+            startY: startY,
+            startEvent: e,
+            startTime: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime()
+        };
+        
+        <span class="hljs-comment">/* 长按延时器 */</span>
+        cancelTapHoldTimer();
+        
+        <span class="hljs-comment">/* 设置长按延时 */</span>
+        tapHoldTimer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            
+            cancelTapHoldTimer();
+            
+            <span class="hljs-keyword">if</span> (singleTouch) {
+                <span class="hljs-keyword">var</span> eProxy = S.merge(e, {
+                    type: <span class="hljs-string">'tapHold'</span>,
+                    pageX: startX,
+                    pageY: startY,
+                    originalEvent: e,
+                    timeStamp: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime()
+                });
+                
+                S.one(target).fire(<span class="hljs-string">'tapHold'</span>, eProxy);
+            }
+            
+        }, TAP_HOLD_DELAY);
+    }
+    
+    <span class="hljs-comment">/* 触摸滑动回调 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">touchmoveHandler</span>(<span class="hljs-params">e</span>) </span>{
+        
+        <span class="hljs-keyword">if</span> (!singleTouch || !tapHoldTimer) { <span class="hljs-keyword">return</span>; }
+        
+        <span class="hljs-keyword">var</span> target = e.target,
+            touch = e.changedTouches ? e.changedTouches[<span class="hljs-number">0</span>] : e,
+            endX = touch.pageX,
+            endY = touch.pageY,
+            deltaX = <span class="hljs-built_in">Math</span>.abs(endX - singleTouch.startX), <span class="hljs-comment">//滑过的水平距离</span>
+            deltaY = <span class="hljs-built_in">Math</span>.abs(endY - singleTouch.startY), <span class="hljs-comment">//滑过的垂直距离</span>
+            distance = <span class="hljs-built_in">Math</span>.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        <span class="hljs-comment">/* 位移超过一定距离，取消tapHold事件 */</span>
+        <span class="hljs-keyword">if</span> (distance &gt; TAP_MAX_DISTANCE) {
+            cancelTapHoldTimer();
+        }
+    }
+    
+    <span class="hljs-comment">/* 触摸结束回调 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">touchendHandler</span>(<span class="hljs-params">e</span>) </span>{
+        
+        cancelTapHoldTimer();
+        
+        <span class="hljs-keyword">if</span> (!singleTouch) {
+            cancelDoubleTapTimer();
+            <span class="hljs-keyword">return</span>;
+        }
+        
+        <span class="hljs-keyword">var</span> eProxy, $target,
+            target = e.target,
+            touch = e.changedTouches ? e.changedTouches[<span class="hljs-number">0</span>] : e,
+            endX = touch.pageX,
+            endY = touch.pageY,
+            endTime = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime(),
+            deltaX = <span class="hljs-built_in">Math</span>.abs(endX - singleTouch.startX), <span class="hljs-comment">//滑过的水平距离</span>
+            deltaY = <span class="hljs-built_in">Math</span>.abs(endY - singleTouch.startY); <span class="hljs-comment">//滑过的垂直距离</span>
+            
+        S.mix(singleTouch, {
+            endX: endX,
+            endY: endY,
+            deltaX: deltaX,
+            deltaY: deltaY,
+            endTime: endTime,
+            endEvent: e,
+            distance: <span class="hljs-built_in">Math</span>.sqrt(deltaX * deltaX + deltaY * deltaY),
+            timeSpan: endTime - singleTouch.startTime
+        });
+        
+        <span class="hljs-comment">/* 触摸时间和移动距离超过最大值，则无效 */</span>
+        <span class="hljs-keyword">if</span> (singleTouch.timeSpan &gt; TAP_MAX_TOUCH_TIME || singleTouch.distance &gt; TAP_MAX_DISTANCE) {
+            singleTouch = <span class="hljs-literal">null</span>;
+            cancelDoubleTapTimer();
+            <span class="hljs-keyword">return</span>;
+        }
+        
+        <span class="hljs-comment">/* 同时绑定singleTap和doubleTap时，一次点击push了两次singleTouch，应该只push一次 */</span>
+        <span class="hljs-keyword">if</span> (!shouldExcludeTouches(singleTouch)) {
+            touches.push(singleTouch);
+        } <span class="hljs-keyword">else</span> {
+            cancelDoubleTapTimer();
+            <span class="hljs-keyword">return</span>;
+        }
+        
+        clearTouchArray();
+       
+        fireTap(e, {
+            type: <span class="hljs-string">'tap'</span>,
+            pageX: endX,
+            pageY: endY,
+            clientX: touch.clientX,
+            clientY: touch.clientY,
+            timeStamp: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime(),
+            originalEvent:e
+        });
+    }
+    
+    <span class="hljs-comment">/* 触摸取消回调 */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">touchcancelHandler</span>(<span class="hljs-params">e</span>) </span>{
+        singleTouch = <span class="hljs-literal">null</span>;
+        clearTouchArray();
+        cancelDoubleTapTimer();
+        cancelTapHoldTimer();
+    }
+    
+    <span class="hljs-comment">/* TODO
+    部分情况不可以发生tap事件，或者target有误，比如说-webkit-overflow-scrolling等
+    触发tap事件*/</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fireTap</span>(<span class="hljs-params">e, obj</span>) </span>{
+        <span class="hljs-keyword">var</span>  $target = S.one(e.target);
+        
+        eProxy = S.merge(e, obj || {});
+        
+        <span class="hljs-comment">/* 防止点击穿透 */</span>
+        eProxy.preventDefault = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">try</span> { 
+                <span class="hljs-keyword">this</span>.constructor.prototype.preventDefault.call(<span class="hljs-keyword">this</span>);   
+                e.preventDefault(); 
+            } <span class="hljs-keyword">catch</span>(err) {}
+        };
+        
+        <span class="hljs-comment">/* 先触发tap，再触发doubleTap */</span>
+        $target.fire(<span class="hljs-string">'tap'</span>, eProxy);
+        
+        <span class="hljs-comment">/* doubleTap和singleTap互斥 */</span>
+        <span class="hljs-keyword">if</span> (doubleTapTimmer) {
+            cancelDoubleTapTimer();
+            
+            <span class="hljs-keyword">if</span> (checkDoubleTap()) {
+                S.mix(eProxy, {
+                    type: <span class="hljs-string">'doubleTap'</span>,
+                    timeStamp: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime()
+                });
+                
+                $target.fire(<span class="hljs-string">'doubleTap'</span>, eProxy);
+            }
+        } <span class="hljs-keyword">else</span> {
+            doubleTapTimmer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+                clearTimeout(doubleTapTimmer);
+                doubleTapTimmer = <span class="hljs-literal">null</span>;
+                
+                S.mix(eProxy, {
+                    type: <span class="hljs-string">'singleTap'</span>,
+                    timeStamp: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime()
+                });
+                
+                $target.fire(<span class="hljs-string">'singleTap'</span>, eProxy);
+            }, SINGLE_TAP_DELAY);
+        }
+    }
+    
+    docElem.addEventListener(EVT_TOUCH_START, touchstartHandler, <span class="hljs-literal">false</span>);
+    docElem.addEventListener(EVT_TOUCH_MOVE, touchmoveHandler, <span class="hljs-literal">false</span>);
+    docElem.addEventListener(EVT_TOUCH_END, touchendHandler, <span class="hljs-literal">false</span>);
+    docElem.addEventListener(EVT_TOUCH_CANCEL, touchcancelHandler, <span class="hljs-literal">false</span>);
+    <span class="hljs-built_in">window</span>.addEventListener(EVT_SCROLL, touchcancelHandler, <span class="hljs-literal">false</span>);
+    
+    <span class="hljs-comment">/* fix ios 的 touch 无法触发的问题 */</span>
+    <span class="hljs-keyword">if</span> (hasTouch) {
+        
+        S.each([<span class="hljs-string">'tap'</span>, <span class="hljs-string">'tapHold'</span>, <span class="hljs-string">'singleTap'</span>, <span class="hljs-string">'doubleTap'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item</span>) </span>{
+            S.Event.Special[item] = {
+                setup: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+                    <span class="hljs-keyword">var</span> elem = <span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>];
+                    <span class="hljs-keyword">if</span> (!elem.__fixTouchEvent) {
+                        elem.addEventListener(<span class="hljs-string">'touchstart'</span>, noop, <span class="hljs-literal">false</span>);
+                        elem.__fixTouchEvent = <span class="hljs-literal">true</span>;
+                    }
+                }
+            };
+        });
+        
+        S.ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            <span class="hljs-built_in">document</span>.body.addEventListener(<span class="hljs-string">'touchstart'</span>, noop, <span class="hljs-literal">false</span>);
+        });
+    }
+
+    S.add &amp;&amp; S.add(<span class="hljs-string">'touch'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{});
+    
+    S.__touchModAdded = <span class="hljs-literal">true</span>;
+
+})(KISSY);
+
+<span class="hljs-comment">/**
+ * 解决点击穿透的问题
+ * [http://gitlab.alibaba-inc.com/mpi/fix-click-through](http://gitlab.alibaba-inc.com/mpi/fix-click-through)
+ * @author huya.nzb@alibaba-inc.com
+ * @date 2015-01-09
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>解决tap点击穿透的问题</strong></p>
+<p>为了解决 click 事件的300ms的延时，大部分js库实现了tap事件，原理是利用touch事件进行封装，然后适当的阻止默认的click事件，但通常情况下会发生tap穿透。重要参考资料：</p>
+<ul>
+<li><a href="http://yunpan.alibaba-inc.com/share/link/L1NmuJ7Cs">移动端点击事件的分析</a> @皓勋</li>
+<li><a href="http://g.alicdn.com/mpi/fix-click-through/0.0.4/index.js">fix-click-through</a> （解决点击穿透的js库）@虎牙</li>
+</ul>
+<p><a href="http://gitlab.alibaba-inc.com/mpi/fix-click-through">fix-click-through</a> 代码不依赖任何库，直接使用</p>
+<pre><code><span class="hljs-comment">//tap事件（已集成进KISSY mini touch模块中）</span>
+FixClickThrough(<span class="hljs-string">'tap'</span>);
+
+<span class="hljs-comment">//iScroll的模拟click</span>
+FixClickThrough(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{
+
+    <span class="hljs-comment">//iScroll4/5</span>
+    <span class="hljs-keyword">return</span> e._fake || e._constructed;
+});
+</code></pre><p>单独引用 fix-click-through</p>
+<pre><code>&lt;script src="
+    http://g.alicdn.com/mpi/fix-click-through/0.0.4/index.js"&gt;
+&lt;/script&gt;
+</code></pre><p>目前该解决方案可以阻止穿透后的元素（包括表单元素 input、select 等）的 click、mousedown、mouseup 事件，但是无法阻止 <code>:active</code> 和 -webkit-tap-highlight-color 的状态触发，暂时没有很好的解决方案</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>!(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    
+    <span class="hljs-comment">/* TODO
+    解决点击穿透之后active和-webkit-tap-highlight-color无法取消的问题 */</span>
+    
+    <span class="hljs-keyword">var</span> docElem = <span class="hljs-built_in">document</span>.documentElement,
+    
+        CLICK = <span class="hljs-string">'click'</span>,
+        MOUSE_DOWN = <span class="hljs-string">'mousedown'</span>,
+        MOUSE_UP = <span class="hljs-string">'mouseup'</span>,
+        RADIO_TYPE = <span class="hljs-string">'radio'</span>,
+        RESET_DELAY = <span class="hljs-number">400</span>,
+        THRESHOLD = <span class="hljs-number">10</span>,
+        
+        ATTR_FIX_THROUGH = <span class="hljs-string">'fix-through'</span>,
+        ATTR_FIX_THROUGH_TAPPED = <span class="hljs-string">'fix-through-tapped'</span>;
+    
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'fix-click-through-style'</span>)) { <span class="hljs-keyword">return</span>; }
+        
+        <span class="hljs-keyword">var</span> stylesheet = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'style'</span>),
+            head = <span class="hljs-built_in">document</span>.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>];
+            
+        stylesheet.type = <span class="hljs-string">'text/css'</span>;
+        stylesheet.id = <span class="hljs-string">'fix-click-through-style'</span>;
+        head.insertBefore(stylesheet, head.firstChild);
+        
+        <span class="hljs-comment">/*默认样式为黑色*/</span>
+        stylesheet.appendChild(<span class="hljs-built_in">document</span>.createTextNode(
+            <span class="hljs-string">'[fix-through] input,'</span> +
+            <span class="hljs-string">'[fix-through] select,'</span> +
+            <span class="hljs-string">'[fix-through] textarea {pointer-events:none;}'</span> +
+            
+            <span class="hljs-string">'[fix-through] input[type=button],'</span> +
+            <span class="hljs-string">'[fix-through] input[type=submit],'</span> +
+            <span class="hljs-string">'[fix-through] input[type=reset],'</span> +
+            <span class="hljs-string">'[fix-through] input[type=image],'</span> +
+            <span class="hljs-string">'[fix-through] input[type=file],'</span> +
+            <span class="hljs-string">'[fix-through] input[type=radio],'</span> +
+            <span class="hljs-string">'[fix-through] input[type=checkbox],'</span> +
+            <span class="hljs-string">'[fix-through] [fix-through-tapped] {pointer-events:auto;}'</span>
+        ));
+    })();
+    
+    <span class="hljs-comment">/**
+     * 解决点击穿透
+     * @class FixClickThrough
+     * @static
+     */</span>    
+    <span class="hljs-built_in">window</span>.FixClickThrough = <span class="hljs-built_in">window</span>.FixClickThrough || {
+        
+        <span class="hljs-comment">/**
+         * 事件绑定缓存
+         * @property cache
+         * @type Object
+         */</span>
+        cache: {},
+        
+        <span class="hljs-comment">/**
+         * elementFromPoint是否相对于视窗
+         * @property relativeToViewport
+         * @type Boolean
+         */</span>
+        relativeToViewport: <span class="hljs-literal">null</span>,
+        
+        <span class="hljs-comment">/**
+         * 判断elementFromPoint是否相对于视窗
+         * @method isRelativeToViewport
+         * @return {Boolean}
+         */</span>
+        isRelativeToViewport: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.relativeToViewport !== <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.relativeToViewport;
+        
+            <span class="hljs-keyword">var</span> x = <span class="hljs-built_in">window</span>.pageXOffset ? <span class="hljs-built_in">window</span>.pageXOffset + <span class="hljs-built_in">window</span>.innerWidth - <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">var</span> y = <span class="hljs-built_in">window</span>.pageYOffset ? <span class="hljs-built_in">window</span>.pageYOffset + <span class="hljs-built_in">window</span>.innerHeight - <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">if</span> (!x &amp;&amp; !y) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+          
+			<span class="hljs-comment">/* 通过检测一个比viewport更大的点来测试，如果返回一个元素
+			 * 则说明elementFromPoint包含一个页面坐标*/</span>
+            <span class="hljs-keyword">return</span> (<span class="hljs-keyword">this</span>.relativeToViewport = !!<span class="hljs-built_in">document</span>.elementFromPoint &amp;&amp; !<span class="hljs-built_in">document</span>.elementFromPoint(x, y));
+        },
+        
+        <span class="hljs-comment">/**
+         * 根据坐标获取元素
+         * [https://github.com/moll/js-element-from-point/](https://github.com/moll/js-element-from-point/)
+         * @method elementFromPoint
+         * @param {Number} x X轴值
+         * @param {Number} y Y轴值
+         * @return {HTMLElement}
+         */</span>
+        elementFromPoint: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x, y</span>) </span>{
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isRelativeToViewport())  {
+                x += <span class="hljs-built_in">window</span>.pageXOffset;
+                y += <span class="hljs-built_in">window</span>.pageYOffset;
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">document</span>.elementFromPoint ? <span class="hljs-built_in">document</span>.elementFromPoint(x, y) : <span class="hljs-literal">null</span>;
+        },
+        
+        <span class="hljs-comment">/**
+         * 是否源自于label节点
+         * @method fromLabel
+         * @param {HTMLElement} elem 事件新节点
+         * @param {HTMLElement} from 事件源自于哪个节点
+         * @return {Boolean} 是否源自于label节点
+         */</span>
+        fromLabel: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">elem, from</span>) </span>{
+            <span class="hljs-keyword">if</span> (!elem || !elem.nodeName.match(<span class="hljs-regexp">/(input|select|textarea)/i</span>)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            }
+            
+            <span class="hljs-keyword">var</span> labels = <span class="hljs-keyword">this</span>.getLabels(elem);
+            
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = labels.length; i &lt; l; i++) {
+                <span class="hljs-keyword">if</span> (labels[i].contains(from)) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                }
+            }
+            
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        },
+        
+        <span class="hljs-comment">/**
+         * 获取表单元素的label
+         * @method getLabels
+         * @param {HTMLElement} elem 表单元素
+         * @return {Array} label数组
+         */</span>
+        getLabels: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">elem</span>) </span>{
+            <span class="hljs-keyword">var</span> id = elem.id,
+                labels = [],
+                label = id ? <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'label[for="'</span> + id +<span class="hljs-string">'"]'</span>) : <span class="hljs-literal">null</span>;
+            
+            <span class="hljs-keyword">if</span> (label &amp;&amp; label.length) {
+                labels = labels.concat(labels.slice.call(label, <span class="hljs-number">0</span>));
+            }
+            
+            label = elem;
+            
+            <span class="hljs-keyword">while</span> ((label = label.parentNode)) {
+                <span class="hljs-keyword">if</span> (label.nodeName.match(<span class="hljs-regexp">/label/i</span>)) {
+                    labels.push(label);
+                }
+            } 
+            
+            <span class="hljs-keyword">return</span> labels;  
+        },
+        
+        <span class="hljs-comment">/**
+         * 绑定点击穿透的事件
+         * @method bind
+         * @param {String} eventName 事件名称
+         * @param {Function} filter 过滤事件
+         */</span>
+        bind: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">eventName, filter</span>) </span>{
+            
+            <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+            
+            <span class="hljs-comment">/* 如果已经解决过，则不再解决 */</span>
+            <span class="hljs-keyword">if</span> (!filter &amp;&amp; <span class="hljs-keyword">this</span>.cache[eventName]) { <span class="hljs-keyword">return</span>; }
+            
+            <span class="hljs-comment">/* 监听冒泡事件 */</span>
+            <span class="hljs-built_in">document</span>.addEventListener(eventName, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{
+                
+                <span class="hljs-keyword">var</span> target = e.target,
+                    now = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime(),
+                    halt, detach, detached, checked, newTarget;
+                
+                <span class="hljs-keyword">if</span> (filter &amp;&amp; filter(e) === <span class="hljs-literal">false</span>) { <span class="hljs-keyword">return</span>; }
+                
+                <span class="hljs-comment">/* 防止无法收起键盘 */</span>
+                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.activeElement &amp;&amp; 
+                    <span class="hljs-built_in">document</span>.activeElement.blur &amp;&amp;
+                    <span class="hljs-built_in">document</span>.activeElement !== target) {
+                    
+                    <span class="hljs-built_in">document</span>.activeElement.blur();
+                }
+                
+				<span class="hljs-comment">/*
+                 * //防止点击输入框无法focus问题
+                 *if (target.focus &amp;&amp; document.activeElement !== target) {
+                 * // target.focus();
+                 *}
+                 *
+                 *如果当前位置的元素不是之前的元素，说明tap时发生了位移或者隐藏，直接阻止事件
+                 *但是还存在tap事件后延时发生位移和隐藏的元素，这个时候最好触发一下
+				 */</span>
+                newTarget = <span class="hljs-keyword">this</span>.elementFromPoint(e.clientX, e.clientY);
+                
+                <span class="hljs-keyword">if</span> (newTarget &amp;&amp; newTarget !== target) {
+                    e.preventDefault &amp;&amp; e.preventDefault();
+                }
+                
+                <span class="hljs-comment">/* 阻止事件穿透（click, focus, blur, focusin, focusout...） */</span>
+                halt = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+                    
+                    newTarget = evt.target;
+                    
+                    <span class="hljs-keyword">if</span> (newTarget !== target &amp;&amp; !self.fromLabel(newTarget, target) &amp;&amp;
+                        <span class="hljs-built_in">Math</span>.abs(e.clientX - evt.clientX) &lt; THRESHOLD &amp;&amp;
+                        <span class="hljs-built_in">Math</span>.abs(e.clientY - evt.clientY) &lt; THRESHOLD) {
+                        
+                        <span class="hljs-comment">/*大部分情况下可以阻止穿透点击事件的触发
+                        某些浏览器和webview阻止了focus的触发，但浏览器依旧响应状态弹出键盘*/</span>
+                        e.preventDefault &amp;&amp; e.preventDefault();
+                        evt.preventDefault &amp;&amp; evt.preventDefault();
+                        evt.stopPropagation &amp;&amp; evt.stopPropagation();
+                        
+                        <span class="hljs-comment">/*部分安卓2.x手机（小米1）不支持stopImmediatePropagation*/</span>
+                        <span class="hljs-keyword">if</span> (evt.stopImmediatePropagation) {
+                            evt.stopImmediatePropagation();
+                        }
+                        
+                        <span class="hljs-comment">/*点击穿透到radio时，无法阻止选中的状态*/</span>
+                        <span class="hljs-keyword">if</span> (newTarget.type === RADIO_TYPE) {
+                            <span class="hljs-keyword">if</span> (evt.type === MOUSE_DOWN) {
+                                checked = newTarget.checked;
+                            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (checked === <span class="hljs-literal">false</span> &amp;&amp; evt.type === CLICK) {
+                                newTarget.checked = <span class="hljs-literal">false</span>;
+                            }
+                        }
+                        
+                        <span class="hljs-comment">/*最后触发穿透后解除绑定*/</span>
+                        <span class="hljs-keyword">if</span> (evt.type === CLICK) {
+                            detach();
+                        }
+                    }
+                };
+                
+                detach = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+                    <span class="hljs-keyword">if</span> (detached) { <span class="hljs-keyword">return</span>; }
+                    
+                    <span class="hljs-built_in">document</span>.removeEventListener(CLICK, halt, <span class="hljs-literal">true</span>);
+                    <span class="hljs-built_in">document</span>.removeEventListener(MOUSE_DOWN, halt, <span class="hljs-literal">true</span>);
+                    <span class="hljs-built_in">document</span>.removeEventListener(MOUSE_UP, halt, <span class="hljs-literal">true</span>);
+                    
+                    <span class="hljs-comment">/*如果值和之前设置的不一样，那么说明有可能连续触发了两次tap，
+                    等待最后一次延时结束后移除attribute*/</span>
+                    <span class="hljs-keyword">if</span> (target.getAttribute(ATTR_FIX_THROUGH_TAPPED) == now) {
+                        target.removeAttribute(ATTR_FIX_THROUGH_TAPPED);
+                    }
+                    
+                    <span class="hljs-keyword">if</span> (docElem.getAttribute(ATTR_FIX_THROUGH) == now) {
+                        docElem.removeAttribute(ATTR_FIX_THROUGH);
+                    }
+                    
+                    detached = <span class="hljs-literal">true</span>;
+                };
+                
+                <span class="hljs-built_in">document</span>.addEventListener(CLICK, halt, <span class="hljs-literal">true</span>);
+                <span class="hljs-built_in">document</span>.addEventListener(MOUSE_DOWN, halt, <span class="hljs-literal">true</span>);
+                <span class="hljs-built_in">document</span>.addEventListener(MOUSE_UP, halt, <span class="hljs-literal">true</span>);
+                
+                target.setAttribute(ATTR_FIX_THROUGH_TAPPED, now);
+                docElem.setAttribute(ATTR_FIX_THROUGH, now);
+                
+                <span class="hljs-comment">/*在部分机型下，包括ios，click事件有可能延时300+ms，400ms是比较稳妥的时间*/</span>
+                setTimeout(detach, RESET_DELAY);
+                
+            }, <span class="hljs-literal">false</span>);
+            
+            <span class="hljs-comment">/*没有过滤器的时候缓存*/</span>
+            <span class="hljs-keyword">if</span> (!filter) {
+                <span class="hljs-keyword">this</span>.cache[eventName] = <span class="hljs-number">1</span>;
+            }
+        }
+    };
+    
+    <span class="hljs-comment">/*解决tap事件穿透问题*/</span>
+    FixClickThrough.bind(<span class="hljs-string">'tap'</span>);
+    
+})();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <style>td {border-top:1px solid #ccc} table {border-collapse: collapse;}</style>
+<style>pre{-moz-tab-size:4;-webkit-tab-size:4;tab-size:4;}</style>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

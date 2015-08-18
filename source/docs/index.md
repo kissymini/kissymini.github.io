@@ -10,7 +10,7 @@ v1.x 及后续版本，KISSY MINI 对外提供一个种子文件
 - **dist**：[mini-min.js](http://g.alicdn.com/kissy/m/1.0.0/mini-min.js) （**gizp 压缩后为 17k**）
 - **源码**：[min.js](http://g.alicdn.com/kissy/m/1.0.0/mini.js)
 
-KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（[KISSY Gallery](http://kpm.taobao.net/)）管理，KISSY MINI 的自定义模块直接依赖于 git 仓库，通过 bower 来约束代码之间的依赖关系。这样，就剔除了 KISSY MINI 组件代码部署上线这个操作，这极大简化了 KISSY MINI 模块研发规范。因此需要注意，KISSY MINI 从 v1.0 版本开始，组件模块代码无法直接和 KISSY 6.x 兼容，但迁移成本其实非常小。
+KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（[KISSY Gallery](http://kpm.taobao.net/)）管理，KISSY MINI 的自定义模块直接依赖于 git 仓库，通过 bower 来约束代码之间的依赖关系。这样，就剔除了 KISSY MINI 组件代码部署上线这个操作，这极大简化了 KISSY MINI 模块研发规范。因此需要注意，KISSY MINI 从 v1.0 版本开始，组件模块代码无法直接和 KISSY 6.x 兼容，但迁移成本其实非常小。同时，我们推荐使用 [MPI 脚手架](http://github.com/jayli/generator-mpi)工具来生成模块代码骨架。
 
 KISSY MINI 所包含的核心模块：
 
@@ -26,15 +26,7 @@ KISSY MINI 所包含的核心模块：
 
 这些模块中的大部分通过 `KISSY` 全局对象来访问，比如`KISSY.Node`、`KISSY.Event`、`KISSY.IO`等，注意`KISSY.Anim`是不存在的
 
-API 文档入口：
-
-- [core](./api/core.html)
-- [node](./api/node.html)
-- [io](./api/io.html)
-- [event](./api/event.html)
-- [loader](./api/loader.html)
-- [anim](./api/anim.html)
-- [touch](./api/touch.html)
+API 文档入口：[core](./api/core.html)，[node](./api/node.html)，[io](./api/io.html)，[event](./api/event.html)，[loader](./api/loader.html)，[anim](./api/anim.html)，[touch](./api/touch.html)
 
 ### 种子文件
 

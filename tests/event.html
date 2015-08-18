@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="" type="text/css" media="" />
+    <link rel="stylesheet" href="./lib/mocha.css"/>
+  <script src="../build/mini.js"></script>
+<script src="./lib/mocha.js"></script>
+<script src="./lib/chai.js"></script>
+<script src="./lib/async.js"></script>
+<script src="./lib/simulate-dom-event.js"></script>
+<script type="text/javascript">
+    mocha.ui('bdd');
+    mocha.reporter('html');
+    chai.should();
+    expect = chai.expect;
+</script>
+</head>
+<body>
+    <div class="hello">测试页面</div>
+<script>
+	var S = KISSY;
+    var $ = KISSY.all;
+	function waits(ms) {
+        return function (next) {
+            setTimeout(next, ms);
+        };
+    }
+    function runs(fn) {
+        return function (next) {
+            if (fn.length) {
+                fn(next);
+            } else {
+                fn();
+                next();
+            }
+        };
+    }
+</script>
+<div class='out' id='i4'>
+	<div class='inner' id='i3'>
+		<div class='inner' id='i1'>
+			<button id='click_button'>click me</button>
+		</div>
+	</div>
+</div>
+<div id="mocha"></div>
+<script src="event/delegate-advanced.js"></script>
+<script src="event/delegate.js"></script>
+</body>
+<script type="text/javascript">
+    if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+    } else {
+        mocha.run();
+    }
+</script>
+</html>
