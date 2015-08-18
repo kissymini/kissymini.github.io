@@ -27,14 +27,14 @@ KISSY MINI 所包含的核心模块：
 这些模块中的大部分通过 `KISSY` 全局对象来访问，比如`KISSY.Node`、`KISSY.Event`、`KISSY.IO`等，注意`KISSY.Anim`是不存在的
 
 - API 文档入口：[core](./docs/core.html)，[node](./docs/node.html)，[io](./docs/io.html)，[event](./docs/event.html)，[loader](./docs/loader.html)，[anim](./docs/anim.html)，[touch](./docs/touch.html)
-- 测试用例入口：
+- 测试用例入口：[node.html](./tests/node.html)、[io.html](./tests/io.html)、[loader.html](./tests/loader.html)、[event.html](./tests/event.html)
 
 ### 种子文件
 
 获取最新的种子文件 
 
-- <a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js" style="background:none" >![](https://img.shields.io/badge/kissy%20mini-1.0.0-green.svg)</a> 新版
-- <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js" style="background:none">![](https://img.shields.io/badge/kissy%20mini-0.3.11-orange.svg) 旧版
+- <a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js" style="background:none" >![](https://img.shields.io/badge/kissy%20mini-1.0.0-green.svg)</a> 新版 
+- <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js" style="background:none">![](https://img.shields.io/badge/kissy%20mini-0.3.11-orange.svg)</a> 旧版
 
 注意，KISSY MINI 0.x 版本对外提供三个文件，分别是[mini.js](http://g.alicdn.com/kissy/m/0.3.11/mini-min.js)、[mini-full.js](http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js) 和 [mini-all.js](http://g.alicdn.com/kissy/m/0.3.11/mini-all-min.js)。这和 v1.x 不同。
 
@@ -106,8 +106,16 @@ KISSY.config({
 
 ### 示例 Demo
 
-- Demo：[]
+- Demo：[KISSY全局对象挂载的方法](./demo/api/kissy-api.html)、[事件委托DEMO](./demo/dump/delegate.html)、[给DOM添加新事件](./demo/dump/fx.html)、[一个小游戏](./demo/game/index.html)、[模块加载Demo](./demo/modules-loader/index.html)、[天猫超市的Demo](./demo/slide_and_lazyload/index.html)
 - 组件：[Slide](http://kissygalleryteam.github.io/slide/1.3/demo/index.html)（Kiss 官方组件）、[Mini Slide](/demo/slide/index.htm)、[仿 Path 的环状菜单](/demo/ringnav/index.htm)
 - 项目：[阿里旅行-景点门票 Pad 版](http://h5.m.taobao.com/trip/ticket/pad/search/index.html?ttid=703628@taobao_ipad_4.0)，[淘宝秒杀手机版](http://wapp.m.taobao.com/mseckill/index.html?host=h5.m.taobao.com)
 
-[阿里旅行·去啊](http://h5.m.taobao.com/trip/home/index.html) 无线 Web 产品均基于 Kissy Mini 搭建。
+[阿里旅行·去啊](http://h5.m.taobao.com/trip/home/index.html) 无线 Web 产品均基于 Kissy Mini。
+
+### 构建工具
+
+KISSY MINI 的模块代码[脚手架工具 MPI](http://github.com/jayli/generator-mpi)，用以生成模块的代码骨架。
+
+<img src="http://gw.alicdn.com/tps/TB13sGbJXXXXXbaXVXXXXXXXXXX-360-196.png" width="200" />
+
+此外 KISSY MINI 的代码编译请使用 [grunt-kmb](https://www.npmjs.com/package/grunt-kmb) 和 [gulp-kmc](https://www.npmjs.com/package/gulp-kmc)。
