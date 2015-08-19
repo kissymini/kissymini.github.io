@@ -82,7 +82,7 @@
 S.IO.<span class="hljs-keyword">get</span>(<span class="hljs-string">"test.php"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span></span>{
     alert(d);
 });
-</code></pre><p>说明：Loader 模块是 Kissy Mini 重要的核心模块，负责在<code>KISSY.use(&#39;模块名&#39;)</code>时自动载入外部模块，模块规范符合 <a href="http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html">Kissy 标准的模块规范 KMD</a>。v1.x 的后续版本会对渐渐放弃对 KMD 的完全兼容（即不鼓励<code>KISSY.add(function(){},{requires:[&#39;a&#39;,&#39;b&#39;]})</code>这种载入依赖的写法），而更加强调对 CMD 语法的支持。因此我们推荐模块开发写法采用 CMD 格式。比如几个和模块定义相关的代码片段：</p>
+</code></pre><p>说明：Loader 模块是 Kissy Mini 重要的核心模块，负责在<code>KISSY.use(&#39;模块名&#39;)</code>时自动载入外部模块，模块规范符合 <a href="http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html">Kissy 标准的模块规范 KMD</a>。v1.x 的后续版本会对渐渐放弃对 KMD 的完全兼容（即不鼓励<code>KISSY.add(function(){},{requires:[&#39;a&#39;,&#39;b&#39;]})</code>这种载入依赖的写法），而更加强调对 CMD 语法的支持。因此我们推荐模块开发写法采用 CMD 格式。并且无需通过<code>KISSY.use()</code>来载入内置模块了。引用种子文件后内置模块自然生效可用。</p>
 <p>同时 Loader 在 v1.0 之后就不在支持 Combo 了，因为出于简化场景的需要，我们更倾向于用离线包给前端页面提速，因此 KISSY MINI 不再优先支持载入线上资源文件的场景。Loader 在满足基本规范的前提下，会在 v1.x 的后续版本中逐步简化。</p>
 <p>1）定义模块</p>
 <p>这里采用 CMD 写法来引入外部依赖</p>

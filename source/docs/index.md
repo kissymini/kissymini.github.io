@@ -65,7 +65,7 @@ Ajax 操作：
 		alert(d);
 	});
 
-说明：Loader 模块是 Kissy Mini 重要的核心模块，负责在`KISSY.use('模块名')`时自动载入外部模块，模块规范符合 [Kissy 标准的模块规范 KMD](http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html)。v1.x 的后续版本会对渐渐放弃对 KMD 的完全兼容（即不鼓励`KISSY.add(function(){},{requires:['a','b']})`这种载入依赖的写法），而更加强调对 CMD 语法的支持。因此我们推荐模块开发写法采用 CMD 格式。比如几个和模块定义相关的代码片段：
+说明：Loader 模块是 Kissy Mini 重要的核心模块，负责在`KISSY.use('模块名')`时自动载入外部模块，模块规范符合 [Kissy 标准的模块规范 KMD](http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html)。v1.x 的后续版本会对渐渐放弃对 KMD 的完全兼容（即不鼓励`KISSY.add(function(){},{requires:['a','b']})`这种载入依赖的写法），而更加强调对 CMD 语法的支持。因此我们推荐模块开发写法采用 CMD 格式。并且无需通过`KISSY.use()`来载入内置模块了。引用种子文件后内置模块自然生效可用。
 
 同时 Loader 在 v1.0 之后就不在支持 Combo 了，因为出于简化场景的需要，我们更倾向于用离线包给前端页面提速，因此 KISSY MINI 不再优先支持载入线上资源文件的场景。Loader 在满足基本规范的前提下，会在 v1.x 的后续版本中逐步简化。
 
