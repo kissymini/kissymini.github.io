@@ -1,0 +1,32 @@
+{
+  "name": "kissymini",
+  "version": "1.0.0",
+  "main": "build/mini-min.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+	"CNAME",
+	"docs",
+	"*.js",
+	"highlight",
+	"images",
+	"javascripts",
+	"params.json",
+	"README.md",
+	"source",
+	"stylesheets",
+	"demo",
+	"*.html",
+	"src",
+    "tests",
+    "*.md",
+    "package.json"
+  ],
+  "devDependencies": {
+  },
+  "keywords": [
+    "kissymini",
+    "javascript",
+    "library"
+  ]
+}
