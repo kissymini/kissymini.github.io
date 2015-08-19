@@ -66,8 +66,10 @@
 </ul>
 <p>注意，KISSY MINI 0.x 版本对外提供三个文件，分别是<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-min.js">mini.js</a>、<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js">mini-full.js</a> 和 <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-all-min.js">mini-all.js</a>。这和 v1.x 不同。</p>
 <h3 id="-">开始使用</h3>
-<p>脚本引用</p>
+<p>直接引用线上地址</p>
 <pre><code><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://g.alicdn.com/kissy/m/1.0.0/mini-min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre><p>或者通过 bower 安装到本地</p>
+<pre><code><span class="hljs-keyword">bower </span>install kissymini
 </code></pre><p>启动：DOMReady 后弹出 Hello World!</p>
 <pre><code>KISSY.ready(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
     alert(<span class="hljs-string">'Hello World!'</span>);
