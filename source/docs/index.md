@@ -2,6 +2,8 @@
 
 [Kissy](http://docs.kissyui.com/) 是一款跨终端、模块化、高性能、使用简单的 JavaScript 框架。Kissy Mini 是其移动端版本，专门为移动端 Web 开发打造，我们做了大量的性能优化和可靠性测试，功能完整、体积小巧，稳定可靠。特别是在事件处理、异步模块加载、面向对象的支持方面表现出众。目前已经应用在阿里许多场景中。
 
+<img src="https://gw.alicdn.com/tps/TB1N6CAJXXXXXXJXpXXXXXXXXXX-524-392.png" width="150" />
+
 <span class="gitter">[![](/images/gitter.svg)](https://gitter.im/kissymini?utm_source=share-link&utm_medium=link&utm_campaign=share-link)</span>
 
 v1.x 及后续版本，KISSY MINI 对外提供一个种子文件
