@@ -114,8 +114,13 @@ KISSY.config({
 
 ### 构建工具
 
-KISSY MINI 的模块代码[脚手架工具 MPI](http://github.com/jayli/generator-mpi)，用以生成模块的代码骨架。
+**脚手架**：KISSY MINI 的模块代码[脚手架工具 MPI](http://github.com/jayli/generator-mpi)，用以生成模块的代码骨架。
 
 <img src="http://gw.alicdn.com/tps/TB13sGbJXXXXXbaXVXXXXXXXXXX-360-196.png" width="200" />
 
-此外 KISSY MINI 的代码编译请使用 [grunt-kmb](https://www.npmjs.com/package/grunt-kmb) 和 [gulp-kmc](https://www.npmjs.com/package/gulp-kmc)。
+**编译构建**：KISSY MINI 的代码编译工具
+
+- Grunt：[grunt-kmc](https://github.com/daxingplay/grunt-kmc) 或者 [grunt-kmb](https://www.npmjs.com/package/grunt-kmb)
+- Gulp：[gulp-kmc](https://www.npmjs.com/package/gulp-kmc)。
+
+以[grunt-kmc](https://github.com/daxingplay/grunt-kmc)为例，示例代码请参照[combo-one-file](https://github.com/daxingplay/grunt-kmc/tree/master/example/combo-one-file)，[视频演示](http://asciinema.org/a/6732)。
