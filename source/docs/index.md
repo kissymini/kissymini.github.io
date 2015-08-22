@@ -4,7 +4,10 @@
 
 <img src="https://gw.alicdn.com/tps/TB1N6CAJXXXXXXJXpXXXXXXXXXX-524-392.png" width="150" />
 
-<span class="gitter">[![](/images/gitter.svg)](https://gitter.im/kissymini?utm_source=share-link&utm_medium=link&utm_campaign=share-link)</span>
+<span class="gitter">[![](https://badge.fury.io/bo/kissymini.svg)](http://badge.fury.io/bo/kissymini)
+[![](https://img.shields.io/github/tag/kissymini/kissymini.github.io.svg)](http://github.com/kissymini/kissymini.github.io)
+![](https://img.shields.io/badge/kissymini-available-green.svg?style=flat-square)
+[![](/images/gitter.svg)](https://gitter.im/kissymini?utm_source=share-link&utm_medium=link&utm_campaign=share-link)</span>
 
 v1.x 及后续版本，KISSY MINI 对外提供一个种子文件
 
