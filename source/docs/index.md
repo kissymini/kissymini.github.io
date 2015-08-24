@@ -1,5 +1,5 @@
 
-KISSY MINI 是 [KISSY](http://docs.kissyui.com) 的一个分支项目，2014 年初 release 第一版并投入使用。目标是建设一个 KISSY 的面向移动端的 MINI 版，功能完整、使用简单等特性。同时在事件处理、模块化和面向对象方面依然秉承了 KISSY 的优良基因。目前已经在阿里的许多场景中平稳运行。 
+KISSY MINI 是 [KISSY](http://docs.kissyui.com) 的一个分支项目，2014 年初 release 第一版并投入使用。目标是建设一个 KISSY 的面向移动端的 MINI 版，具有完整的功能，并保持使用简单。同时在事件处理、模块化和面向对象方面依然秉承了 KISSY 的优良基因。目前已经在阿里的许多场景中平稳运行。 
 
 KISSY MINI 与 KISSY 在企业级研发和模块开发上遵照类似的设计原则，此外没有其他关系，因此** KISSY MINI 是一个全新的 js 库**。
 
