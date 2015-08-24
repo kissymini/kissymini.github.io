@@ -14,9 +14,13 @@
 1. ZeptoJS 的触屏事件 bug 较多，与其不断打补丁，不如彻底重构掉
 1. 能够继承并发展 Kissy 生态圈建设
 
+当运作一年之后（2015），KISSY MINI 在移动场景中修复了绝大多数问题，根据无线（特别是离线）场景做了更深度的定制，完善了脚手架工具，包括项目脚手架（开源的 Mask 和 闭源的 Clam）以及组件脚手架 MPI。因此，KISSY MINI 已经不仅仅是一个 js 库了，而是一整套搭建站点的架构思路，做到页面渲染速度快、稳定性可靠的高标准。一方面，我们将 KISSY MINI 和阿里业务深度绑定，同时也在不断消化引入开源社区的优秀理念，力争将 KISSY MINI 打造成一款设计开放、体系完整、使用极其方便的移动端类库解决方案。最后，阿里一线业务的大量使用极大的保障了 KISSY MINI 的质量。
+
+KISSY MINI 体积比 KISSY 小很多，更重要的是，面向场景更加单一和聚焦（移动端 + 离线包），因此代码更新速度很快，KISSY MINI 是 KISSY 的一个分支，或许以后永远不会再合并到 KISSY 的主干里，KISSY MINI 已经是一款全新的 js 类库了。
+
 ### 如何加入我们？
 
-直接 fork 我们的 [source code](http://gitlab.alibaba-inc.com/kissy/m)，并给我们提交 Pull Request（目前仅支持内网访问）
+阿里内网同学可直接 fork 我们的 [source code](http://gitlab.alibaba-inc.com/kissy/m)，并给我们提交 Pull Request（目前仅支持内网访问）
 
 意见反馈和[Bug 提交](http://gitlab.alibaba-inc.com/kissy/m/issues)（目前仅支持内网访问）
 

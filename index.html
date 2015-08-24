@@ -1,15 +1,15 @@
-<!DOCTYPE html><html><head><title>KISSY MINI</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="author" content="拔赤"><link rel="stylesheet" href="/stylesheets/2015-06-17.css"><link rel="stylesheet" href="/highlight/styles/github.css"></head><body><a href="http://gitlab.alibaba-inc.com/kissy/m/tree/master" class="forkme"><img style="position: absolute; top: 0; left: 0; border: 0;" src="/images/forkme.png"></a><div id="container"><header><h1>Kissy Mini</h1></header><div><ul class="nav"><li> <a href="/index.html">首页</a></li><li> <a href="/docs/core.html">API 文档</a></li><li> <a href="http://github.com/jayli/generator-mpi">MPI 脚手架 </a></li><li> <a href="/about.html">关于我们</a></li></ul><br style="clear:both"></div><div id="main" role="main"><br><div class="article"><p><a href="http://docs.kissyui.com/">Kissy</a> 是一款跨终端、模块化、高性能、使用简单的 JavaScript 框架。Kissy Mini 是其移动端版本，专门为移动端 Web 开发打造，我们做了大量的性能优化和可靠性测试，功能完整、体积小巧，稳定可靠。特别是在事件处理、异步模块加载、面向对象的支持方面表现出众。目前已经应用在阿里许多场景中。</p>
+<!DOCTYPE html><html><head><title>KISSY MINI</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="author" content="拔赤"><link rel="stylesheet" href="/stylesheets/2015-06-17.css"><link rel="stylesheet" href="/highlight/styles/github.css"></head><body><a href="http://gitlab.alibaba-inc.com/kissy/m/tree/master" class="forkme"><img style="position: absolute; top: 0; left: 0; border: 0;" src="/images/forkme.png"></a><div id="container"><header><h1>Kissy Mini</h1></header><div><ul class="nav"><li> <a href="/index.html">首页</a></li><li> <a href="/docs/core.html">API 文档</a></li><li> <a href="http://github.com/jayli/generator-mask">MASK 工具</a></li><li><a href="http://github.com/jayli/generator-mpi">MPI 工具</a></li><li> <a href="/about.html">关于我们</a></li></ul><br style="clear:both"></div><div id="main" role="main"><br><div class="article"><p>KISSY MINI 是 <a href="http://docs.kissyui.com">KISSY</a> 的一个分支项目，2014 年初 release 第一版并投入使用。目标是建设一个 KISSY 的面向移动端的 MINI 版，功能完整、使用简单等特性。同时在事件处理、模块化和面向对象方面依然秉承了 KISSY 的优良基因。目前已经在阿里的许多场景中平稳运行。 </p>
+<p>KISSY MINI 与 KISSY 在企业级研发和模块开发上遵照类似的设计原则，此外没有其他关系，因此<strong> KISSY MINI 是一个全新的 js 库</strong>。</p>
 <p><img src="https://gw.alicdn.com/tps/TB1N6CAJXXXXXXJXpXXXXXXXXXX-524-392.png" width="150" /></p>
 <p><span class="gitter"><a href="http://badge.fury.io/bo/kissymini"><img src="https://badge.fury.io/bo/kissymini.svg" alt=""></a>
 <a href="http://github.com/kissymini/kissymini.github.io"><img src="https://img.shields.io/github/tag/kissymini/kissymini.github.io.svg" alt=""></a>
 <img src="https://img.shields.io/badge/kissymini-available-green.svg?style=flat-square" alt="">
 <a href="https://gitter.im/kissymini?utm_source=share-link&amp;utm_medium=link&amp;utm_campaign=share-link"><img src="/images/gitter.svg" alt=""></a></span></p>
-<p>v1.x 及后续版本，KISSY MINI 对外提供一个种子文件</p>
+<p>KISSY MINI 对外提供一个种子文件（<code>v 1.x</code> 及后续版本）</p>
 <ul>
 <li><strong>dist</strong>：<a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js">mini-min.js</a> （<strong>gizp 压缩后为 17k</strong>）</li>
 <li><strong>源码</strong>：<a href="http://g.alicdn.com/kissy/m/1.0.0/mini.js">min.js</a></li>
 </ul>
-<p>KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（<a href="http://kpm.taobao.net/">KISSY Gallery</a>）管理，KISSY MINI 的自定义模块直接依赖于 git 仓库，通过 bower 来约束代码之间的依赖关系。这样，就剔除了 KISSY MINI 组件代码部署上线这个操作，这极大简化了 KISSY MINI 模块研发规范。因此需要注意，KISSY MINI 从 v1.0 版本开始，组件模块代码无法直接和 KISSY 6.x 兼容，但迁移成本其实非常小。同时，我们推荐使用 <a href="http://github.com/jayli/generator-mpi">MPI 脚手架</a>工具来生成模块代码骨架。</p>
 <p>KISSY MINI 所包含的核心模块：</p>
 <table>
 <thead>
@@ -113,6 +113,21 @@ KISSY.add(<span class="hljs-function"><span class="hljs-keyword">function</span>
     }]
 })</span></span>;</span>
 </code></pre>
+<h3 id="-">构建工具</h3>
+<p>KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（<a href="http://kpm.taobao.net/">KISSY Gallery</a>）管理，KISSY MINI 的自定义模块直接依赖于 git 仓库，通过 bower 来约束代码之间的依赖关系。这样，就剔除了 KISSY MINI 组件代码部署上线这个操作，这极大简化了 KISSY MINI 模块研发规范。因此需要注意，KISSY MINI 从 v1.0 版本开始，组件模块代码无法直接和 KISSY 6.x 兼容，但迁移成本其实非常小。同时，我们推荐使用 <a href="http://github.com/jayli/generator-mpi">MPI 脚手架</a>工具来生成模块代码骨架，使用 <a href="http://github.com/jayli/generator-mask">Mask 工具</a>来生成项目代码骨架。</p>
+<p>1）<strong>脚手架</strong>：</p>
+<ol>
+<li><a href="http://github.com/jayli/generator-mask">项目脚手架工具 Mask</a>：KISSY MINI 项目默认用 Grunt 来构建</li>
+<li><a href="http://github.com/jayli/generator-mpi">模块脚手架工具 MPI</a>：模块无需构建，通过 bower 来管理依赖，通过 git 来存储</li>
+</ol>
+<p><img src="https://gw.alicdn.com/tps/TB10xPGJXXXXXb0XFXXXXXXXXXX-800-602.png" width="400" /></p>
+<p>注意，KISSY MINI 的模块代码无需发布到 npm，这样我们就不用人肉同步 git 仓库的代码版本和 npm 仓库代码版本的差异，你也可以轻松构建自己的代码仓库。</p>
+<p>2）<strong>编译构建</strong>：KISSY MINI 的代码编译工具</p>
+<ul>
+<li>Grunt：<a href="https://github.com/daxingplay/grunt-kmc">grunt-kmc</a> 或者 <a href="https://www.npmjs.com/package/grunt-kmb">grunt-kmb</a></li>
+<li>Gulp：<a href="https://www.npmjs.com/package/gulp-kmc">gulp-kmc</a>。</li>
+</ul>
+<p>以<a href="https://github.com/daxingplay/grunt-kmc">grunt-kmc</a>为例，示例代码请参照<a href="https://github.com/daxingplay/grunt-kmc/tree/master/example/combo-one-file">combo-one-file</a>，<a href="http://asciinema.org/a/6732">视频演示</a>。</p>
 <h3 id="-demo">示例 Demo</h3>
 <ul>
 <li>Demo：<a href="./demo/api/kissy-api.html">KISSY全局对象挂载的方法</a>、<a href="./demo/dump/delegate.html">事件委托DEMO</a>、<a href="./demo/dump/fx.html">给DOM添加新事件</a>、<a href="./demo/game/index.html">一个小游戏</a>、<a href="./demo/modules-loader/index.html">模块加载Demo</a>、<a href="./demo/slide_and_lazyload/index.html">天猫超市的Demo</a></li>
@@ -120,13 +135,4 @@ KISSY.add(<span class="hljs-function"><span class="hljs-keyword">function</span>
 <li>项目：<a href="http://h5.m.taobao.com/trip/ticket/pad/search/index.html?ttid=703628@taobao_ipad_4.0">阿里旅行-景点门票 Pad 版</a>，<a href="http://wapp.m.taobao.com/mseckill/index.html?host=h5.m.taobao.com">淘宝秒杀手机版</a></li>
 </ul>
 <p><a href="http://h5.m.taobao.com/trip/home/index.html">阿里旅行·去啊</a> 无线 Web 产品均基于 Kissy Mini。</p>
-<h3 id="-">构建工具</h3>
-<p><strong>脚手架</strong>：KISSY MINI 的模块代码<a href="http://github.com/jayli/generator-mpi">脚手架工具 MPI</a>，用以生成模块的代码骨架。</p>
-<p><img src="http://gw.alicdn.com/tps/TB13sGbJXXXXXbaXVXXXXXXXXXX-360-196.png" width="200" /></p>
-<p><strong>编译构建</strong>：KISSY MINI 的代码编译工具</p>
-<ul>
-<li>Grunt：<a href="https://github.com/daxingplay/grunt-kmc">grunt-kmc</a> 或者 <a href="https://www.npmjs.com/package/grunt-kmb">grunt-kmb</a></li>
-<li>Gulp：<a href="https://www.npmjs.com/package/gulp-kmc">gulp-kmc</a>。</li>
-</ul>
-<p>以<a href="https://github.com/daxingplay/grunt-kmc">grunt-kmc</a>为例，示例代码请参照<a href="https://github.com/daxingplay/grunt-kmc/tree/master/example/combo-one-file">combo-one-file</a>，<a href="http://asciinema.org/a/6732">视频演示</a>。</p>
 </div></div><section class="comment"><div id="disqus_thread"></div><script src="/javascripts/disqus.js"></script></section></div><script src="/javascripts/jquery.min.js"></script><script src="/javascripts/jquery.grumble.min.js"></script><script src="/javascripts/main.js"></script></body></html>
