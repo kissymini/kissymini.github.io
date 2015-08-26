@@ -12,8 +12,8 @@ KISSY MINI 与 KISSY 在企业级研发和模块开发上遵照类似的设计�
 
 KISSY MINI 对外提供一个种子文件（`v 1.x` 及后续版本）
 
-- **dist**：[mini-min.js](http://g.alicdn.com/kissy/m/1.0.0/mini-min.js) （**gizp 压缩后为 17k**）
-- **源码**：[mini.js](http://g.alicdn.com/kissy/m/1.0.0/mini.js)
+- **dist**：[mini-min.js](http://g.alicdn.com/kissy/m/1.0.1/mini-min.js) （**gizp 压缩后为 17k**）
+- **源码**：[mini.js](http://g.alicdn.com/kissy/m/1.0.1/mini.js)
 
 
 KISSY MINI 所包含的核心模块：
@@ -37,7 +37,7 @@ KISSY MINI 所包含的核心模块：
 
 获取最新的种子文件 
 
-- <a href="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js" style="background:none" >![](https://img.shields.io/badge/kissy%20mini-1.0.0-green.svg)</a> 新版 
+- <a href="http://g.alicdn.com/kissy/m/1.0.1/mini-min.js" style="background:none" >![](https://img.shields.io/badge/kissy%20mini-1.0.1-green.svg)</a> 新版 
 - <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js" style="background:none">![](https://img.shields.io/badge/kissy%20mini-0.3.11-orange.svg)</a> 旧版
 
 注意，KISSY MINI 0.x 版本对外提供三个文件，分别是[mini.js](http://g.alicdn.com/kissy/m/0.3.11/mini-min.js)、[mini-full.js](http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js) 和 [mini-all.js](http://g.alicdn.com/kissy/m/0.3.11/mini-all-min.js)。这和 v1.x 不同。
@@ -46,7 +46,7 @@ KISSY MINI 所包含的核心模块：
 
 直接引用线上地址
 
-	<script src="http://g.alicdn.com/kissy/m/1.0.0/mini-min.js"></script>
+	<script src="http://g.alicdn.com/kissy/m/1.0.1/mini-min.js"></script>
 
 或者通过 bower 安装到本地
 
