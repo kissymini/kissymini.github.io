@@ -125,6 +125,22 @@ KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（[KISSY Gallery]
 
 注意，KISSY MINI 的模块代码无需发布到 npm，这样我们就不用人肉同步 git 仓库的代码版本和 npm 仓库代码版本的差异，你也可以轻松构建自己的代码仓库。
 
+脚手架工具一次性安装：
+
+首先安装三件套
+
+	npm install -g yo grunt-cli bower
+
+然后安装本地服务和脚手架工具
+
+	npm install -g here-ssi generator-mask generator-mpi
+
+这样就拥有了三个重要的命令
+
+1. `here`：开启本地服务，详情查看[here-ssi](https://www.npmjs.com/package/here-ssi)文档
+1. `yo mask`：生成项目，详情查看[Mask](https://github.com/jayli/generator-mask#generator-mask)文档
+1. `yo mpi`：生成组件，详情查看[Mpi](https://github.com/jayli/generator-mpi#generator-mpi)文档
+
 2）**编译构建**：KISSY MINI 的代码编译工具
 
 - Grunt：[grunt-kmc](https://github.com/daxingplay/grunt-kmc) 或者 [grunt-kmb](https://www.npmjs.com/package/grunt-kmb)
