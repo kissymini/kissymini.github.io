@@ -3043,14 +3043,23 @@ config({
     lang        : 'zh-cn'
 });
 
+
 S.config({
-	packages:[
-		// use 可使用默认相对目录，但通常不建议这么做
-		{
+	packages:(function(){
+		var a = [],s = '',tname;
+		for(var i = 0;i<10;i++){
+			tname = ( s += '../' );	
+			a.push({
+				name: tname.replace(/\/$/,''),
+				path: tname
+			});
+		}
+		a.push({
 			name:'.',
 			path:'./'
-		}
-	]
+		});
+		return a;
+	})()
 });
 
 
