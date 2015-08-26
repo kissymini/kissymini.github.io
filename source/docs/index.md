@@ -21,14 +21,14 @@ KISSY MINI 所包含的核心模块：
 | 模块名                 | 体积      | 说明			|
 |:--------------------:|:--------------------:|:--------------------:|
 | core             | **2.9k** | 构造 KISSY 全局对象  |
-| node			| **4.2k** |Node模块   |
+| node			| **4.2k** |Node模块，主要涵盖 DOM 操作的封装   |
 | io		| **2.1k** |Ajax模块   |
-| event			| **2.1k** |Event 模块   |
+| event			| **2.1k** |Event 模块，提供事件的封装，包括自定义事件   |
 | loader			| **4.6k**  |简版的 loader 模块	|
-| anim			| **1k**			|动画模块   |
-| touch 			| **2.1k**			|手势事件模块|
+| anim			| **1k**			|动画模块|
+| touch 			| **2.1k**			|手势事件模块，包括常用的触屏事件，解决 tap 穿透问题|
 
-这些模块中的大部分通过 `KISSY` 全局对象来访问，比如`KISSY.Node`、`KISSY.Event`、`KISSY.IO`等，注意`KISSY.Anim`是不存在的
+这些模块看过之后可以立即忘掉他们，这些模块会默认被初始化好，而且绝大部分功能可通过 `KISSY` 全局对象来访问，比如 `KISSY.Node`、`KISSY.Event`、`KISSY.IO` 等，注意 `KISSY.Anim`、`KISSY.Touch` 是不存在的。通常情况下，我们更推荐你使用基于 DOM 的链式调用。在需要特殊的面向对象编程时（比如使用自定义事件(KISSY.Event.Target)或者类扩充(KISSY.augment)时），需要通过全局对象`KISSY`。
 
 - API 文档入口：[core](./docs/core.html)，[node](./docs/node.html)，[io](./docs/io.html)，[event](./docs/event.html)，[loader](./docs/loader.html)，[anim](./docs/anim.html)，[touch](./docs/touch.html)
 - 测试用例入口：[node.html](./tests/node.html)、[io.html](./tests/io.html)、[loader.html](./tests/loader.html)、[event.html](./tests/event.html)
