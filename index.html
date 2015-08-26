@@ -71,9 +71,9 @@
 <p>注意，KISSY MINI 0.x 版本对外提供三个文件，分别是<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-min.js">mini.js</a>、<a href="http://g.alicdn.com/kissy/m/0.3.11/mini-full-min.js">mini-full.js</a> 和 <a href="http://g.alicdn.com/kissy/m/0.3.11/mini-all-min.js">mini-all.js</a>。这和 v1.x 不同。</p>
 <h3 id="-">开始使用</h3>
 <p>直接引用线上地址</p>
-<pre><code><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://g.alicdn.com/kissy/m/1.0.0/mini-min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://g.alicdn.com/kissy/m/1.0.0/mini-min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
 </code></pre><p>或者通过 bower 安装到本地</p>
-<pre><code><span class="hljs-keyword">bower </span>install kissymini
+<pre><code>bower <span class="hljs-keyword">install</span> kissymini
 </code></pre><p>启动：DOMReady 后弹出 Hello World!</p>
 <pre><code>KISSY.ready(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S)</span></span>{
     alert(<span class="hljs-string">'Hello World!'</span>);
@@ -91,10 +91,10 @@ S.IO.<span class="hljs-keyword">get</span>(<span class="hljs-string">"test.php"<
 <p>1）定义模块</p>
 <p>这里采用 CMD 写法来引入外部依赖</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// ./index.js</span>
-KISSY.add(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">S, require, exports, module</span>) </span>{
+KISSY.add(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(S, require, exports, module)</span> </span>{
     <span class="hljs-comment">// 通过 require 引入外部模块</span>
     <span class="hljs-keyword">var</span> myMode = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./my-mode'</span>);
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Mod</span>(<span class="hljs-params"></span>) </span>{}
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Mod</span><span class="hljs-params">()</span> </span>{}
     <span class="hljs-keyword">return</span> Mod;
 });
 </code></pre>
@@ -110,8 +110,8 @@ KISSY.add(<span class="hljs-function"><span class="hljs-keyword">function</span>
     <span class="hljs-rule"><span class="hljs-attribute">packages</span>:<span class="hljs-value"> [{
         name    : <span class="hljs-string">'pkg1'</span>,
         path    : <span class="hljs-string">'./module'</span>,
-    }]
-})</span></span>;</span>
+    </span></span></span>}]
+});
 </code></pre>
 <h3 id="-">构建工具</h3>
 <p>KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（<a href="http://kpm.taobao.net/">KISSY Gallery</a>）管理，KISSY MINI 的自定义模块直接依赖于 git 仓库，通过 bower 来约束代码之间的依赖关系。这样，就剔除了 KISSY MINI 组件代码部署上线这个操作，这极大简化了 KISSY MINI 模块研发规范。因此需要注意，KISSY MINI 从 v1.0 版本开始，组件模块代码无法直接和 KISSY 6.x 兼容，但迁移成本其实非常小。同时，我们推荐使用 <a href="http://github.com/jayli/generator-mpi">MPI 脚手架</a>工具来生成模块代码骨架，使用 <a href="http://github.com/jayli/generator-mask">Mask 工具</a>来生成项目代码骨架。</p>
@@ -124,9 +124,9 @@ KISSY.add(<span class="hljs-function"><span class="hljs-keyword">function</span>
 <p>注意，KISSY MINI 的模块代码无需发布到 npm，这样我们就不用人肉同步 git 仓库的代码版本和 npm 仓库代码版本的差异，你也可以轻松构建自己的代码仓库。</p>
 <p>脚手架工具一次性安装：</p>
 <p>首先安装三件套</p>
-<pre><code>npm <span class="hljs-operator"><span class="hljs-keyword">install</span> -<span class="hljs-keyword">g</span> yo grunt-cli bower</span>
+<pre><code>npm install -<span class="hljs-keyword">g</span> yo grunt-<span class="hljs-keyword">cli</span> bower
 </code></pre><p>然后安装本地服务和脚手架工具</p>
-<pre><code>npm <span class="hljs-operator"><span class="hljs-keyword">install</span> -<span class="hljs-keyword">g</span> here-ssi generator-<span class="hljs-keyword">mask</span> generator-mpi</span>
+<pre><code>npm <span class="hljs-keyword">install</span> -g here-ssi generator-mask generator-mpi
 </code></pre><p>这样就拥有了三个重要的命令</p>
 <ol>
 <li><code>here</code>：开启本地服务，详情查看<a href="https://www.npmjs.com/package/here-ssi">here-ssi</a>文档</li>
