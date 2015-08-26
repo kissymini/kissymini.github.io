@@ -13,7 +13,7 @@ KISSY MINI 与 KISSY 在企业级研发和模块开发上遵照类似的设计�
 KISSY MINI 对外提供一个种子文件（`v 1.x` 及后续版本）
 
 - **dist**：[mini-min.js](http://g.alicdn.com/kissy/m/1.0.0/mini-min.js) （**gizp 压缩后为 17k**）
-- **源码**：[min.js](http://g.alicdn.com/kissy/m/1.0.0/mini.js)
+- **源码**：[mini.js](http://g.alicdn.com/kissy/m/1.0.0/mini.js)
 
 
 KISSY MINI 所包含的核心模块：
