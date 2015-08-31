@@ -202,6 +202,20 @@
 
 		});
 
+		it('S.use 加载多层的上层目录中的文件',function(done){
+
+			S.use('../tests/loader/reload/a',function(S){
+				var A = S.require('./loader/reload/a');
+				var a = S.require('./loader/reload/a');
+				A.should.equal(1);
+				a.should.equal(1);
+				done();
+			});
+		
+			done();
+
+		});
+
 	});
 
 
