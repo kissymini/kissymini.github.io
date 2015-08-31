@@ -121,7 +121,7 @@ KISSY MINI 的社区在 v1.0 及后续版本中将不再集中（[KISSY Gallery]
 1. [项目脚手架工具 Mask](http://github.com/jayli/generator-mask)：KISSY MINI 项目默认用 Grunt 来构建
 1. [模块脚手架工具 MPI](http://github.com/jayli/generator-mpi)：模块无需构建，通过 bower 来管理依赖，通过 git 来存储
 
-<img src="https://gw.alicdn.com/tps/TB10xPGJXXXXXb0XFXXXXXXXXXX-800-602.png" width="400" />
+<img src="https://gw.alicdn.com/tps/TB16ARoJpXXXXX1XVXXXXXXXXXX-1466-632.png" width="600" />
 
 注意，KISSY MINI 的模块代码无需发布到 npm，这样我们就不用人肉同步 git 仓库的代码版本和 npm 仓库代码版本的差异，你也可以轻松构建自己的代码仓库。
 
