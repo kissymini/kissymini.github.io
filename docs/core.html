@@ -133,16 +133,24 @@ KISSY MINI 1.0 及以后的版本重新定义了核心的 Util 部分功能和 L
 </tr>
 </tbody>
 </table>
-<p>这些模块中的大部分通过 <code>KISSY</code> 全局对象来访问，比如<code>KISSY.Node</code>、<code>KISSY.Event</code>、<code>KISSY.IO</code>等，注意<code>KISSY.Anim</code>是不存在的</p>
+<p>这些模块中的大部分通过 <code>KISSY</code> 全局对象来访问，比如<a href="../docs/node.html">KISSY.Node</a>、<a href="../docs/event.html">KISSY.Event</a>、<a href="../docs/io.html">KISSY.IO</a>，此外常见但不常用的全局对象有 <a href="../docs/loader.html">KISSY.Loader</a>。注意，Node、Touch、Anim 功能以装饰者模式提供，即<code>S.one(&#39;#id&#39;)</code>得到的节点上直接拥有这些特性。最后，KISSY 对象直接挂载了常用的 Api 方法，方法列表<a href="../demo/api/kissy-api.html">参照这里</a>。</p>
+<p><strong>Hello World!</strong></p>
+<pre><code class="lang-javascript">KISSY.ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">S</span>)</span>{
+    S.one(<span class="hljs-string">'body'</span>).append(<span class="hljs-string">'&lt;i&gt;hello&lt;/i&gt;'</span>)
+    .on(<span class="hljs-string">'tap'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
+        alert(<span class="hljs-string">'world'</span>);    
+    });
+});
+</code></pre>
 <p>API 文档入口：</p>
 <ul>
-<li><a href="../docs/core.html">core</a></li>
-<li><a href="../docs/node.html">node</a></li>
-<li><a href="../docs/io.html">io</a></li>
-<li><a href="../docs/event.html">event</a></li>
-<li><a href="../docs/loader.html">loader</a></li>
-<li><a href="../docs/anim.html">anim</a></li>
-<li><a href="../docs/touch.html">touch</a></li>
+<li><a href="../docs/core.html">core 文档</a></li>
+<li><a href="../docs/node.html">node 文档</a></li>
+<li><a href="../docs/io.html">io 文档</a></li>
+<li><a href="../docs/event.html">event 文档</a></li>
+<li><a href="../docs/loader.html">loader 文档</a></li>
+<li><a href="../docs/anim.html">anim 文档</a></li>
+<li><a href="../docs/touch.html">touch 文档</a></li>
 </ul>
 <h2 id="core-">Core 模块</h2>
 

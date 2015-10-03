@@ -1958,8 +1958,27 @@ config({
     lang        : <span class="hljs-string">'zh-cn'</span>
 });
 
+
 S.config({
-	packages:[</pre></div></div>
+	packages:(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">var</span> a = [],s = <span class="hljs-string">''</span>,tname;
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++){
+			tname = ( s += <span class="hljs-string">'../'</span> );	
+			a.push({
+				name: tname.replace(<span class="hljs-regexp">/\/$/</span>,<span class="hljs-string">''</span>),
+				path: tname
+			});
+		}
+		a.push({
+			name:<span class="hljs-string">'.'</span>,
+			path:<span class="hljs-string">'./'</span>
+		});
+		<span class="hljs-keyword">return</span> a;
+	})()
+});
+
+
+}(<span class="hljs-keyword">this</span>));</pre></div></div>
             
         </li>
         
@@ -1969,29 +1988,6 @@ S.config({
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>use 可使用默认相对目录，但通常不建议这么做</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		{
-			name:<span class="hljs-string">'.'</span>,
-			path:<span class="hljs-string">'./'</span>
-		}
-	]
-});
-
-
-}(<span class="hljs-keyword">this</span>));</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <style>td {border-top:1px solid #ccc} table {border-collapse: collapse;}</style>
 
